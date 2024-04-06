@@ -60,10 +60,10 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
     protected <C extends Container> boolean matchStaticFilters(Recipe<C> r) {
         return ((r instanceof CraftingRecipe && !(r instanceof IShapedRecipe<?>)
                 && AllConfigs.server().recipes.allowShapelessInMixer.get() && r.getIngredients().size() > 1
-                && !MechanicalPressBlockEntity.canCompress(r)) && ! AllRecipeTypes.shouldIgnoreInAutomation(r)
-                || r.getType() == AllRecipeTypes.MIXING.getType()
+                && !MechanicalPressBlockEntity.canCompress(r)) && !AllRecipeTypes.shouldIgnoreInAutomation(r)
+                || r.getType() == GTRecipeTypes.MIXER_RECIPES
                 || r.getType() == ModRecipeTypes.MIXING.getType()
-                || r.getType() == GTRecipeTypes.MIXER_RECIPES);
+                || r.getType() == AllRecipeTypes.MIXING.getType());
     }
 
     @Override
@@ -100,8 +100,7 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
     protected <C extends Container> boolean matchBasinRecipe(Recipe<C> recipe) {
         if(recipe == null) return false;
         Optional<BasinBlockEntity> basin = getBasin();
-        if(basin.isEmpty()) return false;
-        return TieredBasinRecipe.match(basin.get(), recipe, this.tier);
+        return basin.filter(basinBlockEntity -> TieredBasinRecipe.match(basinBlockEntity, recipe, this.tier)).isPresent();
     }
 
     private class CircuitValueBoxTransform extends ValueBoxTransform.Sided {

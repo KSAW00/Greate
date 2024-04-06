@@ -1,5 +1,7 @@
 package electrolyte.greate.content.kinetics.press;
 
+import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
+import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour.ProcessingResult;
@@ -8,7 +10,9 @@ import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackH
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.kinetics.press.PressingBehaviour;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredProcessingRecipeHolder;
+import electrolyte.greate.content.processing.recipe.TieredProcessingRecipe;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +59,12 @@ public class TieredBeltPressingCallbacks {
         } else {
             TransportedItemStack left = transported.copy();
             if(behaviour.blockEntity instanceof ITieredProcessingRecipeHolder tprh) {
-                left.stack.shrink(tprh.getRecipe().getIngredients().get(0).getItems()[0].getCount());
+                if(tprh.getRecipe() instanceof TieredProcessingRecipe<?>) {
+                    left.stack.shrink(tprh.getRecipe().getIngredients().get(0).getItems()[0].getCount());
+                } else if(tprh.getRecipe() instanceof GTRecipe gtr) {
+                    int amount = ((Ingredient) gtr.getInputContents(ItemRecipeCapability.CAP).get(0).getContent()).getItems()[0].getCount();
+                    left.stack.shrink(amount);
+                }
             } else {
                 left.stack.shrink(1);
             }

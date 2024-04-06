@@ -3,10 +3,8 @@ package electrolyte.greate.content.kinetics.millstone;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlock;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
-
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
-import electrolyte.greate.registry.Millstones;
 import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;

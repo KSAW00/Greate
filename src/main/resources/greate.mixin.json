@@ -13,6 +13,8 @@
     "MixinBeltTunnelBlock",
     "MixinBlockEntityBehaviour",
     "MixinBlockStressDefaults",
+    "MixinCrushingWheelControllerBlockEntity",
+    "MixinCrushingWheelControllerBlockEntityAccessor",
     "MixinFluidPropagator",
     "MixinGirderBlock",
     "MixinGirderEncasedShaftBlock",

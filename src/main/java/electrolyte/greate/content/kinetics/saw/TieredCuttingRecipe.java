@@ -15,7 +15,6 @@ import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilde
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder.TieredProcessingRecipeParams;
 import electrolyte.greate.registry.ModRecipeTypes;
 import electrolyte.greate.registry.Saws;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -87,21 +86,19 @@ public class TieredCuttingRecipe extends TieredProcessingRecipe<RecipeWrapper> i
     public static TieredCuttingRecipe convertNormalSawing(Recipe<?> recipe) {
         return new TieredProcessingRecipeBuilder<>(TieredCuttingRecipe::new, recipe.getId())
                 .withItemIngredients(recipe.getIngredients())
-                .output(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))
                 .withItemOutputs(((ProcessingRecipe<?>) recipe).getRollableResults())
                 .recipeTier(ULV)
                 .build();
     }
 
-    public static TieredCuttingRecipe convertGTCutter(GTRecipe recipe, int machineTier) {
+    public static TieredCuttingRecipe convertGTCutter(GTRecipe recipe) {
         List<Content> inputContents = recipe.getInputContents(ItemRecipeCapability.CAP);
         List<Content> fluidContents = recipe.getInputContents(FluidRecipeCapability.CAP);
         int recipeTier = GreateValues.convertGTEUToTier(recipe.getTickInputContents(EURecipeCapability.CAP));
         return new TieredProcessingRecipeBuilder<>(TieredCuttingRecipe::new, recipe.getId())
                 .withItemIngredientsGT(inputContents)
                 .withFluidIngredientsGT(fluidContents)
-                .output(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))
-                .withItemOutputsGT(recipe.getOutputContents(ItemRecipeCapability.CAP), recipeTier, machineTier)
+                .withItemOutputsGT(recipe.getOutputContents(ItemRecipeCapability.CAP), recipeTier, ULV)
                 .recipeTier(recipeTier)
                 .duration(recipe.duration)
                 .build();

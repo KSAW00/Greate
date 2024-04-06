@@ -7,7 +7,6 @@ import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder.TieredProcessingRecipeFactory;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.NonNullList;
@@ -172,7 +171,7 @@ public class TieredProcessingRecipeSerializer<T extends TieredProcessingRecipe<?
         return readFromBuffer(id, buffer);
     }
 
-    public TieredProcessingRecipeBuilder.TieredProcessingRecipeFactory<T> getFactory() {
+    public TieredProcessingRecipeFactory<T> getFactory() {
         return factory;
     }
 }

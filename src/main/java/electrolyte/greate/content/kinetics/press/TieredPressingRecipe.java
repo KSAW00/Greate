@@ -9,13 +9,11 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
 import com.simibubi.create.foundation.utility.Lang;
 import electrolyte.greate.GreateValues;
-
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipe;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder.TieredProcessingRecipeParams;
 import electrolyte.greate.registry.MechanicalPresses;
 import electrolyte.greate.registry.ModRecipeTypes;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -72,18 +70,17 @@ public class TieredPressingRecipe extends TieredProcessingRecipe<RecipeWrapper> 
 
     public static TieredPressingRecipe convertNormalPressing(Recipe<?> recipe) {
         return new TieredProcessingRecipeBuilder<>(TieredPressingRecipe::new, recipe.getId())
-                .withItemIngredients(recipe.getIngredients()).output(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))
+                .withItemIngredients(recipe.getIngredients())
                 .withItemOutputs(((ProcessingRecipe<?>) recipe).getRollableResults())
                 .recipeTier(ULV).noCircuit().build();
     }
 
-    public static TieredPressingRecipe convertGT(GTRecipe recipe, int machineTier) {
+    public static TieredPressingRecipe convertGT(GTRecipe recipe) {
         List<Content> inputContents = recipe.getInputContents(ItemRecipeCapability.CAP);
         int recipeTier = GreateValues.convertGTEUToTier(recipe.getTickInputContents(EURecipeCapability.CAP));
         return new TieredProcessingRecipeBuilder<>(TieredPressingRecipe::new, recipe.getId())
                 .withItemIngredientsGT(inputContents)
-                .output(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))
-                .withItemOutputsGT(recipe.getOutputContents(ItemRecipeCapability.CAP), recipeTier, machineTier)
+                .withItemOutputsGT(recipe.getOutputContents(ItemRecipeCapability.CAP), recipeTier, ULV)
                 .recipeTier(recipeTier)
                 .recipeCircuit(getCircuitFromGTRecipe(inputContents))
                 .build();

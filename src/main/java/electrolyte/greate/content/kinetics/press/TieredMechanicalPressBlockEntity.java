@@ -2,7 +2,6 @@ package electrolyte.greate.content.kinetics.press;
 
 import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
-import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
@@ -14,8 +13,7 @@ import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
-import com.simibubi.create.foundation.recipe.RecipeApplier;
-import com.simibubi.create.foundation.recipe.RecipeFinder;
+import com.simibubi.create.foundation.recipe.RecipeConditions;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.VecHelper;
 import electrolyte.greate.Greate;
@@ -23,9 +21,11 @@ import electrolyte.greate.content.kinetics.base.ICircuitHolder;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredKineticBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredProcessingRecipeHolder;
 import electrolyte.greate.content.processing.basin.TieredBasinRecipe;
+import electrolyte.greate.content.processing.recipe.TieredProcessingRecipe;
 import electrolyte.greate.foundation.data.recipe.TieredRecipeConditions;
+import electrolyte.greate.foundation.recipe.TieredRecipeApplier;
+import electrolyte.greate.foundation.recipe.TieredRecipeFinder;
 import electrolyte.greate.registry.ModRecipeTypes;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -39,8 +39,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +50,6 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
     private int tier;
     private ScrollValueBehaviour targetCircuit;
     private static final Object PRESSING_RECIPE_CACHE_KEY = new Object();
-    private int remainingTime;
 
     public TieredMechanicalPressBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -77,18 +77,17 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
     @Override
     public boolean tryProcessInWorld(ItemEntity itemEntity, boolean simulate) {
         ItemStack stack = itemEntity.getItem();
-        Optional<PressingRecipe> assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, stack, AllRecipeTypes.PRESSING.getType(), PressingRecipe.class);
-        Optional<TieredPressingRecipe> recipe = getValidRecipe(stack);
-        if(assemblyRecipe.isEmpty() && recipe.isEmpty()) return false;
+        Optional<? extends Recipe<?>> recipe = getValidRecipe(stack);
+        if(recipe.isEmpty()) return false;
         if(simulate) return true;
 
         ItemStack createdStack = ItemStack.EMPTY;
         pressingBehaviour.particleItems.add(stack);
         if(canProcessInBulk() || stack.getCount() == 1) {
-            RecipeApplier.applyRecipeOn(itemEntity, assemblyRecipe.isPresent() ? assemblyRecipe.get() : recipe.get());
+            TieredRecipeApplier.applyRecipeOn(itemEntity, recipe.get(), tier);
             createdStack = itemEntity.getItem().copy();
         } else {
-            for(ItemStack result : RecipeApplier.applyRecipeOn(level, ItemHandlerHelper.copyStackWithSize(stack, 1), assemblyRecipe.isPresent() ? assemblyRecipe.get() : recipe.get())) {
+            for(ItemStack result : TieredRecipeApplier.applyRecipeOn(level, ItemHandlerHelper.copyStackWithSize(stack, 1), recipe.get(), tier)) {
                 if(createdStack.isEmpty()) {
                     createdStack = result.copy();
                 }
@@ -97,8 +96,14 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
                 createdEntityStack.setDeltaMovement(VecHelper.offsetRandomly(Vec3.ZERO, level.random, 0.05f));
                 level.addFreshEntity(createdEntityStack);
             }
-
-            stack.shrink((assemblyRecipe.isPresent() ? assemblyRecipe.get() : recipe.get()).getIngredients().get(0).getItems()[0].getCount());
+            if(recipe.get() instanceof TieredProcessingRecipe<?>) {
+                stack.shrink(recipe.get().getIngredients().get(0).getItems()[0].getCount());
+            } else if(recipe.get() instanceof GTRecipe gtr) {
+                int amount = ((Ingredient) gtr.getInputContents(ItemRecipeCapability.CAP).get(0).getContent()).getItems()[0].getCount();
+                stack.shrink(amount);
+            } else {
+                stack.shrink(1);
+            }
         }
 
         if(!createdStack.isEmpty()) {
@@ -109,14 +114,13 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
 
     @Override
     public boolean tryProcessOnBelt(TransportedItemStack input, List<ItemStack> outputList, boolean simulate) {
-        //todo: setup tiered machines in sequenced assembly recipes
-        Optional<PressingRecipe> assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, input.stack, AllRecipeTypes.PRESSING.getType(), PressingRecipe.class);
-        Optional<TieredPressingRecipe> recipe = getValidRecipe(input.stack);
-        if(assemblyRecipe.isEmpty() && recipe.isEmpty()) return false;
+        //TODO: tiered sequenced assembly recipes
+        Optional<? extends Recipe<?>> recipe = getValidRecipe(input.stack);
+        if(recipe.isEmpty()) return false;
         if(simulate) return true;
         pressingBehaviour.particleItems.add(input.stack);
-        List<ItemStack> outputStacks = RecipeApplier.applyRecipeOn(level, canProcessInBulk() ?
-                input.stack : ItemHandlerHelper.copyStackWithSize(input.stack, 1), assemblyRecipe.isPresent() ? assemblyRecipe.get() : recipe.get());
+        List<ItemStack> outputStacks = TieredRecipeApplier.applyRecipeOn(level, canProcessInBulk() ?
+                input.stack : ItemHandlerHelper.copyStackWithSize(input.stack, 1), recipe.get(), tier);
         for(ItemStack stack : outputStacks) {
             if(!stack.isEmpty()) {
                 onItemPressed(stack);
@@ -128,70 +132,32 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
         return true;
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if(remainingTime > 0) {
-            remainingTime--;
-        }
-    }
+    private static final RecipeWrapper pressingInv = new RecipeWrapper(new ItemStackHandler(1));
 
-    public Optional<TieredPressingRecipe> getValidRecipe(ItemStack item) {
-        currentRecipe = null;
-        List<Recipe<?>> list = new ArrayList<>();
-        if(remainingTime == 0) {
-            list = RecipeFinder.get(PRESSING_RECIPE_CACHE_KEY, level, p ->
-                    p.getType() == GTRecipeTypes.BENDER_RECIPES ||
-                            p.getType() == ModRecipeTypes.PRESSING.getType() ||
-                            p.getType() == AllRecipeTypes.PRESSING.getType()).stream()
-                    .filter(r -> {
-                if(r.getType() == GTRecipeTypes.BENDER_RECIPES) {
-                    GTRecipe recipe = (GTRecipe) r;
-                    for(Content c : recipe.getInputContents(ItemRecipeCapability.CAP)) {
-                        if(ItemRecipeCapability.CAP.copyContent(c.getContent()).test(item)) {
-                            if(ItemRecipeCapability.CAP.copyContent(c.getContent()).getItems()[0].getCount() <= item.getCount()) {
-                                return true;
-                            }
-                        }
-                    }
-                } else {
-                    for(Ingredient i : r.getIngredients()) {
-                        if(i.test(item)) {
-                            if(i.getItems()[0].getCount() <= item.getCount()) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-                return false;
-            }).filter(TieredRecipeConditions.circuitMatches(this.targetCircuit.getValue()))
-              .filter(TieredRecipeConditions.isEqualOrAboveTier(this.tier))
-              .toList();
+    public Optional<? extends Recipe<?>> getValidRecipe(ItemStack stack) {
+        Optional<PressingRecipe> assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, stack, AllRecipeTypes.PRESSING.getType(), PressingRecipe.class);
+        if(assemblyRecipe.isPresent()) {
+            currentRecipe = assemblyRecipe.get();
+            return assemblyRecipe;
         }
-        if(list.isEmpty()) {
-            remainingTime = 10;
-        } else if(Minecraft.getInstance().level != null) {
-            for(Recipe<?> recipe : list) {
-                if(recipe.getType() == GTRecipeTypes.BENDER_RECIPES) {
-                    TieredPressingRecipe convertedRecipe = TieredPressingRecipe.convertGT((GTRecipe) recipe, this.tier);
-                    currentRecipe = convertedRecipe;
-                    return Optional.of(convertedRecipe);
-                } else if(recipe.getType() == AllRecipeTypes.PRESSING.getType()) {
-                    TieredPressingRecipe tpr = TieredPressingRecipe.convertNormalPressing(recipe);
-                    currentRecipe = tpr;
-                    return Optional.of(tpr);
-                } else {
-                    TieredPressingRecipe tpr = (TieredPressingRecipe) recipe;
-                    currentRecipe = tpr;
-                    return Optional.of(tpr);
-                }
-            }
+
+        pressingInv.setItem(0, stack);
+        Optional<Recipe<?>> recipe = TieredRecipeFinder.findRecipe(PRESSING_RECIPE_CACHE_KEY, level, pressingInv,
+                RecipeConditions.isOfType(GTRecipeTypes.BENDER_RECIPES, ModRecipeTypes.PRESSING.getType(), AllRecipeTypes.PRESSING.getType())
+                        .and(TieredRecipeConditions.firstIngredientMatches(stack)),
+                TieredRecipeConditions.isEqualOrAboveTier(tier)
+                        .and(TieredRecipeConditions.circuitMatches(targetCircuit.getValue()))
+                        .and(TieredRecipeConditions.firstIngredientCountMatches(stack)));
+        if(recipe.isPresent()) {
+            currentRecipe = recipe.get();
+            return recipe;
         }
         return Optional.empty();
     }
 
     @Override
-    protected <C extends Container> boolean matchStaticFilters(Recipe<C> recipe) {
+    protected <
+        C extends Container> boolean matchStaticFilters(Recipe<C> recipe) {
         return (recipe instanceof CraftingRecipe && !(recipe instanceof MechanicalCraftingRecipe) && canCompress(recipe)
                 && !AllRecipeTypes.shouldIgnoreInAutomation(recipe))
                 || recipe.getType() == AllRecipeTypes.COMPACTING.getType()
@@ -201,11 +167,6 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
     @Override
     public Recipe<?> getRecipe() {
         return this.currentRecipe;
-    }
-
-    @Override
-    public void setRecipe(Recipe<?> recipe) {
-        this.currentRecipe = recipe;
     }
 
     @Override

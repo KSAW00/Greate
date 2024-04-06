@@ -1,22 +1,25 @@
 package electrolyte.greate.mixin;
 
+import com.google.common.collect.ImmutableList;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.kinetics.base.BlockBreakingKineticBlockEntity;
+import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
 import com.simibubi.create.content.kinetics.saw.SawBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.recipe.RecipeConditions;
 import com.simibubi.create.foundation.recipe.RecipeFinder;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-import electrolyte.greate.content.kinetics.saw.TieredCuttingRecipe;
 import electrolyte.greate.content.kinetics.saw.TieredSawBlock;
 import electrolyte.greate.content.kinetics.saw.TieredSawBlockEntity;
 import electrolyte.greate.foundation.data.recipe.TieredRecipeConditions;
+import electrolyte.greate.foundation.recipe.TieredRecipeHelper;
 import electrolyte.greate.registry.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +42,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -67,6 +71,10 @@ public abstract class MixinSawBlockEntity extends BlockBreakingKineticBlockEntit
     private void greate_getRecipes(CallbackInfoReturnable<List<? extends Recipe<?>>> cir) {
         if(this.getBlockState().getBlock() instanceof TieredSawBlock tsb) {
             TieredSawBlockEntity be = (TieredSawBlockEntity) level.getBlockEntity(this.getBlockPos());
+            Optional<CuttingRecipe> assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, inventory.getStackInSlot(0), AllRecipeTypes.CUTTING.getType(), CuttingRecipe.class);
+            if(assemblyRecipe.isPresent() && filtering.test(assemblyRecipe.get().getResultItem(level.registryAccess()))) {
+                cir.setReturnValue(ImmutableList.of(assemblyRecipe.get()));
+            }
             Predicate<Recipe<?>> recipeTypes = RecipeConditions.isOfType(AllRecipeTypes.CUTTING.getType(), ModRecipeTypes.CUTTING.getType(), GTRecipeTypes.CUTTER_RECIPES,
                     AllConfigs.server().recipes.allowStonecuttingOnSaw.get() ? RecipeType.STONECUTTING : null,
                     AllConfigs.server().recipes.allowWoodcuttingOnSaw.get() ? woodcuttingRecipeType.get() : null);
@@ -95,9 +103,6 @@ public abstract class MixinSawBlockEntity extends BlockBreakingKineticBlockEntit
             if(recipeIndex >= recipes.size()) recipeIndex = 0;
 
             Recipe<?> recipe = recipes.get(recipeIndex);
-            if(recipe instanceof GTRecipe gtr) {
-                recipe = TieredCuttingRecipe.convertGTCutter(gtr, tsb.getTier());
-            }
             int rolls = inventory.getStackInSlot(0).getCount();
             IFluidHandler availableFluid = be.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
             if(availableFluid == null) ci.cancel();
@@ -110,6 +115,8 @@ public abstract class MixinSawBlockEntity extends BlockBreakingKineticBlockEntit
                     if(!pr.getFluidIngredients().isEmpty()) {
                         availableFluid.drain(pr.getFluidIngredients().get(0).getRequiredAmount(), FluidAction.EXECUTE);
                     }
+                } else if (recipe instanceof GTRecipe gtr) {
+                    results.addAll(TieredRecipeHelper.INSTANCE.getItemResults(gtr, tsb.getTier()));
                 } else if(recipe instanceof StonecutterRecipe || recipe.getType() == woodcuttingRecipeType.get()) {
                     results.add(recipe.getResultItem(level.registryAccess()).copy());
                 }

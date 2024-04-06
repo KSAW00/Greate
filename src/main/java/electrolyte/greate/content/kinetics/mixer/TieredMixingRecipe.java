@@ -8,12 +8,10 @@ import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import electrolyte.greate.GreateValues;
-
 import electrolyte.greate.content.processing.basin.TieredBasinRecipe;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder.TieredProcessingRecipeParams;
 import electrolyte.greate.registry.ModRecipeTypes;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.Recipe;
 
 import java.util.List;
@@ -25,11 +23,10 @@ public class TieredMixingRecipe extends TieredBasinRecipe {
         super(ModRecipeTypes.MIXING, params);
     }
 
-    public static TieredMixingRecipe convertUntieredRecipe(Recipe<?> recipe) {
+    public static TieredMixingRecipe convertNormal(Recipe<?> recipe) {
         return new TieredProcessingRecipeBuilder<>(TieredMixingRecipe::new, recipe.getId())
                 .withItemIngredients(recipe.getIngredients())
                 .withFluidIngredients(((ProcessingRecipe<?>) recipe).getFluidIngredients())
-                .output(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))
                 .withItemOutputs(((ProcessingRecipe<?>) recipe).getRollableResults())
                 .withFluidOutputs(((ProcessingRecipe<?>) recipe).getFluidResults())
                 .requiresHeat(((ProcessingRecipe<?>) recipe).getRequiredHeat())
@@ -45,7 +42,6 @@ public class TieredMixingRecipe extends TieredBasinRecipe {
         return new TieredProcessingRecipeBuilder<>(TieredMixingRecipe::new, recipe.getId())
                 .withItemIngredientsGT(itemInputContents)
                 .withFluidIngredientsGT(fluidInputContents)
-                .output(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))
                 .withItemOutputsGT(recipe.getOutputContents(ItemRecipeCapability.CAP), recipeTier, machineTier)
                 .withFluidOutputsGT(recipe.getOutputContents(FluidRecipeCapability.CAP))
                 .requiresHeat(HeatCondition.HEATED)

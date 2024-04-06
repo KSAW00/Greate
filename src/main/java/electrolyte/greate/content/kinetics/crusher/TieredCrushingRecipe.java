@@ -5,12 +5,9 @@ import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import electrolyte.greate.GreateValues;
-
-import electrolyte.greate.content.processing.recipe.TieredProcessingRecipe;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder.TieredProcessingRecipeParams;
 import electrolyte.greate.registry.ModRecipeTypes;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
@@ -36,16 +33,12 @@ public class TieredCrushingRecipe extends TieredAbstractCrushingRecipe {
         return ingredients.get(0).test(pContainer.getItem(0));
     }
 
-    public static TieredCrushingRecipe convertNormalCrushing(Recipe<?> recipe, int machineTier) {
-        return new TieredProcessingRecipeBuilder<>(TieredCrushingRecipe::new, recipe.getId()).duration(((ProcessingRecipe<?>) recipe).getProcessingDuration()).withItemIngredients(recipe.getIngredients()).output(recipe.getResultItem(Minecraft.getInstance().getConnection().registryAccess())).withItemOutputs(((ProcessingRecipe<?>) recipe).getRollableResults(), ULV, machineTier).recipeTier(ULV).build();
+    public static TieredCrushingRecipe convertNormalCrushing(Recipe<?> recipe) {
+        return new TieredProcessingRecipeBuilder<>(TieredCrushingRecipe::new, recipe.getId()).duration(((ProcessingRecipe<?>) recipe).getProcessingDuration()).withItemIngredients(recipe.getIngredients()).withItemOutputs(((ProcessingRecipe<?>) recipe).getRollableResults()).recipeTier(ULV).build();
     }
 
-    public static TieredCrushingRecipe convertTieredCrushing(Recipe<?> recipe, int machineTier) {
-        return new TieredProcessingRecipeBuilder<>(TieredCrushingRecipe::new, recipe.getId()).duration(((ProcessingRecipe<?>) recipe).getProcessingDuration()).withItemIngredients(recipe.getIngredients()).output(recipe.getResultItem(Minecraft.getInstance().getConnection().registryAccess())).withItemOutputs(((ProcessingRecipe<?>) recipe).getRollableResults(), ((TieredProcessingRecipe<?>) recipe).getRecipeTier(), machineTier).recipeTier(((TieredProcessingRecipe<?>) recipe).getRecipeTier()).build();
-    }
-
-    public static TieredCrushingRecipe convertGT(GTRecipe recipe, int machineTier) {
+    public static TieredCrushingRecipe convertGT(GTRecipe recipe) {
         int recipeTier = GreateValues.convertGTEUToTier(recipe.getTickInputContents(EURecipeCapability.CAP));
-        return new TieredProcessingRecipeBuilder<>(TieredCrushingRecipe::new, recipe.getId()).duration(recipe.duration).withItemIngredientsGT(recipe.getInputContents(ItemRecipeCapability.CAP)).output(recipe.getResultItem(Minecraft.getInstance().getConnection().registryAccess())).withItemOutputsGT(recipe.getOutputContents(ItemRecipeCapability.CAP), recipeTier, machineTier).recipeTier(recipeTier).build();
+        return new TieredProcessingRecipeBuilder<>(TieredCrushingRecipe::new, recipe.getId()).duration(recipe.duration).withItemIngredientsGT(recipe.getInputContents(ItemRecipeCapability.CAP)).withItemOutputsGT(recipe.getOutputContents(ItemRecipeCapability.CAP), recipeTier, ULV).recipeTier(recipeTier).build();
     }
 }

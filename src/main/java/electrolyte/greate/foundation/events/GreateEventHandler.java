@@ -4,8 +4,10 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.utility.Lang;
 import electrolyte.greate.Greate;
+import electrolyte.greate.foundation.recipe.TieredRecipeFinder;
 import electrolyte.greate.infrastructure.config.GreateConfigs;
 import net.minecraft.ChatFormatting;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,5 +30,10 @@ public class GreateEventHandler {
                 event.getToolTip().add(Lang.builder(Greate.MOD_ID).translate("old_create_items_warning").component().withStyle(ChatFormatting.RED));
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onResourceReload(AddReloadListenerEvent event) {
+        event.addListener(TieredRecipeFinder.LISTENER);
     }
 }

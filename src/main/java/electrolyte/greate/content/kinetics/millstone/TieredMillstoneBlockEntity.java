@@ -1,19 +1,21 @@
 package electrolyte.greate.content.kinetics.millstone;
 
-import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
-import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
+import com.simibubi.create.foundation.recipe.RecipeConditions;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredKineticBlockEntity;
-import electrolyte.greate.content.processing.recipe.TieredProcessingRecipe;
+import electrolyte.greate.foundation.data.recipe.TieredRecipeConditions;
+import electrolyte.greate.foundation.recipe.TieredRecipeFinder;
+import electrolyte.greate.foundation.recipe.TieredRecipeHelper;
 import electrolyte.greate.registry.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
@@ -26,15 +28,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements ITieredKineticBlockEntity {
-
-    private ProcessingRecipe<RecipeWrapper> lastRecipe;
+    public int timer;
+    private Recipe<? extends Container> lastRecipe;
     private int tier;
     private int maxItemsPerRecipe;
+    private static final Object MILLING_RECIPE_CACHE_KEY = new Object();
+
 
     public TieredMillstoneBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
-        inputInv = new ItemStackHandler(1);
-        outputInv = new ItemStackHandler(1);
         capability = LazyOptional.of(TieredMillstoneInventoryHandler::new);
         tier = ((TieredMillstoneBlock) state.getBlock()).getTier();
         maxItemsPerRecipe = tier * 2;
@@ -44,16 +46,17 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
     public void tick() {
         super.tick();
 
-        if(getSpeed() == 0) return;
+        if(getSpeed() == 0)
+            return;
 
         for(int i = 0; i < outputInv.getSlots(); i++) {
-            if(outputInv.getStackInSlot(i).getCount() == outputInv.getSlotLimit(i)) return;
-            if(outputInv.getStackInSlot(i).getCount() + Math.min(inputInv.getStackInSlot(0).getCount(), maxItemsPerRecipe) > outputInv.getSlotLimit(i)) return;
+            if(outputInv.getStackInSlot(i).getCount() == outputInv.getSlotLimit(i))
+                return;
+            if(outputInv.getStackInSlot(i).getCount() + Math.min(inputInv.getStackInSlot(0).getCount(), maxItemsPerRecipe) > outputInv.getSlotLimit(i))
+                return;
         }
 
-        RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
-
-        if(timer > 0 && lastRecipe != null && lastRecipe.matches(inventoryIn, level)) {
+        if(timer > 0) {
             timer -= getProcessingSpeed();
 
             if(level.isClientSide) {
@@ -67,55 +70,31 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
             return;
         }
 
-        if(inputInv.getStackInSlot(0).isEmpty()) return;
+        if(inputInv.getStackInSlot(0).isEmpty())
+            return;
 
-        if(lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-            Optional<ProcessingRecipe<RecipeWrapper>> recipe = findRecipe(inventoryIn);
+        RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
+        if(lastRecipe == null || ! TieredRecipeHelper.INSTANCE.firstIngredientMatches(lastRecipe, inventoryIn)) {
+            Optional<Recipe<?>> recipe = findRecipe(inventoryIn);
             if(recipe.isEmpty()) {
                 timer = 100;
                 sendData();
             } else {
                 lastRecipe = recipe.get();
-                timer = lastRecipe.getProcessingDuration();
+                timer = TieredRecipeHelper.INSTANCE.findDuration(recipe.get());
                 sendData();
             }
             return;
         }
-
-        timer = lastRecipe.getProcessingDuration();
+        timer = TieredRecipeHelper.INSTANCE.findDuration(lastRecipe);
         sendData();
-    }
-
-    @Override
-    public void spawnParticles() {
-        if(lastRecipe != null && lastRecipe.matches(new RecipeWrapper(inputInv), level)) {
-            super.spawnParticles();
-        }
-    }
-
-    public Optional<ProcessingRecipe<RecipeWrapper>> findRecipe(RecipeWrapper wrapper) {
-        Optional<ProcessingRecipe<RecipeWrapper>> millingRecipe = ModRecipeTypes.MILLING.find(wrapper, level, tier);
-        if(millingRecipe.isEmpty()) {
-            millingRecipe = AllRecipeTypes.MILLING.find(wrapper, level);
-        }
-        if (millingRecipe.isEmpty()) {
-            Optional<GTRecipe> test = level.getRecipeManager().getAllRecipesFor(GTRecipeTypes.MACERATOR_RECIPES).stream().filter(r ->
-                    ((Ingredient) r.getInputContents(ItemRecipeCapability.CAP).get(0).getContent()).test(wrapper.getItem(0))).findFirst();
-            if(test.isPresent()) {
-                TieredProcessingRecipe<RecipeWrapper> convertedRecipe = TieredMillingRecipe.convertGT(test.get(), tier);
-                if(convertedRecipe.getRecipeTier() <= tier) {
-                    return Optional.of(convertedRecipe);
-                }
-            }
-        }
-        return millingRecipe;
     }
 
     private void process() {
         RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-        if(lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-            Optional<ProcessingRecipe<RecipeWrapper>> recipe = findRecipe(inventoryIn);
+        if(lastRecipe == null || ! TieredRecipeHelper.INSTANCE.firstIngredientMatches(lastRecipe, inventoryIn)) {
+            Optional<Recipe<?>> recipe = findRecipe(inventoryIn);
 
             if(recipe.isEmpty()) return;
             lastRecipe = recipe.get();
@@ -126,7 +105,8 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
         stackInSlot.shrink(maxItemsPerRecipe);
         inputInv.setStackInSlot(0, stackInSlot);
         for(int i = 0; i < Math.min(amountInSlot, maxItemsPerRecipe); i++) {
-            lastRecipe.rollResults().forEach(stack -> ItemHandlerHelper.insertItemStacked(outputInv, stack, false));
+            List<ItemStack> results = TieredRecipeHelper.INSTANCE.getItemResults(lastRecipe, tier);
+            results.forEach(stack -> ItemHandlerHelper.insertItemStacked(outputInv, stack, false));
         }
         award(AllAdvancements.MILLSTONE);
 
@@ -134,13 +114,32 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
         setChanged();
     }
 
+    @Override
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
+        timer = compound.getInt("Timer");
+    }
+
+    @Override
+    public void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
+        compound.putInt("Timer", timer);
+    }
+
     private boolean canProcess(ItemStack stack) {
         ItemStackHandler tester = new ItemStackHandler(1);
         tester.setStackInSlot(0, stack);
         RecipeWrapper inventoryIn = new RecipeWrapper(tester);
 
-        if(lastRecipe != null && lastRecipe.matches(inventoryIn, level)) return true;
-        return inputInv.getStackInSlot(0).isEmpty() && outputInv.getStackInSlot(0).isEmpty();
+        if(lastRecipe != null && TieredRecipeHelper.INSTANCE.firstIngredientMatches(lastRecipe, inventoryIn)) return true;
+        return findRecipe(inventoryIn).isPresent();
+    }
+
+    private Optional<Recipe<?>> findRecipe(RecipeWrapper wrapper) {
+        return TieredRecipeFinder.findRecipe(MILLING_RECIPE_CACHE_KEY, level, wrapper,
+                RecipeConditions.isOfType(GTRecipeTypes.MACERATOR_RECIPES, ModRecipeTypes.MILLING.getType(), AllRecipeTypes.MILLING.getType())
+                        .and(TieredRecipeConditions.firstIngredientMatches(wrapper.getItem(0))),
+                TieredRecipeConditions.isEqualOrAboveTier(tier));
     }
 
     @Override

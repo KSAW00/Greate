@@ -89,8 +89,8 @@ public class GreateJEI implements IModPlugin {
 
                 milling = builder(TieredAbstractCrushingRecipe.class)
                     .addTypedRecipes(ModRecipeTypes.MILLING)
-                    .addTypedRecipes(AllRecipeTypes.MILLING::getType, TieredMillingRecipe::convertNormalMilling)
-                    .addTypedRecipesGT(GTRecipeTypes.MACERATOR_RECIPES, (r) -> TieredMillingRecipe.convertGT(r, ULV))
+                    .addTypedRecipes(AllRecipeTypes.MILLING::getType, TieredMillingRecipe::convertNormal)
+                    .addTypedRecipesGT(GTRecipeTypes.MACERATOR_RECIPES, TieredMillingRecipe::convertGT)
                     .catalysts(Arrays.stream(Millstones.MILLSTONES)
                             .<Supplier<ItemLike>>map(o -> o::get)
                             .collect(Collectors.toList()))
@@ -99,10 +99,10 @@ public class GreateJEI implements IModPlugin {
                     .build("milling", TieredMillingCategory::new),
 
                 crushing = builder(TieredAbstractCrushingRecipe.class)
-                        .addTypedRecipesGT(GTRecipeTypes.MACERATOR_RECIPES, r -> TieredCrushingRecipe.convertGT(r, ULV))
+                        .addTypedRecipesGT(GTRecipeTypes.MACERATOR_RECIPES, TieredCrushingRecipe::convertGT)
                         .addTypedRecipes(ModRecipeTypes.CRUSHING::getType)
-                        .addTypedRecipesExcludingGT(AllRecipeTypes.CRUSHING::getType, GTRecipeTypes.MACERATOR_RECIPES, r -> TieredCrushingRecipe.convertNormalCrushing(r, ULV))
-                        .addTypedRecipesExcluding(AllRecipeTypes.MILLING::getType, AllRecipeTypes.CRUSHING::getType, r -> TieredCrushingRecipe.convertNormalCrushing(r, ULV))
+                        .addTypedRecipes(ModRecipeTypes.MILLING::getType)
+                        .addTypedRecipes(AllRecipeTypes.MILLING::getType, TieredCrushingRecipe::convertNormalCrushing)
                         .catalysts(Arrays.stream(CrushingWheels.CRUSHING_WHEELS)
                                 .<Supplier<ItemLike>>map(o -> o::get)
                                 .collect(Collectors.toList()))
@@ -111,9 +111,9 @@ public class GreateJEI implements IModPlugin {
                         .build("crushing", TieredCrushingCategory::new),
 
                 pressing = builder(TieredPressingRecipe.class)
-                        .addTypedRecipesGT(GTRecipeTypes.BENDER_RECIPES, r -> TieredPressingRecipe.convertGT(r, ULV))
+                        .addTypedRecipesGT(GTRecipeTypes.BENDER_RECIPES, TieredPressingRecipe::convertGT)
                         .addTypedRecipes(ModRecipeTypes.PRESSING::getType)
-                        .addTypedRecipesExcludingGT(AllRecipeTypes.PRESSING::getType, GTRecipeTypes.BENDER_RECIPES, TieredPressingRecipe::convertNormalPressing)
+                        .addTypedRecipes(AllRecipeTypes.PRESSING::getType, TieredPressingRecipe::convertNormalPressing)
                         .catalysts(Arrays.stream(MechanicalPresses.MECHANICAL_PRESSES)
                                 .<Supplier<ItemLike>>map(o -> o::get)
                                 .collect(Collectors.toList()))
@@ -124,7 +124,7 @@ public class GreateJEI implements IModPlugin {
                 mixing = builder(TieredBasinRecipe.class)
                         .addTypedRecipesGT(GTRecipeTypes.MIXER_RECIPES, r -> TieredMixingRecipe.convertGTMixing(r, ULV))
                         .addTypedRecipes(ModRecipeTypes.MIXING::getType)
-                        .addTypedRecipesExcludingGT(AllRecipeTypes.MIXING::getType, GTRecipeTypes.MIXER_RECIPES, TieredMixingRecipe::convertUntieredRecipe)
+                        .addTypedRecipes(AllRecipeTypes.MIXING::getType, TieredMixingRecipe::convertNormal)
                         .catalysts(Arrays.stream(MechanicalMixers.MECHANICAL_MIXERS)
                                 .<Supplier<ItemLike>>map(o -> o::get)
                                 .collect(Collectors.toList()))
@@ -153,7 +153,7 @@ public class GreateJEI implements IModPlugin {
                         .enableWhen(c -> c.allowBrewingInMixer)
                         .addRecipes(() -> {
                             ArrayList<TieredMixingRecipe> brewingRecipes = new ArrayList<>();
-                            PotionMixingRecipes.ALL.forEach(potionRecipe -> brewingRecipes.add(TieredMixingRecipe.convertUntieredRecipe(potionRecipe)));
+                            PotionMixingRecipes.ALL.forEach(potionRecipe -> brewingRecipes.add(TieredMixingRecipe.convertNormal(potionRecipe)));
                             return brewingRecipes;
                         })
                         .catalysts(Arrays.stream(MechanicalMixers.MECHANICAL_MIXERS)
@@ -192,9 +192,9 @@ public class GreateJEI implements IModPlugin {
                         .build("automatic_packing", TieredPackingCategory::autoSquare),
 
                 sawing = builder(TieredCuttingRecipe.class)
-                        .addTypedRecipesGT(GTRecipeTypes.CUTTER_RECIPES, r -> TieredCuttingRecipe.convertGTCutter(r, ULV))
+                        .addTypedRecipesGT(GTRecipeTypes.CUTTER_RECIPES, TieredCuttingRecipe::convertGTCutter)
                         .addTypedRecipes(ModRecipeTypes.CUTTING::getType)
-                        .addTypedRecipesExcludingGT(AllRecipeTypes.CUTTING::getType, GTRecipeTypes.CUTTER_RECIPES, TieredCuttingRecipe::convertNormalSawing)
+                        .addTypedRecipes(AllRecipeTypes.CUTTING::getType, TieredCuttingRecipe::convertNormalSawing)
                         .catalysts(Arrays.stream(Saws.SAWS)
                                 .<Supplier<ItemLike>>map(o -> o::get)
                                 .collect(Collectors.toList()))

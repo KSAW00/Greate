@@ -1,21 +1,28 @@
 package electrolyte.greate.foundation.data.recipe;
 
 import com.google.common.collect.ImmutableList;
+import com.gregtechceu.gtceu.api.GTCEuAPI;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
 import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import electrolyte.greate.Greate;
+import electrolyte.greate.content.kinetics.crusher.TieredCrushingRecipe;
+import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder;
 import electrolyte.greate.registry.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
@@ -79,7 +86,7 @@ public class GreateRecipes {
             // Millstones
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_millstone"), MILLSTONES[tier].asStack(), " A ", "WHW", "CSC", 'A', COGWHEELS[tier].asStack(), 'W', GreateTags.mcItemTag("wooden_slabs"), 'H', HULL[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
             // Saws (special case since they use conveyors and motors)
-            if(tier != 0) {
+            if(tier != 0 && tier != 9) {
                 VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_mechanical_saw"), SAWS[tier].asStack(), "MHE", "CSC", 'M', CONVEYOR.getIngredient(tier), 'H', HULL[tier].asStack(), 'E', MOTOR.getIngredient(tier), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
             }
             // Pumps
@@ -88,9 +95,13 @@ public class GreateRecipes {
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_whisk"), WHISKS[tier].asStack(), "fId", "PIP", "PPP", 'I', new UnificationEntry(ingot, tierMaterial), 'P', new UnificationEntry(plate, tierMaterial));
         }
 
-        // Andesite Saw (special case since they use conveyors and motors)
+        //Andesite Saw (special case since they use conveyors and motors)
         VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("andesite_mechanical_saw"), Saws.ANDESITE_SAW.asStack(), "MHE", "CSC", 'M', ULV_CONVEYOR_MODULE, 'H', HULL[ULV].asStack(), 'E', ULV_ELECTRIC_MOTOR, 'C', GreateTags.gtceuItemTag("circuits/ulv"), 'S', ANDESITE_SHAFT.asStack());
 
+        //Neutronium Saw (only if higher tier content is enabled)
+        if(GTCEuAPI.isHighTier()) {
+            VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("neutronium_mechanical_saw"), SAWS[9].asStack(), "MHE", "CSC", 'M', CONVEYOR.getIngredient(9), 'H', HULL[9].asStack(), 'E', MOTOR.getIngredient(9), 'C', CIRCUIT.getIngredient(9), 'S', SHAFTS[9].asStack());
+        }
         //ULV Conveyor + Motor
         final Map<String, Material> rubberMaterials = new Object2ObjectOpenHashMap<>();
         rubberMaterials.put("rubber", Rubber);
@@ -126,6 +137,10 @@ public class GreateRecipes {
             Material beltMaterial = BM[beltTier];
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(beltMaterial.getName() + "_belt_connector"), BELT_CONNECTORS[beltTier].asStack(), "FFF", "FFF", 'F', new UnificationEntry(foil, beltMaterial));
         }
+
+        //Only default create recipes that do not have a GT macerator counterpart
+        new TieredProcessingRecipeBuilder<>(TieredCrushingRecipe::new, new ResourceLocation(Greate.MOD_ID, "amethyst_cluster")).withItemIngredients(Ingredient.of(Items.AMETHYST_CLUSTER)).withItemOutputs(List.of(new ProcessingOutput(new ItemStack(Items.AMETHYST_SHARD, 7), 1), new ProcessingOutput(new ItemStack(Items.AMETHYST_SHARD), 0.5f))).recipeTier(ULV).build(provider);
+        new TieredProcessingRecipeBuilder<>(TieredCrushingRecipe::new, new ResourceLocation(Greate.MOD_ID, "prismarine_crystals")).withItemIngredients(Ingredient.of(Items.PRISMARINE_CRYSTALS)).withItemOutputs(List.of(new ProcessingOutput(new ItemStack(Items.QUARTZ), 1), new ProcessingOutput(new ItemStack(Items.QUARTZ, 2), 0.5f), new ProcessingOutput(new ItemStack(Items.GLOWSTONE_DUST, 2), 0.1f))).recipeTier(ULV).build(provider);
     }
 
     private static void conversionCycle(Consumer<FinishedRecipe> provider, List<ItemProviderEntry<? extends ItemLike>> cycle) {
