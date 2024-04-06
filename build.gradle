@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-version = '0.0.17'
+version = '0.0.18'
 group = 'electrolyte.greate'
 archivesBaseName = 'greate'
 
