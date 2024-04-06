@@ -40,15 +40,13 @@ public class TieredSawBlockEntity extends SawBlockEntity implements ITieredKinet
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
-        if(canProcess()) {
-            inputTank = new SmartFluidTankBehaviour(SmartFluidTankBehaviour.INPUT, this, 1, 16000, false);
-            behaviours.add(inputTank);
+        inputTank = new SmartFluidTankBehaviour(SmartFluidTankBehaviour.INPUT, this, 1, 16000, false);
+        behaviours.add(inputTank);
 
-            fluidCapability = LazyOptional.of(() -> {
-                LazyOptional<? extends IFluidHandler> inputCap = inputTank.getCapability();
-                return new CombinedTankWrapper(inputCap.orElse(null));
-            });
-        }
+        fluidCapability = LazyOptional.of(() -> {
+            LazyOptional<? extends IFluidHandler> inputCap = inputTank.getCapability();
+            return new CombinedTankWrapper(inputCap.orElse(null));
+        });
     }
 
     @Override

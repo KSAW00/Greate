@@ -143,6 +143,7 @@ public class TieredSawRenderer extends SawRenderer {
 
     private void renderFluid(TieredSawBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int light) {
         SmartFluidTankBehaviour behaviour = be.getBehaviour(SmartFluidTankBehaviour.INPUT);
+        if(behaviour == null) return;
         float units = behaviour.getTanks()[0].getTotalUnits(partialTicks);
         if(units < 1) return;
 
