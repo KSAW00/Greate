@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ITieredKineticBlockEntity {
 
-    default double getMaxCapacityFromBlock(Block block) {
+    default float getMaxCapacityFromBlock(Block block) {
         boolean tieredMachine = block instanceof ITieredBlock;
         if(tieredMachine) {
             int tier = ((ITieredBlock) block).getTier();
@@ -22,7 +22,7 @@ public interface ITieredKineticBlockEntity {
         return Integer.MAX_VALUE;
     }
 
-    default void updateFromNetwork(float maxStress, float currentStress, int networkSize, double networkMaxCapacity) {};
+    default void updateFromNetwork(float maxStress, float currentStress, int networkSize, float networkMaxCapacity) {};
 
     default boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking, int tier, double capacity, double stress) {
         if(tier != -1) {

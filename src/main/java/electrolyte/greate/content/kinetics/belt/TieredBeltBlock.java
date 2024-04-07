@@ -76,6 +76,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
 
     public TieredBeltBlock(Properties properties) {
         super(properties);
+        tier = -1;
     }
 
     @Override

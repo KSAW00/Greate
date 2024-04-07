@@ -22,7 +22,7 @@ public abstract class MixinKineticNetwork {
     @Shadow public abstract int getSize();
     @Shadow public abstract float calculateStress();
     @Shadow public abstract float calculateCapacity();
-    @Unique private double greate_currentMaxCapacity;
+    @Unique private float greate_currentMaxCapacity;
 
     @Inject(method = "initFromTE", at = @At("RETURN"), remap = false)
     private void greate_initFromTE(float maxStress, float currentStress, int members, CallbackInfo ci) {
@@ -33,7 +33,7 @@ public abstract class MixinKineticNetwork {
     private void greate_updateNetwork(CallbackInfo ci) {
         float newStress = calculateStress();
         float newMaxStress = calculateCapacity();
-        double newMaxCapacity = greate_calculateMaxCapacity();
+        float newMaxCapacity = greate_calculateMaxCapacity();
         if(currentStress != newStress || currentCapacity != newMaxStress || greate_currentMaxCapacity != newMaxCapacity) {
             currentStress = newStress;
             currentCapacity = newMaxStress;
@@ -51,7 +51,7 @@ public abstract class MixinKineticNetwork {
 
     @Unique
     private void greate_updateMaxCapacity() {
-        double newMaxCapacity = greate_calculateMaxCapacity();
+        float newMaxCapacity = greate_calculateMaxCapacity();
         if(greate_currentMaxCapacity != newMaxCapacity) {
             greate_currentMaxCapacity = newMaxCapacity;
             sync();
@@ -69,8 +69,8 @@ public abstract class MixinKineticNetwork {
     }
 
     @Unique
-    private double greate_calculateMaxCapacity() {
-        double presentMaxCapacity = Integer.MAX_VALUE;
+    private float greate_calculateMaxCapacity() {
+        float presentMaxCapacity = Integer.MAX_VALUE;
         for (KineticBlockEntity be : members.keySet()) {
             if (be instanceof ITieredKineticBlockEntity itkbe) {
                 if (presentMaxCapacity > itkbe.getMaxCapacityFromBlock(be.getBlockState().getBlock())) {
