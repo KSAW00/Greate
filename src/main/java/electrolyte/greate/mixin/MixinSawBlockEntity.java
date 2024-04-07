@@ -1,7 +1,10 @@
 package electrolyte.greate.mixin;
 
 import com.google.common.collect.ImmutableList;
+import com.gregtechceu.gtceu.api.capability.recipe.FluidRecipeCapability;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
+import com.gregtechceu.gtceu.api.recipe.content.Content;
+import com.gregtechceu.gtceu.api.recipe.ingredient.FluidIngredient;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.kinetics.base.BlockBreakingKineticBlockEntity;
@@ -117,6 +120,10 @@ public abstract class MixinSawBlockEntity extends BlockBreakingKineticBlockEntit
                     }
                 } else if (recipe instanceof GTRecipe gtr) {
                     results.addAll(TieredRecipeHelper.INSTANCE.getItemResults(gtr, tsb.getTier()));
+                    if(!gtr.getInputContents(FluidRecipeCapability.CAP).isEmpty()) {
+                        Content c = gtr.getInputContents(FluidRecipeCapability.CAP).get(0);
+                        availableFluid.drain((int) ((FluidIngredient) c.getContent()).getAmount(), FluidAction.EXECUTE);
+                    }
                 } else if(recipe instanceof StonecutterRecipe || recipe.getType() == woodcuttingRecipeType.get()) {
                     results.add(recipe.getResultItem(level.registryAccess()).copy());
                 }
