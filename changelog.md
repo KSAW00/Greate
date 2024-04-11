@@ -1,1 +1,5 @@
--Hopefully fix belts this time (you still need to **break and replace** any belts you place before this update!)
+- Add placeholder ULV conveyor and electric motors for recipes
+- Fix broken tooltip when placing GT items in the basin
+- Make fluid cap on saw always present
+- Refactor recipes to work on servers
+- Fix belts sometimes getting the wrong max capacity when joining a world (You'll need to **break and replace** any that are already in a world)
