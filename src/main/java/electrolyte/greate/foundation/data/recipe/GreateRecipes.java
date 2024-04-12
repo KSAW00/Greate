@@ -8,6 +8,7 @@ import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
+import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import electrolyte.greate.Greate;
@@ -20,6 +21,8 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -41,6 +44,7 @@ import static electrolyte.greate.GreateValues.TM;
 import static electrolyte.greate.registry.Belts.BELT_CONNECTORS;
 import static electrolyte.greate.registry.Cogwheels.COGWHEELS;
 import static electrolyte.greate.registry.Cogwheels.LARGE_COGWHEELS;
+import static electrolyte.greate.registry.CrushingWheels.CRUSHING_WHEELS;
 import static electrolyte.greate.registry.Gearboxes.GEARBOXES;
 import static electrolyte.greate.registry.Gearboxes.VERTICAL_GEARBOXES;
 import static electrolyte.greate.registry.MechanicalMixers.MECHANICAL_MIXERS;
@@ -68,7 +72,11 @@ public class GreateRecipes {
             Material tierMaterial = TM[tier];
             String materialName = tierMaterial.getName();
             // Alloys
-            VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_alloy"), ALLOYS[tier].asStack(), "NA", "AN", "fh", 'N', new UnificationEntry(nugget, tierMaterial), 'A', new ItemStack(Blocks.ANDESITE));
+            if(tier == 0) {
+                VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("andesite_alloy"), ALLOYS[tier].asStack(), "NA", "AN", "fh", 'N', Ingredient.of(Items.IRON_NUGGET, AllItems.ZINC_NUGGET), 'A', new ItemStack(Blocks.ANDESITE));
+            } else {
+                VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_alloy"), ALLOYS[tier].asStack(), "NA", "AN", "fh", 'N', new UnificationEntry(nugget, tierMaterial), 'A', new ItemStack(Blocks.ANDESITE));
+            }
             // Shafts
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_shaft"), SHAFTS[tier].asStack(4), "s ", " A", 'A', ALLOYS[tier].asStack());
             // Cogwheels
@@ -93,6 +101,17 @@ public class GreateRecipes {
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_mechanical_pump"), MECHANICAL_PUMPS[tier].asStack(), " R ", "wPC", " R ", 'R', new UnificationEntry(ring, Rubber), 'P', AllBlocks.FLUID_PIPE, 'C', COGWHEELS[tier].asStack());
             // Whisks
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_whisk"), WHISKS[tier].asStack(), "fId", "PIP", "PPP", 'I', new UnificationEntry(ingot, tierMaterial), 'P', new UnificationEntry(plate, tierMaterial));
+
+            MechanicalCraftingRecipeBuilder.shapedRecipe(CRUSHING_WHEELS[tier], 2)
+                    .key('A', ALLOYS[tier])
+                    .key('C', (TagKey<Item>) CIRCUIT.getIngredient(tier))
+                    .key('S', SHAFTS[tier])
+                    .patternLine(" AAA ")
+                    .patternLine("AACAA")
+                    .patternLine("ACSCA")
+                    .patternLine("AACAA")
+                    .patternLine(" AAA ")
+                    .build(provider);
         }
 
         //Andesite Saw (special case since they use conveyors and motors)

@@ -19,9 +19,6 @@ import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredCogwheelBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.encased.TieredEncasedCogwheelBlock;
 import electrolyte.greate.foundation.data.GreateBlockStateGen;
-import electrolyte.greate.registry.GreateTags.GreateItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
@@ -108,28 +105,28 @@ public class Cogwheels {
         REGISTRATE.setCreativeTab(Greate.GREATE_TAB);
 
         // Cogwheels
-        COGWHEELS[ULV] = ANDESITE_COGWHEEL = registerCogwheel(ULV, GreateItemTags.COGWHEELS_ANDESITE.itemTag);
-        COGWHEELS[LV] = STEEL_COGWHEEL = registerCogwheel(LV, GreateItemTags.COGWHEELS_STEEL.itemTag);
-        COGWHEELS[MV] = ALUMINIUM_COGWHEEL = registerCogwheel(MV, GreateItemTags.COGWHEELS_ALUMINIUM.itemTag);
-        COGWHEELS[HV] = STAINLESS_STEEL_COGWHEEL = registerCogwheel(HV, GreateItemTags.COGWHEELS_STAINLESS_STEEL.itemTag);
-        COGWHEELS[EV] = TITANIUM_COGWHEEL = registerCogwheel(EV, GreateItemTags.COGWHEELS_TITANIUM.itemTag);
-        COGWHEELS[IV] = TUNGSTENSTEEL_COGWHEEL = registerCogwheel(IV, GreateItemTags.COGWHEELS_TUNGSTENSTEEL.itemTag);
-        COGWHEELS[LuV] = PALLADIUM_COGWHEEL = registerCogwheel(LuV, GreateItemTags.COGWHEELS_PALLADIUM.itemTag);
-        COGWHEELS[ZPM] = NAQUADAH_COGWHEEL = registerCogwheel(ZPM, GreateItemTags.COGWHEELS_NAQUADAH.itemTag);
-        COGWHEELS[UV] = DARMSTADTIUM_COGWHEEL = registerCogwheel(UV, GreateItemTags.COGWHEELS_DARMSTADTIUM.itemTag);
-        COGWHEELS[UHV] = NEUTRONIUM_COGWHEEL = registerCogwheel(UHV, GreateItemTags.COGWHEELS_NEUTRONIUM.itemTag);
+        COGWHEELS[ULV] = ANDESITE_COGWHEEL = registerCogwheel(ULV);
+        COGWHEELS[LV] = STEEL_COGWHEEL = registerCogwheel(LV);
+        COGWHEELS[MV] = ALUMINIUM_COGWHEEL = registerCogwheel(MV);
+        COGWHEELS[HV] = STAINLESS_STEEL_COGWHEEL = registerCogwheel(HV);
+        COGWHEELS[EV] = TITANIUM_COGWHEEL = registerCogwheel(EV);
+        COGWHEELS[IV] = TUNGSTENSTEEL_COGWHEEL = registerCogwheel(IV);
+        COGWHEELS[LuV] = PALLADIUM_COGWHEEL = registerCogwheel(LuV);
+        COGWHEELS[ZPM] = NAQUADAH_COGWHEEL = registerCogwheel(ZPM);
+        COGWHEELS[UV] = DARMSTADTIUM_COGWHEEL = registerCogwheel(UV);
+        COGWHEELS[UHV] = NEUTRONIUM_COGWHEEL = registerCogwheel(UHV);
 
         // Large cogwheels
-        LARGE_COGWHEELS[ULV] = LARGE_ANDESITE_COGWHEEL = registerLargeCogwheel(ULV, GreateItemTags.LARGE_COGWHEELS_ANDESITE.itemTag);
-        LARGE_COGWHEELS[LV] = LARGE_STEEL_COGWHEEL = registerLargeCogwheel(LV, GreateItemTags.LARGE_COGWHEELS_STEEL.itemTag);
-        LARGE_COGWHEELS[MV] = LARGE_ALUMINIUM_COGWHEEL = registerLargeCogwheel(MV, GreateItemTags.LARGE_COGWHEELS_ALUMINIUM.itemTag);
-        LARGE_COGWHEELS[HV] = LARGE_STAINLESS_STEEL_COGWHEEL = registerLargeCogwheel(HV, GreateItemTags.LARGE_COGWHEELS_STAINLESS_STEEL.itemTag);
-        LARGE_COGWHEELS[EV] = LARGE_TITANIUM_COGWHEEL = registerLargeCogwheel(EV, GreateItemTags.LARGE_COGWHEELS_TITANIUM.itemTag);
-        LARGE_COGWHEELS[IV] = LARGE_TUNGSTENSTEEL_COGWHEEL = registerLargeCogwheel(IV, GreateItemTags.LARGE_COGWHEELS_TUNGSTENSTEEL.itemTag);
-        LARGE_COGWHEELS[LuV] = LARGE_PALLADIUM_COGWHEEL = registerLargeCogwheel(LuV, GreateItemTags.LARGE_COGWHEELS_PALLADIUM.itemTag);
-        LARGE_COGWHEELS[ZPM] = LARGE_NAQUADAH_COGWHEEL = registerLargeCogwheel(ZPM, GreateItemTags.LARGE_COGWHEELS_NAQUADAH.itemTag);
-        LARGE_COGWHEELS[UV] = LARGE_DARMSTADTIUM_COGWHEEL = registerLargeCogwheel(UV, GreateItemTags.LARGE_COGWHEELS_DARMSTADTIUM.itemTag);
-        LARGE_COGWHEELS[UHV] = LARGE_NEUTRONIUM_COGWHEEL = registerLargeCogwheel(UHV, GreateItemTags.LARGE_COGWHEELS_NEUTRONIUM.itemTag);
+        LARGE_COGWHEELS[ULV] = LARGE_ANDESITE_COGWHEEL = registerLargeCogwheel(ULV);
+        LARGE_COGWHEELS[LV] = LARGE_STEEL_COGWHEEL = registerLargeCogwheel(LV);
+        LARGE_COGWHEELS[MV] = LARGE_ALUMINIUM_COGWHEEL = registerLargeCogwheel(MV);
+        LARGE_COGWHEELS[HV] = LARGE_STAINLESS_STEEL_COGWHEEL = registerLargeCogwheel(HV);
+        LARGE_COGWHEELS[EV] = LARGE_TITANIUM_COGWHEEL = registerLargeCogwheel(EV);
+        LARGE_COGWHEELS[IV] = LARGE_TUNGSTENSTEEL_COGWHEEL = registerLargeCogwheel(IV);
+        LARGE_COGWHEELS[LuV] = LARGE_PALLADIUM_COGWHEEL = registerLargeCogwheel(LuV);
+        LARGE_COGWHEELS[ZPM] = LARGE_NAQUADAH_COGWHEEL = registerLargeCogwheel(ZPM);
+        LARGE_COGWHEELS[UV] = LARGE_DARMSTADTIUM_COGWHEEL = registerLargeCogwheel(UV);
+        LARGE_COGWHEELS[UHV] = LARGE_NEUTRONIUM_COGWHEEL = registerLargeCogwheel(UHV);
 
         // Andesite encased cogwheels
         ANDESITE_ENCASED_COGWHEELS[ULV] = ANDESITE_ENCASED_ANDESITE_COGWHEEL = registerAndesiteEncasedCogwheel(ULV);
@@ -180,11 +177,11 @@ public class Cogwheels {
         BRASS_ENCASED_LARGE_COGWHEELS[UHV] = BRASS_ENCASED_LARGE_NEUTRONIUM_COGWHEEL = registerBrassEncasedLargeCogwheel(UHV);
     }
 
-    public static BlockEntry<TieredCogwheelBlock> registerCogwheel(int tier, TagKey<Item> smallCogwheelTag) {
-        return registerCogwheel(tier, TM[tier], COGWHEEL_SHAFTLESS_MODELS[tier], COGWHEEL_SHAFT_MODELS[tier], smallCogwheelTag);
+    public static BlockEntry<TieredCogwheelBlock> registerCogwheel(int tier) {
+        return registerCogwheel(tier, TM[tier], COGWHEEL_SHAFTLESS_MODELS[tier], COGWHEEL_SHAFT_MODELS[tier]);
     }
     
-    public static BlockEntry<TieredCogwheelBlock> registerCogwheel(int tier, Material material, PartialModel largeCogwheelShaftless, PartialModel cogwheelShaft, TagKey<Item> smallCogwheelTag) {
+    public static BlockEntry<TieredCogwheelBlock> registerCogwheel(int tier, Material material, PartialModel largeCogwheelShaftless, PartialModel cogwheelShaft) {
         return REGISTRATE
                 .block(material.getName() + "_cogwheel", p -> TieredCogwheelBlock.small(p, largeCogwheelShaftless, cogwheelShaft))
                 .initialProperties(SharedProperties::stone)
@@ -196,17 +193,15 @@ public class Cogwheels {
                 .blockstate(GreateBlockStateGen.tieredCogwheelProvider(false))
                 .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
                 .onRegister(c -> c.setTier(tier))
-                .item(CogwheelBlockItem::new)
-                .tag(GreateItemTags.COGWHEELS.itemTag)
-                .tag(smallCogwheelTag).build()
+                .item(CogwheelBlockItem::new).build()
                 .register();
     }
 
-    public static BlockEntry<TieredCogwheelBlock> registerLargeCogwheel(int tier, TagKey<Item> largeCogwheelTag) {
-        return registerLargeCogwheel(tier, TM[tier], LARGE_COGWHEEL_SHAFTLESS_MODELS[tier], COGWHEEL_SHAFT_MODELS[tier], largeCogwheelTag);
+    public static BlockEntry<TieredCogwheelBlock> registerLargeCogwheel(int tier) {
+        return registerLargeCogwheel(tier, TM[tier], LARGE_COGWHEEL_SHAFTLESS_MODELS[tier], COGWHEEL_SHAFT_MODELS[tier]);
     }
     
-    public static BlockEntry<TieredCogwheelBlock> registerLargeCogwheel(int tier, Material material, PartialModel largeCogwheelShaftless, PartialModel cogwheelShaft, TagKey<Item> largeCogwheelTag) {
+    public static BlockEntry<TieredCogwheelBlock> registerLargeCogwheel(int tier, Material material, PartialModel largeCogwheelShaftless, PartialModel cogwheelShaft) {
         return REGISTRATE
                 .block("large_" + material.getName() + "_cogwheel", p -> TieredCogwheelBlock.large(p, largeCogwheelShaftless, cogwheelShaft))
                 .initialProperties(SharedProperties::stone)
@@ -218,9 +213,7 @@ public class Cogwheels {
                 .blockstate(GreateBlockStateGen.tieredCogwheelProvider(true))
                 .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
                 .onRegister(c -> c.setTier(tier))
-                .item(CogwheelBlockItem::new)
-                .tag(GreateItemTags.COGWHEELS.itemTag)
-                .tag(largeCogwheelTag).build()
+                .item(CogwheelBlockItem::new).build()
                 .register();
     }
 

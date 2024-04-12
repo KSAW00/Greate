@@ -267,5 +267,10 @@
   "item.greate.tungsten_steel_whisk": "Tungsten Steel Whisk",
   "item.greate.ulv_conveyor_module": "ULV Conveyor Module",
   "item.greate.ulv_electric_motor": "ULV Electric Motor",
-  "itemGroup.greate": "Greate"
+  "itemGroup.greate": "Greate",
+  "material.greate.andesite_alloy": "Andesite Alloy",
+  "material.greate.chromatic_compound": "Chromatic Compound",
+  "material.greate.refined_radiance": "Refined Radiance",
+  "material.greate.rose_quartz": "Rose Quartz",
+  "material.greate.shadow_steel": "Shadow Steel"
 }

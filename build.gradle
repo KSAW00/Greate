@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-version = '0.0.18'
+version = '0.0.19'
 group = 'electrolyte.greate'
 archivesBaseName = 'greate'
 
@@ -104,7 +104,7 @@ dependencies {
     modImplementation("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gregtech_version}") { transitive = false }
     modApi("dev.toma.configuration:configuration-forge-${minecraft_version}:${configuration_version}")
 
-    modRuntimeOnly("curse.maven:jade-324717:${jade_version}")
+    modImplementation("curse.maven:jade-324717:${jade_version}")
     modRuntimeOnly("curse.maven:spark-361579:${spark_version}")
 
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))

@@ -1,6 +1,5 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.GTCEu;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import electrolyte.greate.Greate;
 
@@ -21,6 +20,7 @@ public class GreateMaterials {
 	public static void init() {
 		AndesiteAlloy = Builder("andesite_alloy")
 				.ingot().fluid()
+				.appendFlags(STD_METAL)
 				.color(0xC7C8B8).iconSet(DULL)
 				.components(Andesite, 9, Iron, 1)
 				.buildAndRegister();

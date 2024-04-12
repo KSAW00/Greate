@@ -69,41 +69,8 @@ public class GreateTags {
     }
 
     public enum GreateItemTags {
-        SHAFTS,
-        SHAFTS_ANDESITE(Greate.MOD_ID, "shafts/andesite"),
-        SHAFTS_STEEL(Greate.MOD_ID, "shafts/steel"),
-        SHAFTS_ALUMINIUM(Greate.MOD_ID, "shafts/aluminium"),
-        SHAFTS_STAINLESS_STEEL(Greate.MOD_ID, "shafts/stainless_steel"),
-        SHAFTS_TITANIUM(Greate.MOD_ID, "shafts/titanium"),
-        SHAFTS_TUNGSTENSTEEL(Greate.MOD_ID, "shafts/tungstensteel"),
-        SHAFTS_PALLADIUM(Greate.MOD_ID, "shafts/palladium"),
-        SHAFTS_NAQUADAH(Greate.MOD_ID, "shafts/naquadah"),
-        SHAFTS_DARMSTADTIUM(Greate.MOD_ID, "shafts/darmstadtium"),
-        SHAFTS_NEUTRONIUM(Greate.MOD_ID, "shafts/neutronium"),
 
-        COGWHEELS,
-        COGWHEELS_ANDESITE(Greate.MOD_ID, "cogwheels/andesite"),
-        COGWHEELS_STEEL(Greate.MOD_ID, "cogwheels/steel"),
-        COGWHEELS_ALUMINIUM(Greate.MOD_ID, "cogwheels/aluminium"),
-        COGWHEELS_STAINLESS_STEEL(Greate.MOD_ID, "cogwheels/stainless_steel"),
-        COGWHEELS_TITANIUM(Greate.MOD_ID, "cogwheels/titanium"),
-        COGWHEELS_TUNGSTENSTEEL(Greate.MOD_ID, "cogwheels/tungstensteel"),
-        COGWHEELS_PALLADIUM(Greate.MOD_ID, "cogwheels/palladium"),
-        COGWHEELS_NAQUADAH(Greate.MOD_ID, "cogwheels/naquadah"),
-        COGWHEELS_DARMSTADTIUM(Greate.MOD_ID, "cogwheels/darmstadtium"),
-        COGWHEELS_NEUTRONIUM(Greate.MOD_ID, "cogwheels/neutronium"),
-
-        LARGE_COGWHEELS,
-        LARGE_COGWHEELS_ANDESITE(Greate.MOD_ID, "large_cogwheels/andesite"),
-        LARGE_COGWHEELS_STEEL(Greate.MOD_ID, "large_cogwheels/steel"),
-        LARGE_COGWHEELS_ALUMINIUM(Greate.MOD_ID, "large_cogwheels/aluminium"),
-        LARGE_COGWHEELS_STAINLESS_STEEL(Greate.MOD_ID, "large_cogwheels/stainless_steel"),
-        LARGE_COGWHEELS_TITANIUM(Greate.MOD_ID, "large_cogwheels/titanium"),
-        LARGE_COGWHEELS_TUNGSTENSTEEL(Greate.MOD_ID, "large_cogwheels/tungstensteel"),
-        LARGE_COGWHEELS_PALLADIUM(Greate.MOD_ID, "large_cogwheels/palladium"),
-        LARGE_COGWHEELS_NAQUADAH(Greate.MOD_ID, "large_cogwheels/naquadah"),
-        LARGE_COGWHEELS_DARMSTADTIUM(Greate.MOD_ID, "large_cogwheels/darmstadtium"),
-        LARGE_COGWHEELS_NEUTRONIUM(Greate.MOD_ID, "large_cogwheels/neutronium");
+        ;
 
         public final TagKey<Item> itemTag;
 

@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-19T22:34:00.2913758	Registrate Provider for greate [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.20.1	2024-04-12T11:31:22.0920045	Registrate Provider for greate [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 f4e4278d7bc1d07ca2ed77174a9e045a71cfdec9 assets/greate/blockstates/aluminium_cogwheel.json
 7f34dcbfb9923f8310cac4320343257721576c07 assets/greate/blockstates/aluminium_crushing_wheel.json
 4b0e51a1c10685f7d432467339afc9c2e24793b0 assets/greate/blockstates/aluminium_crushing_wheel_controller.json
@@ -194,8 +194,8 @@ d32fec57fdc211d6ddf1672ccf943c00f206a211 assets/greate/blockstates/tungsten_stee
 d8b5e6ddde0e2a603a7b2336c08dbafba3e75efa assets/greate/blockstates/tungsten_steel_mechanical_saw.json
 53be595bd11592b7ca147db06888ec74bda80f73 assets/greate/blockstates/tungsten_steel_millstone.json
 19df2f562bf730c88a655292ceda6d80043ac009 assets/greate/blockstates/tungsten_steel_shaft.json
-5c4f1a847b14703971d375804066501a2f214002 assets/greate/lang/en_ud.json
-7af455083d524e6edc055fbcb3eb062f2fbdd12d assets/greate/lang/en_us.json
+0103e2995e597533c7e5b5fef676fcf653ba77bb assets/greate/lang/en_ud.json
+04db6db6471e3b719f49790f7cd7e5982ce30d5d assets/greate/lang/en_us.json
 e0549d6d5f65018f65583c80113ea7feb397066c assets/greate/models/block/aluminium_cogwheel.json
 9915e6ca9728cb87b0c8bb2f0d15a0a69e711559 assets/greate/models/block/aluminium_cogwheel_shaft.json
 162c0c7b7d12494f9fff4bf25e2504a060b608df assets/greate/models/block/aluminium_cogwheel_shaftless.json
@@ -1136,37 +1136,5 @@ d72a61406c8b4d433301b0050af765f794ec8acd data/greate/loot_tables/blocks/tungsten
 c9332d3c3d72c0de75a664574e895b3dd517e644 data/greate/loot_tables/blocks/tungsten_steel_mechanical_saw.json
 5d1f4ae9c35ba827631a2bfa1048a803b759b4bf data/greate/loot_tables/blocks/tungsten_steel_millstone.json
 a458724e0a0e575d3149b1a81519cab823c51547 data/greate/loot_tables/blocks/tungsten_steel_shaft.json
-694e51b38afdddb7a3419889e46f3397fd49cbb8 data/greate/tags/items/cogwheels.json
-ca8777b1b15f3a29c11ce9864dd3422adac04010 data/greate/tags/items/cogwheels/aluminium.json
-8fb99af9ec1a536b949752bbc296bf059dd4315a data/greate/tags/items/cogwheels/andesite.json
-4d1edce9a989b5dfb9702b95c73489e5ad8291f6 data/greate/tags/items/cogwheels/darmstadtium.json
-bb75986d94c5aad5a5737d4a86aab2a29132ab7f data/greate/tags/items/cogwheels/naquadah.json
-4e7e7957c49c038323ff7c9e3f7b402f1c7fb260 data/greate/tags/items/cogwheels/neutronium.json
-882f49ebd58546deea9807fb849a5b5ee9cf2b8c data/greate/tags/items/cogwheels/palladium.json
-420ffc0571db9382d1e5471c7d992111a3cc6962 data/greate/tags/items/cogwheels/stainless_steel.json
-bd045379881b0cc77d8c62a70f8d6dce3f1f3f56 data/greate/tags/items/cogwheels/steel.json
-cb34c0efb4be6455600a4a25931df50f35ef7ed8 data/greate/tags/items/cogwheels/titanium.json
-d10ac7cc812b413d3d615e5eda150350a6768009 data/greate/tags/items/cogwheels/tungstensteel.json
-7bb921ecdc5771d985700c593d1f282d58ed26c2 data/greate/tags/items/large_cogwheels/aluminium.json
-4e46a25c998e3458f827f1e34456de1bbe1a3dba data/greate/tags/items/large_cogwheels/andesite.json
-e0aab798315a1c981b9221fa24690d9e7ce94205 data/greate/tags/items/large_cogwheels/darmstadtium.json
-2e05196a272c2f928739f4b79f67462dd3ce7735 data/greate/tags/items/large_cogwheels/naquadah.json
-3873474417afb5eeade4de1ebced65a149141393 data/greate/tags/items/large_cogwheels/neutronium.json
-f7cbc4efc14ec27c68a623647db7d68bce6cd45a data/greate/tags/items/large_cogwheels/palladium.json
-851473cb20309f51924aa2f79bae6dbd8e45a873 data/greate/tags/items/large_cogwheels/stainless_steel.json
-41a940401cd8582fb8ba730699e37589fdddb0fd data/greate/tags/items/large_cogwheels/steel.json
-02422dd843fa2efe04f0945a7066fd6ff69d74e4 data/greate/tags/items/large_cogwheels/titanium.json
-955c70177d20ed03caa4682d381681ece4053f5f data/greate/tags/items/large_cogwheels/tungstensteel.json
-03188315e70146ca25ebf3b4ec32ec2d88d31195 data/greate/tags/items/shafts.json
-63c5b3b66cdcc59f7b534a61ebe64ff9d4e2e110 data/greate/tags/items/shafts/aluminium.json
-624913c4329214f381249825353c78888391025f data/greate/tags/items/shafts/andesite.json
-227a1314cdb12a2d1f4830440cfc6112d294e407 data/greate/tags/items/shafts/darmstadtium.json
-9a10b2b52f669cd9e6b9530a2de3f0c1b309bb80 data/greate/tags/items/shafts/naquadah.json
-8fd2807aafd39b079e3ee39144b739367e68befe data/greate/tags/items/shafts/neutronium.json
-7fe3305c6114914852802c8ef14f2929b71a65aa data/greate/tags/items/shafts/palladium.json
-6d15bf5f82fb4b367f587c438f6fee78cedbc6f7 data/greate/tags/items/shafts/stainless_steel.json
-636aa873919b0023a771d99df0f780a85a69d4cb data/greate/tags/items/shafts/steel.json
-036aa5db20a537f8b5232fc61a51dc5a6a4e5792 data/greate/tags/items/shafts/titanium.json
-24415403ea106326ec967e07690dad282b95ff9d data/greate/tags/items/shafts/tungstensteel.json
 5bf2a7f66c37a244bbe8999250587ddf8d643d93 data/minecraft/tags/blocks/mineable/axe.json
 a98f75357f61be9ade5cb8bb3aee9ea2ba75d953 data/minecraft/tags/blocks/mineable/pickaxe.json

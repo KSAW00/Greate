@@ -21,9 +21,6 @@ import electrolyte.greate.content.kinetics.simpleRelays.encased.TieredEncasedSha
 import electrolyte.greate.content.kinetics.steamEngine.TieredPoweredShaftBlock;
 import electrolyte.greate.foundation.data.GreateBlockStateGen;
 import electrolyte.greate.foundation.data.GreateBuilderTransformers;
-import electrolyte.greate.registry.GreateTags.GreateItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.MapColor;
 
 import static com.gregtechceu.gtceu.api.GTValues.*;
@@ -89,16 +86,16 @@ public class Shafts {
         REGISTRATE.setCreativeTab(Greate.GREATE_TAB);
 
         // Shaft
-        SHAFTS[ULV] = ANDESITE_SHAFT = shaft(ULV, GreateItemTags.SHAFTS_ANDESITE.itemTag);
-        SHAFTS[LV] = STEEL_SHAFT = shaft(LV, GreateItemTags.SHAFTS_STEEL.itemTag);
-        SHAFTS[MV] = ALUMINIUM_SHAFT = shaft(MV, GreateItemTags.SHAFTS_ALUMINIUM.itemTag);
-        SHAFTS[HV] = STAINLESS_STEEL_SHAFT = shaft(HV, GreateItemTags.SHAFTS_STAINLESS_STEEL.itemTag);
-        SHAFTS[EV] = TITANIUM_SHAFT = shaft(EV, GreateItemTags.SHAFTS_TITANIUM.itemTag);
-        SHAFTS[IV] = TUNGSTENSTEEL_SHAFT = shaft(IV, GreateItemTags.SHAFTS_TUNGSTENSTEEL.itemTag);
-        SHAFTS[LuV] = PALLADIUM_SHAFT = shaft(LuV, GreateItemTags.SHAFTS_PALLADIUM.itemTag);
-        SHAFTS[ZPM] = NAQUADAH_SHAFT = shaft(ZPM, GreateItemTags.SHAFTS_NAQUADAH.itemTag);
-        SHAFTS[UV] = DARMSTADTIUM_SHAFT = shaft(UV, GreateItemTags.SHAFTS_DARMSTADTIUM.itemTag);
-        SHAFTS[UHV] = NEUTRONIUM_SHAFT = shaft(UHV, GreateItemTags.SHAFTS_NEUTRONIUM.itemTag);
+        SHAFTS[ULV] = ANDESITE_SHAFT = shaft(ULV);
+        SHAFTS[LV] = STEEL_SHAFT = shaft(LV);
+        SHAFTS[MV] = ALUMINIUM_SHAFT = shaft(MV);
+        SHAFTS[HV] = STAINLESS_STEEL_SHAFT = shaft(HV);
+        SHAFTS[EV] = TITANIUM_SHAFT = shaft(EV);
+        SHAFTS[IV] = TUNGSTENSTEEL_SHAFT = shaft(IV);
+        SHAFTS[LuV] = PALLADIUM_SHAFT = shaft(LuV);
+        SHAFTS[ZPM] = NAQUADAH_SHAFT = shaft(ZPM);
+        SHAFTS[UV] = DARMSTADTIUM_SHAFT = shaft(UV);
+        SHAFTS[UHV] = NEUTRONIUM_SHAFT = shaft(UHV);
 
         // Powered shaft
         POWERED_SHAFTS[ULV] = POWERED_ANDESITE_SHAFT = poweredShaft(ULV);
@@ -137,11 +134,11 @@ public class Shafts {
         BRASS_ENCASED_SHAFTS[UHV] = BRASS_ENCASED_NEUTRONIUM_SHAFT = brassEncasedShaft(UHV);
     }
 
-    private static BlockEntry<TieredShaftBlock> shaft(int tier, TagKey<Item> shaftTag) {
-        return shaft(tier, TM[tier], shaftTag);
+    private static BlockEntry<TieredShaftBlock> shaft(int tier) {
+        return shaft(tier, TM[tier]);
     }
 
-    public static BlockEntry<TieredShaftBlock> shaft(int tier, Material material, TagKey<Item> shaftTag) {
+    public static BlockEntry<TieredShaftBlock> shaft(int tier, Material material) {
         return REGISTRATE
                 .block(material.getName() + "_shaft", TieredShaftBlock::new)
                 .initialProperties(SharedProperties::stone)
@@ -153,9 +150,7 @@ public class Shafts {
                 .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
                 .onRegister(c -> c.setTier(tier))
                 .simpleItem()
-                .item()
-                .tag(GreateItemTags.SHAFTS.itemTag)
-                .tag(shaftTag).build()
+                .item().build()
                 .register();
     }
 
