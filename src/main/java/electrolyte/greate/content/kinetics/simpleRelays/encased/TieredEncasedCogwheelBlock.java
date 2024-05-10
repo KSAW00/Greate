@@ -1,13 +1,10 @@
 package electrolyte.greate.content.kinetics.simpleRelays.encased;
 
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.SimpleKineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogwheelBlock;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredEncasedCogwheel;
 import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -24,25 +21,22 @@ import net.minecraft.world.phys.HitResult;
 
 import java.util.function.Supplier;
 
-public class TieredEncasedCogwheelBlock extends EncasedCogwheelBlock implements ITieredBlock, ITieredEncasedCogwheel {
+public class TieredEncasedCogwheelBlock extends EncasedCogwheelBlock implements ITieredBlock {
 
     private int tier;
     private final Supplier<Block> cogwheel;
-    private final PartialModel partialModel, cogwheelShaftlessModel;
 
-    public static TieredEncasedCogwheelBlock small(Properties properties, Supplier<Block> casing, Supplier<Block> cogwheel, PartialModel partialModel, PartialModel cogwheelShaftlessModel) {
-        return new TieredEncasedCogwheelBlock(properties, false, casing, cogwheel, partialModel, cogwheelShaftlessModel);
+    public static TieredEncasedCogwheelBlock small(Properties properties, Supplier<Block> casing, Supplier<Block> cogwheel) {
+        return new TieredEncasedCogwheelBlock(properties, false, casing, cogwheel);
     }
 
-    public static TieredEncasedCogwheelBlock large(Properties properties, Supplier<Block> casing, Supplier<Block> cogwheel, PartialModel partialModel, PartialModel cogwheelShaftlessModel) {
-        return new TieredEncasedCogwheelBlock(properties, true, casing, cogwheel, partialModel, cogwheelShaftlessModel);
+    public static TieredEncasedCogwheelBlock large(Properties properties, Supplier<Block> casing, Supplier<Block> cogwheel) {
+        return new TieredEncasedCogwheelBlock(properties, true, casing, cogwheel);
     }
 
-    public TieredEncasedCogwheelBlock(Properties properties, boolean isLarge, Supplier<Block> casing, Supplier<Block> cogwheel, PartialModel partialModel, PartialModel cogwheelShaftlessModel) {
+    public TieredEncasedCogwheelBlock(Properties properties, boolean isLarge, Supplier<Block> casing, Supplier<Block> cogwheel) {
         super(properties, isLarge, casing);
         this.cogwheel = cogwheel;
-        this.partialModel = partialModel;
-        this.cogwheelShaftlessModel = cogwheelShaftlessModel;
     }
 
     @Override
@@ -85,15 +79,5 @@ public class TieredEncasedCogwheelBlock extends EncasedCogwheelBlock implements 
     @Override
     public void setTier(int tier) {
         this.tier = tier;
-    }
-
-    @Override
-    public PartialModel getPartialModel() {
-        return this.partialModel;
-    }
-
-    @Override
-    public PartialModel getCogwheelModel() {
-        return this.cogwheelShaftlessModel;
     }
 }

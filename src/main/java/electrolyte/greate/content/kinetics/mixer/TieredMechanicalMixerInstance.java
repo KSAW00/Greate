@@ -11,18 +11,23 @@ import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import electrolyte.greate.content.kinetics.simpleRelays.encased.TieredEncasedCogInstance;
 import net.minecraft.core.Direction.Axis;
 
+import static electrolyte.greate.registry.GreatePartialModels.COGWHEEL_SHAFTLESS_MODELS;
+import static electrolyte.greate.registry.GreatePartialModels.MECHANICAL_MIXER_HEAD_MODELS;
+
 public class TieredMechanicalMixerInstance extends TieredEncasedCogInstance implements DynamicInstance {
 
     private final RotatingData mixerHead;
     private final OrientedData mixerPole;
     private final TieredMechanicalMixerBlockEntity mixer;
+    private int tier;
 
     public TieredMechanicalMixerInstance(MaterialManager materialManager, TieredMechanicalMixerBlockEntity blockEntity) {
         super(materialManager, blockEntity, false);
         this.mixer = blockEntity;
+        tier = ((TieredMechanicalMixerBlock) this.mixer.getBlockState().getBlock()).getTier();
         mixerHead = materialManager.defaultCutout()
                 .material(AllMaterialSpecs.ROTATING)
-                .getModel(((TieredMechanicalMixerBlock) this.mixer.getBlockState().getBlock()).getPartialModel(), blockState)
+                .getModel(MECHANICAL_MIXER_HEAD_MODELS[tier], blockState)
                 .createInstance();
         mixerHead.setRotationAxis(Axis.Y);
         mixerPole = getOrientedMaterial()
@@ -39,7 +44,7 @@ public class TieredMechanicalMixerInstance extends TieredEncasedCogInstance impl
     protected Instancer<RotatingData> getCogModel() {
         return materialManager.defaultSolid()
                 .material(AllMaterialSpecs.ROTATING)
-                .getModel(((TieredMechanicalMixerBlock) this.mixer.getBlockState().getBlock()).getCogwheelModel(), blockEntity.getBlockState());
+                .getModel(COGWHEEL_SHAFTLESS_MODELS[tier], blockEntity.getBlockState());
     }
 
     @Override

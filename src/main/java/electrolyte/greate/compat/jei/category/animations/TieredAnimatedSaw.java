@@ -9,6 +9,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import static electrolyte.greate.registry.GreatePartialModels.MECHANICAL_SAW_BLADE_VERTICAL_ACTIVE_MODELS;
+
 public class TieredAnimatedSaw extends AnimatedKinetics {
 
     private final TieredSawBlock block;
@@ -38,7 +40,7 @@ public class TieredAnimatedSaw extends AnimatedKinetics {
                 .scale(scale)
                 .render(guiGraphics);
 
-        blockElement(block.getSawModels()[3])
+        blockElement(MECHANICAL_SAW_BLADE_VERTICAL_ACTIVE_MODELS[block.getTier()])
                 .rotateBlock(0, -90, -90)
                 .scale(scale)
                 .render(guiGraphics);

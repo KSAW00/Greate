@@ -14,6 +14,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Con
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
+import static electrolyte.greate.registry.GreatePartialModels.COGWHEEL_SHAFTLESS_MODELS;
+import static electrolyte.greate.registry.GreatePartialModels.MECHANICAL_MIXER_HEAD_MODELS;
+
 public class TieredMechanicalMixerRenderer extends KineticBlockEntityRenderer<TieredMechanicalMixerBlockEntity> {
     public TieredMechanicalMixerRenderer(Context context) {
         super(context);
@@ -29,8 +32,9 @@ public class TieredMechanicalMixerRenderer extends KineticBlockEntityRenderer<Ti
         if(Backend.canUseInstancing(be.getLevel())) return;
         BlockState blockState = be.getBlockState();
         TieredMechanicalMixerBlock mixerBlock = (TieredMechanicalMixerBlock) blockState.getBlock();
+        int tier = mixerBlock.getTier();
         VertexConsumer vb = buffer.getBuffer(RenderType.solid());
-        SuperByteBuffer byteBuffer = CachedBufferer.partial(mixerBlock.getCogwheelModel(), blockState);
+        SuperByteBuffer byteBuffer = CachedBufferer.partial(COGWHEEL_SHAFTLESS_MODELS[tier], blockState);
         standardKineticRotationTransform(byteBuffer, be, light).renderInto(ms, vb);
 
         float renderedHeadOffset = be.getRenderedHeadOffset(partialTicks);
@@ -42,7 +46,7 @@ public class TieredMechanicalMixerRenderer extends KineticBlockEntityRenderer<Ti
         poleRender.translate(0, -renderedHeadOffset, 0).light(light).renderInto(ms, vb);
 
         VertexConsumer vbConsumer = buffer.getBuffer(RenderType.cutoutMipped());
-        SuperByteBuffer headRender = CachedBufferer.partial(mixerBlock.getPartialModel(), blockState);
+        SuperByteBuffer headRender = CachedBufferer.partial(MECHANICAL_MIXER_HEAD_MODELS[tier], blockState);
         headRender.rotateCentered(Direction.UP, angle).translate(0, -renderedHeadOffset, 0).light(light).renderInto(ms, vbConsumer);
     }
 }

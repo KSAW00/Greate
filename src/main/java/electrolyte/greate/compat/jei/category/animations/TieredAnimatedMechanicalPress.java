@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import static electrolyte.greate.registry.GreatePartialModels.MECHANICAL_PRESS_HEAD_MODELS;
+
 public class TieredAnimatedMechanicalPress extends AnimatedKinetics {
 
     private boolean basin;
@@ -33,7 +35,7 @@ public class TieredAnimatedMechanicalPress extends AnimatedKinetics {
 
         blockElement(shaft(block)).rotateBlock(0, 0, getCurrentAngle()).scale(scale).render(guiGraphics);
         blockElement(block.defaultBlockState()).scale(scale).render(guiGraphics);
-        blockElement(block.getPartialModel())
+        blockElement(MECHANICAL_PRESS_HEAD_MODELS[block.getTier()])
                 .atLocal(0, -getAnimatedHeadOffset(), 0).scale(scale).render(guiGraphics);
 
         if (basin) {

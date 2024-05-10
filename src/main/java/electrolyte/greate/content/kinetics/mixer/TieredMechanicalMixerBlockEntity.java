@@ -18,6 +18,7 @@ import electrolyte.greate.content.processing.basin.TieredBasinRecipe;
 import electrolyte.greate.registry.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -54,6 +55,16 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         return ITieredKineticBlockEntity.super.addToGoggleTooltip(tooltip, isPlayerSneaking, tier, capacity, stress);
+    }
+
+    @Override
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
+    }
+
+    @Override
+    public void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
     }
 
     @Override
@@ -101,6 +112,21 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
         if(recipe == null) return false;
         Optional<BasinBlockEntity> basin = getBasin();
         return basin.filter(basinBlockEntity -> TieredBasinRecipe.match(basinBlockEntity, recipe, this.tier)).isPresent();
+    }
+
+    @Override
+    public void startProcessingBasin() {
+        super.startProcessingBasin();
+    }
+
+    @Override
+    public boolean isRunningRecipe() {
+        return isRunning();
+    }
+
+    @Override
+    public int getProcessingTicks() {
+        return processingTicks;
     }
 
     private class CircuitValueBoxTransform extends ValueBoxTransform.Sided {

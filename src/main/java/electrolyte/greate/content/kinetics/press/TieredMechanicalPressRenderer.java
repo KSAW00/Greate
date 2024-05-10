@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Con
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import static electrolyte.greate.registry.GreatePartialModels.MECHANICAL_PRESS_HEAD_MODELS;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 public class TieredMechanicalPressRenderer extends KineticBlockEntityRenderer<TieredMechanicalPressBlockEntity> {
@@ -31,7 +32,8 @@ public class TieredMechanicalPressRenderer extends KineticBlockEntityRenderer<Ti
         BlockState blockState = be.getBlockState();
         PressingBehaviour pressingBehaviour = be.getPressingBehaviour();
         float headOffset = pressingBehaviour.getRenderedHeadOffset(partialTicks) * pressingBehaviour.mode.headOffset;
-        SuperByteBuffer headRender = CachedBufferer.partialFacing(((TieredMechanicalPressBlock) be.getBlockState().getBlock()).getPartialModel(), blockState, blockState.getValue(HORIZONTAL_FACING));
+        int tier = ((TieredMechanicalPressBlock) blockState.getBlock()).getTier();
+        SuperByteBuffer headRender = CachedBufferer.partialFacing(MECHANICAL_PRESS_HEAD_MODELS[tier], blockState, blockState.getValue(HORIZONTAL_FACING));
         headRender.translate(0, -headOffset, 0).light(light).renderInto(ms, buffer.getBuffer(RenderType.solid()));
     }
 

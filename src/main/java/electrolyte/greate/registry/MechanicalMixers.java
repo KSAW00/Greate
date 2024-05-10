@@ -1,13 +1,10 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.api.data.chemical.material.Material;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.Greate;
-
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.mixer.TieredMechanicalMixerBlock;
 import electrolyte.greate.foundation.data.GreateBuilderTransformers;
@@ -17,7 +14,6 @@ import net.minecraft.world.level.material.MapColor;
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static electrolyte.greate.Greate.REGISTRATE;
 import static electrolyte.greate.GreateValues.TM;
-import static electrolyte.greate.registry.GreatePartialModels.*;
 
 public class MechanicalMixers {
 
@@ -48,18 +44,14 @@ public class MechanicalMixers {
         MECHANICAL_MIXERS[UV] = DARMSTADTIUM_MECHANICAL_MIXER = mechanicalMixer(UV, 4.5);
         MECHANICAL_MIXERS[UHV] = NEUTRONIUM_MECHANICAL_MIXER = mechanicalMixer(UHV, 5.0);
     }
-
-    private static BlockEntry<TieredMechanicalMixerBlock> mechanicalMixer(int tier, double stressImpact) {
-        return mechanicalMixer(tier, TM[tier], MECHANICAL_MIXER_HEAD_MODELS[tier], COGWHEEL_SHAFTLESS_MODELS[tier], stressImpact);
-    }
     
-    public static BlockEntry<TieredMechanicalMixerBlock> mechanicalMixer(int tier, Material material, PartialModel mixerHeadModel, PartialModel cogwheelModel, double stressImpact) {
-        return REGISTRATE.block(material.getName() + "_mechanical_mixer", p -> new TieredMechanicalMixerBlock(p, mixerHeadModel, cogwheelModel))
+    public static BlockEntry<TieredMechanicalMixerBlock> mechanicalMixer(int tier, double stressImpact) {
+        return REGISTRATE.block(TM[tier].getName() + "_mechanical_mixer", TieredMechanicalMixerBlock::new)
                 .initialProperties(SharedProperties::stone)
                 .properties(p -> p.noOcclusion().mapColor(MapColor.STONE))
                 .transform(TagGen.axeOrPickaxe())
                 .transform(BlockStressDefaults.setImpact(stressImpact))
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .transform(GreateBuilderTransformers.tieredMechanicalMixer())
                 .addLayer(() -> RenderType::cutoutMipped)
                 .onRegister(c -> c.setTier(tier))

@@ -4,7 +4,8 @@ import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import electrolyte.greate.content.kinetics.base.TieredSingleRotatingInstance;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
+
+import static electrolyte.greate.registry.GreatePartialModels.MILLSTONE_INNER_MODELS;
 
 public class TieredMillstoneCogInstance extends TieredSingleRotatingInstance<TieredMillstoneBlockEntity> {
 
@@ -14,6 +15,7 @@ public class TieredMillstoneCogInstance extends TieredSingleRotatingInstance<Tie
 
     @Override
     protected Instancer<RotatingData> getModel() {
-        return getRotatingMaterial().getModel(((ITieredPartialModel) blockState.getBlock()).getPartialModel(), blockEntity.getBlockState());
+        int tier = ((TieredMillstoneBlock) blockEntity.getBlockState().getBlock()).getTier();
+        return getRotatingMaterial().getModel(MILLSTONE_INNER_MODELS[tier], blockEntity.getBlockState());
     }
 }

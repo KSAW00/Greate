@@ -10,6 +10,9 @@ import electrolyte.greate.content.kinetics.mixer.TieredMechanicalMixerBlock;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 
+import static electrolyte.greate.registry.GreatePartialModels.COGWHEEL_SHAFTLESS_MODELS;
+import static electrolyte.greate.registry.GreatePartialModels.MECHANICAL_MIXER_HEAD_MODELS;
+
 public class TieredAnimatedMixer extends AnimatedKinetics {
 
     private final TieredMechanicalMixerBlock block;
@@ -27,13 +30,13 @@ public class TieredAnimatedMixer extends AnimatedKinetics {
         matrixStack.mulPose(Axis.YP.rotationDegrees(22.5f));
         int scale = 23;
 
-        blockElement(block.getCogwheelModel()).rotateBlock(0, getCurrentAngle() * 2, 0).atLocal(0, 0, 0).scale(scale).render(guiGraphics);
+        blockElement(COGWHEEL_SHAFTLESS_MODELS[block.getTier()]).rotateBlock(0, getCurrentAngle() * 2, 0).atLocal(0, 0, 0).scale(scale).render(guiGraphics);
         blockElement(block.defaultBlockState()).atLocal(0, 0, 0).scale(scale).render(guiGraphics);
 
         float animation = ((Mth.sin(AnimationTickHolder.getRenderTime() / 32f) + 1) / 5) + 0.5f;
 
         blockElement(AllPartialModels.MECHANICAL_MIXER_POLE).atLocal(0, animation, 0).scale(scale).render(guiGraphics);
-        blockElement(block.getPartialModel()).rotateBlock(0, getCurrentAngle() * 4, 0).atLocal(0, animation, 0).scale(scale).render(guiGraphics);
+        blockElement(MECHANICAL_MIXER_HEAD_MODELS[block.getTier()]).rotateBlock(0, getCurrentAngle() * 4, 0).atLocal(0, animation, 0).scale(scale).render(guiGraphics);
         blockElement(AllBlocks.BASIN.getDefaultState()).atLocal(0, 1.65, 0).scale(scale).render(guiGraphics);
 
         matrixStack.popPose();

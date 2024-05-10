@@ -1,11 +1,8 @@
 package electrolyte.greate.content.kinetics.gearbox;
 
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.kinetics.gearbox.GearboxBlock;
 import com.simibubi.create.content.kinetics.gearbox.GearboxBlockEntity;
-
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
 import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -20,14 +17,12 @@ import net.minecraft.world.phys.HitResult;
 
 import java.util.List;
 
-public class TieredGearboxBlock extends GearboxBlock implements ITieredBlock, ITieredPartialModel {
+public class TieredGearboxBlock extends GearboxBlock implements ITieredBlock {
 
     private int tier;
-    private PartialModel partialModel;
 
-    public TieredGearboxBlock(Properties properties, PartialModel partialModel) {
+    public TieredGearboxBlock(Properties properties) {
         super(properties);
-        this.partialModel = partialModel;
     }
 
     @Override
@@ -59,11 +54,6 @@ public class TieredGearboxBlock extends GearboxBlock implements ITieredBlock, IT
     @Override
     public void setTier(int tier) {
         this.tier = tier;
-    }
-
-    @Override
-    public PartialModel getPartialModel() {
-        return partialModel;
     }
 
     @Override

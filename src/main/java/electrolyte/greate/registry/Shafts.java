@@ -1,6 +1,5 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
@@ -134,17 +133,13 @@ public class Shafts {
         BRASS_ENCASED_SHAFTS[UHV] = BRASS_ENCASED_NEUTRONIUM_SHAFT = brassEncasedShaft(UHV);
     }
 
-    private static BlockEntry<TieredShaftBlock> shaft(int tier) {
-        return shaft(tier, TM[tier]);
-    }
-
-    public static BlockEntry<TieredShaftBlock> shaft(int tier, Material material) {
+    public static BlockEntry<TieredShaftBlock> shaft(int tier) {
         return REGISTRATE
-                .block(material.getName() + "_shaft", TieredShaftBlock::new)
+                .block(TM[tier].getName() + "_shaft", TieredShaftBlock::new)
                 .initialProperties(SharedProperties::stone)
                 .properties(p -> p.mapColor(MapColor.METAL))
                 .transform(BlockStressDefaults.setNoImpact())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .transform(TagGen.pickaxeOnly())
                 .blockstate(GreateBlockStateGen.tieredShaftProvider())
                 .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
@@ -154,52 +149,40 @@ public class Shafts {
                 .register();
     }
 
-    private static BlockEntry<TieredPoweredShaftBlock> poweredShaft(int tier) {
-        return poweredShaft(tier, TM[tier], SHAFTS[tier]);
-    }
-
-    public static BlockEntry<TieredPoweredShaftBlock> poweredShaft(int tier, Material material, BlockEntry<TieredShaftBlock> shaft) {
+    public static BlockEntry<TieredPoweredShaftBlock> poweredShaft(int tier) {
         return REGISTRATE
-                .block("powered_" + material.getName() + "_shaft", p -> new TieredPoweredShaftBlock(p, shaft::get))
+                .block("powered_" + TM[tier].getName() + "_shaft", p -> new TieredPoweredShaftBlock(p, SHAFTS[tier]::get))
                 .initialProperties(SharedProperties::stone)
                 .properties(p -> p.mapColor(MapColor.METAL))
                 .transform(TagGen.pickaxeOnly())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .blockstate(GreateBlockStateGen.tieredPoweredShaftProvider())
-                .loot((l, b) -> l.dropOther(b, shaft.get()))
+                .loot((l, b) -> l.dropOther(b, SHAFTS[tier].get()))
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }
 
-    private static BlockEntry<TieredEncasedShaftBlock> andesiteEncasedShaft(int tier) {
-        return andesiteEncasedShaft(tier, TM[tier], SHAFTS[tier]);
+    public static BlockEntry<TieredEncasedShaftBlock> andesiteEncasedShaft(int tier) {
+        return encasedShaft(tier, AllBlocks.ANDESITE_CASING, AllSpriteShifts.ANDESITE_CASING);
     }
 
-    public static BlockEntry<TieredEncasedShaftBlock> andesiteEncasedShaft(int tier, Material material, BlockEntry<TieredShaftBlock> shaft) {
-        return encasedShaft(tier, material, shaft, AllBlocks.ANDESITE_CASING, AllSpriteShifts.ANDESITE_CASING);
+    public static BlockEntry<TieredEncasedShaftBlock> brassEncasedShaft(int tier) {
+        return encasedShaft(tier, AllBlocks.BRASS_CASING, AllSpriteShifts.BRASS_CASING);
     }
 
-    private static BlockEntry<TieredEncasedShaftBlock> brassEncasedShaft(int tier) {
-        return brassEncasedShaft(tier, TM[tier], SHAFTS[tier]);
-    }
-
-    public static BlockEntry<TieredEncasedShaftBlock> brassEncasedShaft(int tier, Material material, BlockEntry<TieredShaftBlock> shaft) {
-        return encasedShaft(tier, material, shaft, AllBlocks.BRASS_CASING, AllSpriteShifts.BRASS_CASING);
-    }
-
-    public static BlockEntry<TieredEncasedShaftBlock> encasedShaft(int tier, Material material, BlockEntry<TieredShaftBlock> shaft, BlockEntry<CasingBlock> casing, CTSpriteShiftEntry casingSpriteShiftEntry) {
+    public static BlockEntry<TieredEncasedShaftBlock> encasedShaft(int tier, BlockEntry<CasingBlock> casing, CTSpriteShiftEntry casingSpriteShiftEntry) {
         boolean andesiteCasing = casing == AllBlocks.ANDESITE_CASING;
         String casingName = andesiteCasing ? "andesite" : "brass";
         NonNullUnaryOperator<BlockBuilder<TieredEncasedShaftBlock, CreateRegistrate>> encasingTransformer = andesiteCasing ?
-                GreateBuilderTransformers.tieredAndesiteEncasedShaft(shaft, () -> casingSpriteShiftEntry) :
-                GreateBuilderTransformers.tieredBrassEncasedShaft(shaft, () -> casingSpriteShiftEntry);
+                GreateBuilderTransformers.tieredAndesiteEncasedShaft(SHAFTS[tier], () -> casingSpriteShiftEntry) :
+                GreateBuilderTransformers.tieredBrassEncasedShaft(SHAFTS[tier], () -> casingSpriteShiftEntry);
         return REGISTRATE
-                .block( casingName + "_encased_" + material.getName() + "_shaft", p -> new TieredEncasedShaftBlock(p, casing::get, shaft::get))
+                .block( casingName + "_encased_" + TM[tier].getName() + "_shaft", p -> new TieredEncasedShaftBlock(p, casing::get, SHAFTS[tier]::get))
                 .properties(p -> p.mapColor(MapColor.PODZOL))
                 .transform(encasingTransformer)
-                .transform(EncasingRegistry.addVariantTo(shaft))
+                .transform(EncasingRegistry.addVariantTo(SHAFTS[tier]))
                 .transform(TagGen.axeOrPickaxe())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }

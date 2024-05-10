@@ -1,12 +1,10 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.Greate;
-
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingWheelBlock;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingWheelControllerBlock;
@@ -16,8 +14,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-
-import java.util.ArrayList;
 
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static electrolyte.greate.Greate.REGISTRATE;
@@ -77,13 +73,9 @@ public class CrushingWheels {
         CRUSHING_WHEEL_CONTROLLERS[UHV] = NEUTRONIUM_CRUSHING_WHEEL_CONTROLLER = crushingWheelController(UHV);
     }
 
-    private static BlockEntry<TieredCrushingWheelBlock> crushingWheel(int tier, double stressImpact) {
-        return crushingWheel(tier, TM[tier], stressImpact);
-    }
-
-    public static BlockEntry<TieredCrushingWheelBlock> crushingWheel(int tier, Material material, double stressImpact) {
+    public static BlockEntry<TieredCrushingWheelBlock> crushingWheel(int tier, double stressImpact) {
         return REGISTRATE
-                .block(material.getName() + "_crushing_wheel", TieredCrushingWheelBlock::new)
+                .block(TM[tier].getName() + "_crushing_wheel", TieredCrushingWheelBlock::new)
                 .properties(p -> p.mapColor(MapColor.METAL))
                 .initialProperties(SharedProperties::stone)
                 .properties(BlockBehaviour.Properties::noOcclusion)
@@ -91,18 +83,14 @@ public class CrushingWheels {
                 .addLayer(() -> RenderType::cutoutMipped)
                 .transform(GreateBuilderTransformers.tieredCrushingWheel())
                 .transform(BlockStressDefaults.setImpact(stressImpact))
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }
 
-    private static BlockEntry<TieredCrushingWheelControllerBlock> crushingWheelController(int tier) {
-        return crushingWheelController(tier, TM[tier], CRUSHING_WHEELS[tier]);
-    }
-
-    public static BlockEntry<TieredCrushingWheelControllerBlock> crushingWheelController(int tier, Material material, BlockEntry<TieredCrushingWheelBlock> crushingWheel) {
+    public static BlockEntry<TieredCrushingWheelControllerBlock> crushingWheelController(int tier) {
         return REGISTRATE
-                .block(material.getName() + "_crushing_wheel_controller", p -> new TieredCrushingWheelControllerBlock(p, crushingWheel.get()))
+                .block(TM[tier].getName() + "_crushing_wheel_controller", p -> new TieredCrushingWheelControllerBlock(p, CRUSHING_WHEELS[tier].get()))
                 .properties(p -> p.mapColor(MapColor.STONE))
                 .properties(p -> p.noOcclusion()
                         .noLootTable()

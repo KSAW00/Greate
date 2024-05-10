@@ -1,13 +1,10 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.api.data.chemical.material.Material;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.Greate;
-
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.millstone.TieredMillstoneBlock;
 import electrolyte.greate.foundation.data.GreateBuilderTransformers;
@@ -16,7 +13,6 @@ import net.minecraft.world.level.material.MapColor;
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static electrolyte.greate.Greate.REGISTRATE;
 import static electrolyte.greate.GreateValues.TM;
-import static electrolyte.greate.registry.GreatePartialModels.MILLSTONE_INNER_MODELS;
 
 public class Millstones {
 
@@ -48,19 +44,15 @@ public class Millstones {
         MILLSTONES[UHV] = NEUTRONIUM_MILLSTONE = millstone(UHV, 5.0);
     }
 
-    private static BlockEntry<TieredMillstoneBlock> millstone(int tier, double millstoneImpact) {
-        return millstone(tier, TM[tier], MILLSTONE_INNER_MODELS[tier], millstoneImpact);
-    }
-
-    public static BlockEntry<TieredMillstoneBlock> millstone(int tier, Material material, PartialModel millstoneInnerModel, double millstoneImpact) {
+    public static BlockEntry<TieredMillstoneBlock> millstone(int tier, double millstoneImpact) {
         return REGISTRATE
-                .block(material.getName() + "_millstone", p -> new TieredMillstoneBlock(p, millstoneInnerModel))
+                .block(TM[tier].getName() + "_millstone", TieredMillstoneBlock::new)
                 .initialProperties(SharedProperties::stone)
                 .properties(p -> p.mapColor(MapColor.METAL))
                 .transform(TagGen.pickaxeOnly())
                 .transform(GreateBuilderTransformers.tieredMillstone())
                 .transform(BlockStressDefaults.setImpact(millstoneImpact))
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }

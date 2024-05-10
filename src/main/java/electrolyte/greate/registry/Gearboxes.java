@@ -1,7 +1,5 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.api.data.chemical.material.Material;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
@@ -12,7 +10,6 @@ import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import electrolyte.greate.Greate;
-
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.gearbox.TieredGearboxBlock;
 import electrolyte.greate.content.kinetics.gearbox.TieredVerticalGearboxItem;
@@ -24,7 +21,6 @@ import net.minecraft.world.level.material.PushReaction;
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static electrolyte.greate.Greate.REGISTRATE;
 import static electrolyte.greate.GreateValues.TM;
-import static electrolyte.greate.registry.GreatePartialModels.SHAFT_HALF_MODELS;
 
 public class Gearboxes {
 
@@ -84,20 +80,16 @@ public class Gearboxes {
         VERTICAL_GEARBOXES[UHV] = NEUTRONIUM_VERTICAL_GEARBOX = verticalGearbox(UHV);
     }
 
-    private static BlockEntry<TieredGearboxBlock> gearbox(int tier) {
-        return gearbox(tier, TM[tier], SHAFT_HALF_MODELS[tier]);
-    }
-
-    public static BlockEntry<TieredGearboxBlock> gearbox(int tier, Material material, PartialModel halfShaftModel) {
+    public static BlockEntry<TieredGearboxBlock> gearbox(int tier) {
         return REGISTRATE
-                .block(material.getName() + "_gearbox", p -> new TieredGearboxBlock(p, halfShaftModel))
+                .block(TM[tier].getName() + "_gearbox", TieredGearboxBlock::new)
                 .initialProperties(SharedProperties::stone)
                 .properties(Properties::noOcclusion)
                 .properties(p -> p.mapColor(MapColor.PODZOL).pushReaction(PushReaction.PUSH_ONLY))
                 .transform(BlockStressDefaults.setNoImpact())
                 .transform(TagGen.axeOrPickaxe())
                 .transform(GreateBuilderTransformers.tieredGearbox())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING)))
                 .onRegister(CreateRegistrate.casingConnectivity((block, c) -> c.make(block, AllSpriteShifts.ANDESITE_CASING,
                         (s, f) -> f.getAxis() == s.getValue(GearboxBlock.AXIS))))
@@ -105,13 +97,9 @@ public class Gearboxes {
                 .register();
     }
 
-    private static ItemEntry<TieredVerticalGearboxItem> verticalGearbox(int tier) {
-        return verticalGearbox(TM[tier].getName() + "_vertical_gearbox", GEARBOXES[tier]);
-    }
-
-    public static ItemEntry<TieredVerticalGearboxItem> verticalGearbox(String name, BlockEntry<TieredGearboxBlock> gearbox) {
+    public static ItemEntry<TieredVerticalGearboxItem> verticalGearbox(int tier) {
         return REGISTRATE
-                .item(name, p -> new TieredVerticalGearboxItem(p, gearbox.get()))
+                .item(TM[tier].getName() + "_vertical_gearbox", p -> new TieredVerticalGearboxItem(p, GEARBOXES[tier].get()))
                 .transform(GreateBuilderTransformers.tieredGearboxVertical())
                 .register();
     }

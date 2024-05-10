@@ -1,6 +1,5 @@
 package electrolyte.greate.content.kinetics.saw;
 
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.content.kinetics.saw.SawBlock;
@@ -9,12 +8,9 @@ import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.placement.IPlacementHelper;
 import com.simibubi.create.foundation.placement.PlacementHelpers;
 import com.simibubi.create.foundation.placement.PlacementOffset;
-
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredShaftBlock;
 import electrolyte.greate.registry.ModBlockEntityTypes;
-import electrolyte.greate.registry.Saws;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,20 +35,16 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class TieredSawBlock extends SawBlock implements ITieredBlock, ITieredShaftBlock, ITieredPartialModel {
+public class TieredSawBlock extends SawBlock implements ITieredBlock, ITieredShaftBlock {
 
     private int tier;
     private Block shaft;
-    private PartialModel halfShaftModel;
-    private PartialModel[] sawModels;
 
     private static final int PLACEMENT_HELPER_ID = PlacementHelpers.register(new PlacementHelper());
 
-    public TieredSawBlock(Properties properties, Block shaft, PartialModel halfShaftModel, PartialModel... sawModels) {
+    public TieredSawBlock(Properties properties, Block shaft) {
         super(properties);
         this.shaft = shaft;
-        this.halfShaftModel = halfShaftModel;
-        this.sawModels = sawModels;
     }
 
     @Override
@@ -114,15 +106,6 @@ public class TieredSawBlock extends SawBlock implements ITieredBlock, ITieredSha
             be.notifyUpdate();
             return InteractionResult.SUCCESS;
         });
-    }
-
-    @Override
-    public PartialModel getPartialModel() {
-        return halfShaftModel;
-    }
-
-    public PartialModel[] getSawModels() {
-        return sawModels;
     }
 
     @MethodsReturnNonnullByDefault

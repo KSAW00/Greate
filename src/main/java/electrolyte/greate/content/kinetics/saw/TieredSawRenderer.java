@@ -20,7 +20,6 @@ import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
@@ -31,13 +30,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 
+import static electrolyte.greate.registry.GreatePartialModels.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
 public class TieredSawRenderer extends SawRenderer {
 
     private Block shaftBlock;
-    private PartialModel halfShaftModel;
-    private PartialModel[] sawModels;
+    private int tier;
 
     public TieredSawRenderer(Context context) {
         super(context);
@@ -45,8 +44,7 @@ public class TieredSawRenderer extends SawRenderer {
 
     @Override
     protected void renderSafe(SawBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
-        halfShaftModel = ((ITieredPartialModel) be.getBlockState().getBlock()).getPartialModel();
-        sawModels = ((TieredSawBlock) be.getBlockState().getBlock()).getSawModels();
+        tier = ((TieredSawBlock) be.getBlockState().getBlock()).getTier();
         shaftBlock = ((TieredSawBlock) be.getBlockState().getBlock()).getShaft();
         renderBlade(be, ms, bufferSource, light);
         renderItems(be, partialTicks, ms, bufferSource, light, overlay);
@@ -67,19 +65,19 @@ public class TieredSawRenderer extends SawRenderer {
         boolean rotate = false;
         if(SawBlock.isHorizontal(state)) {
             if(speed > 0) {
-                sawModel = sawModels[0];
+                sawModel = MECHANICAL_SAW_BLADE_HORIZONTAL_ACTIVE_MODELS[tier];
             } else if(speed < 0) {
-                sawModel = sawModels[1];
+                sawModel = MECHANICAL_SAW_BLADE_HORIZONTAL_REVERSED_MODELS[tier];
             } else {
-                sawModel = sawModels[2];
+                sawModel = MECHANICAL_SAW_BLADE_HORIZONTAL_INACTIVE_MODELS[tier];
             }
         } else {
             if(speed > 0) {
-                sawModel = sawModels[3];
+                sawModel = MECHANICAL_SAW_BLADE_VERTICAL_ACTIVE_MODELS[tier];
             } else if(speed < 0) {
-                sawModel = sawModels[4];
+                sawModel = MECHANICAL_SAW_BLADE_VERTICAL_REVERSED_MODELS[tier];
             } else {
-                sawModel = sawModels[5];
+                sawModel = MECHANICAL_SAW_BLADE_VERTICAL_INACTIVE_MODELS[tier];
             }
 
             if(state.getValue(SawBlock.AXIS_ALONG_FIRST_COORDINATE)) rotate = true;
@@ -96,7 +94,7 @@ public class TieredSawRenderer extends SawRenderer {
     protected SuperByteBuffer getRotatedModel(KineticBlockEntity be) {
         BlockState state = be.getBlockState();
         if(state.getValue(FACING).getAxis().isHorizontal()) {
-            return CachedBufferer.partialFacing(halfShaftModel, state.rotate(be.getLevel(), be.getBlockPos(), Rotation.CLOCKWISE_180));
+            return CachedBufferer.partialFacing(SHAFT_HALF_MODELS[tier], state.rotate(be.getLevel(), be.getBlockPos(), Rotation.CLOCKWISE_180));
         }
         return CachedBufferer.block(KineticBlockEntityRenderer.KINETIC_BLOCK, getRenderedBlockState(be));
     }
@@ -117,19 +115,19 @@ public class TieredSawRenderer extends SawRenderer {
         boolean backwards = VecHelper.isVecPointingTowards(context.relativeMotion, facing.getOpposite());
         boolean moving = context.getAnimationSpeed() != 0;
         boolean shouldAnimate = (context.contraption.stalled && horizontal) || (!context.contraption.stalled && !backwards && moving);
+        int tier = ((TieredSawBlock) state.getBlock()).getTier();
 
         SuperByteBuffer superBuffer;
-        PartialModel[] sawModels = ((TieredSawBlock) context.state.getBlock()).getSawModels();
         if (SawBlock.isHorizontal(state)) {
             if (shouldAnimate)
-                superBuffer = CachedBufferer.partial(sawModels[0], state);
+                superBuffer = CachedBufferer.partial(MECHANICAL_SAW_BLADE_HORIZONTAL_ACTIVE_MODELS[tier], state);
             else
-                superBuffer = CachedBufferer.partial(sawModels[2], state);
+                superBuffer = CachedBufferer.partial(MECHANICAL_SAW_BLADE_HORIZONTAL_INACTIVE_MODELS[tier], state);
         } else {
             if (shouldAnimate)
-                superBuffer = CachedBufferer.partial(sawModels[3], state);
+                superBuffer = CachedBufferer.partial(MECHANICAL_SAW_BLADE_VERTICAL_ACTIVE_MODELS[tier], state);
             else
-                superBuffer = CachedBufferer.partial(sawModels[5], state);
+                superBuffer = CachedBufferer.partial(MECHANICAL_SAW_BLADE_VERTICAL_INACTIVE_MODELS[tier], state);
         }
 
         superBuffer.transform(matrices.getModel()).centre().rotateY(AngleHelper.horizontalAngle(facing)).rotateX(AngleHelper.verticalAngle(facing));

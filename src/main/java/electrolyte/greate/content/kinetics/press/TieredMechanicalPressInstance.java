@@ -12,6 +12,7 @@ import electrolyte.greate.content.kinetics.base.TieredShaftInstance;
 import org.joml.Quaternionf;
 
 import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
+import static electrolyte.greate.registry.GreatePartialModels.MECHANICAL_PRESS_HEAD_MODELS;
 
 public class TieredMechanicalPressInstance extends TieredShaftInstance<TieredMechanicalPressBlockEntity> implements DynamicInstance {
 
@@ -19,7 +20,8 @@ public class TieredMechanicalPressInstance extends TieredShaftInstance<TieredMec
 
     public TieredMechanicalPressInstance(MaterialManager materialManager, TieredMechanicalPressBlockEntity blockEntity) {
         super(materialManager, blockEntity);
-        pressHead = materialManager.defaultSolid().material(Materials.ORIENTED).getModel(((TieredMechanicalPressBlock)blockEntity.getBlockState().getBlock()).getPartialModel(), blockState).createInstance();
+        int tier = ((TieredMechanicalPressBlock) blockEntity.getBlockState().getBlock()).getTier();
+        pressHead = materialManager.defaultSolid().material(Materials.ORIENTED).getModel(MECHANICAL_PRESS_HEAD_MODELS[tier], blockState).createInstance();
         Quaternionf q = Axis.YP.rotationDegrees(AngleHelper.horizontalAngle(blockState.getValue(HORIZONTAL_FACING)));
         pressHead.setRotation(q);
         transformModels();

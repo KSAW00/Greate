@@ -2,7 +2,6 @@ package electrolyte.greate.content.kinetics.simpleRelays;
 
 import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.MaterialManager;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
@@ -14,6 +13,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
+
+import static electrolyte.greate.registry.GreatePartialModels.COGWHEEL_SHAFT_MODELS;
+import static electrolyte.greate.registry.GreatePartialModels.LARGE_COGWHEEL_SHAFTLESS_MODELS;
 
 public class TieredBracketedKineticBlockEntityInstance extends TieredSingleRotatingInstance<TieredBracketedKineticBlockEntity> {
 
@@ -27,13 +29,13 @@ public class TieredBracketedKineticBlockEntityInstance extends TieredSingleRotat
         super.init();
         if(!ICogWheel.isLargeCog(blockEntity.getBlockState())) return;
 
-        PartialModel[] models = ((TieredCogwheelBlock) blockEntity.getBlockState().getBlock()).getPartialModels();
+        int tier = ((TieredCogwheelBlock) blockEntity.getBlockState().getBlock()).getTier();
         float speed = blockEntity.getSpeed();
         Axis axis = KineticBlockEntityRenderer.getRotationAxisOf(blockEntity);
         BlockPos pos = blockEntity.getBlockPos();
         float offset = BracketedKineticBlockEntityRenderer.getShaftAngleOffset(axis, pos);
         Direction facing = Direction.fromAxisAndDirection(axis, AxisDirection.POSITIVE);
-        Instancer<RotatingData> half = getRotatingMaterial().getModel(models[0], blockState, facing, () -> this.rotateToAxis(axis));
+        Instancer<RotatingData> half = getRotatingMaterial().getModel(LARGE_COGWHEEL_SHAFTLESS_MODELS[tier], blockState, facing, () -> this.rotateToAxis(axis));
 
         additionalShaft = setup(half.createInstance(), speed);
         additionalShaft.setRotationOffset(offset);
@@ -43,10 +45,10 @@ public class TieredBracketedKineticBlockEntityInstance extends TieredSingleRotat
     protected Instancer<RotatingData> getModel() {
         if(!ICogWheel.isLargeCog(blockEntity.getBlockState())) return super.getModel();
 
-        PartialModel[] models = ((TieredCogwheelBlock) blockEntity.getBlockState().getBlock()).getPartialModels();
+        int tier = ((TieredCogwheelBlock) blockEntity.getBlockState().getBlock()).getTier();
         Axis axis = KineticBlockEntityRenderer.getRotationAxisOf(blockEntity);
         Direction facing = Direction.fromAxisAndDirection(axis, AxisDirection.POSITIVE);
-        return getRotatingMaterial().getModel(models[1], blockState, facing, () -> this.rotateToAxis(axis));
+        return getRotatingMaterial().getModel(COGWHEEL_SHAFT_MODELS[tier], blockState, facing, () -> this.rotateToAxis(axis));
     }
 
     private PoseStack rotateToAxis(Axis axis) {

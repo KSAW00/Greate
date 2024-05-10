@@ -6,6 +6,8 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import electrolyte.greate.content.kinetics.millstone.TieredMillstoneBlock;
 import net.minecraft.client.gui.GuiGraphics;
 
+import static electrolyte.greate.registry.GreatePartialModels.MILLSTONE_INNER_MODELS;
+
 public class TieredAnimatedMillstone extends AnimatedKinetics {
 
     private final TieredMillstoneBlock block;
@@ -22,7 +24,7 @@ public class TieredAnimatedMillstone extends AnimatedKinetics {
         AllGuiTextures.JEI_SHADOW.render(graphics, -16, 13);
         poseStack.translate(-2, 18, 0);
         int scale = 22;
-        blockElement(block.getPartialModel()).rotateBlock(22.5, getCurrentAngle() * 2, 0).scale(scale).render(graphics);
+        blockElement(MILLSTONE_INNER_MODELS[block.getTier()]).rotateBlock(22.5, getCurrentAngle() * 2, 0).scale(scale).render(graphics);
         blockElement(block.defaultBlockState()).rotateBlock(22.5, 22.5, 0).scale(scale).render(graphics);
         poseStack.popPose();
     }

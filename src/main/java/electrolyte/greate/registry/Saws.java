@@ -1,30 +1,23 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.api.data.chemical.material.Material;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.AllTags.AllItemTags;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.Greate;
-
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.saw.TieredSawBlock;
 import electrolyte.greate.content.kinetics.saw.TieredSawGenerator;
 import electrolyte.greate.content.kinetics.saw.TieredSawMovementBehaviour;
-import electrolyte.greate.content.kinetics.simpleRelays.TieredShaftBlock;
 import electrolyte.greate.foundation.data.GreateBuilderTransformers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.material.MapColor;
-
-import java.util.ArrayList;
 
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static electrolyte.greate.Greate.REGISTRATE;
 import static electrolyte.greate.GreateValues.TM;
-import static electrolyte.greate.registry.GreatePartialModels.*;
 import static electrolyte.greate.registry.Shafts.SHAFTS;
 
 public class Saws {
@@ -57,22 +50,16 @@ public class Saws {
         SAWS[UHV] = NEUTRONIUM_SAW = saw(UHV, 10.0);
     }
 
-    private static BlockEntry<TieredSawBlock> saw(int tier, double stressImpact) {
-        return saw(tier, TM[tier], SHAFTS[tier], stressImpact, SHAFT_HALF_MODELS[tier],
-                MECHANICAL_SAW_BLADE_HORIZONTAL_ACTIVE_MODELS[tier], MECHANICAL_SAW_BLADE_HORIZONTAL_REVERSED_MODELS[tier], MECHANICAL_SAW_BLADE_HORIZONTAL_INACTIVE_MODELS[tier],
-                MECHANICAL_SAW_BLADE_VERTICAL_ACTIVE_MODELS[tier], MECHANICAL_SAW_BLADE_VERTICAL_REVERSED_MODELS[tier], MECHANICAL_SAW_BLADE_VERTICAL_INACTIVE_MODELS[tier]);
-    }
-
-    public static BlockEntry<TieredSawBlock> saw(int tier, Material material, BlockEntry<TieredShaftBlock> shaftBlock, double stressImpact, PartialModel halfShaftModel, PartialModel... sawModels) {
+    public static BlockEntry<TieredSawBlock> saw(int tier, double stressImpact) {
         return REGISTRATE
-                .block(material.getName() + "_mechanical_saw", p -> new TieredSawBlock(p, shaftBlock.get(), halfShaftModel, sawModels))
+                .block(TM[tier].getName() + "_mechanical_saw", p -> new TieredSawBlock(p, SHAFTS[tier].get()))
                 .initialProperties(SharedProperties::stone)
                 .addLayer(() -> RenderType::cutoutMipped)
                 .properties(p -> p.mapColor(MapColor.PODZOL))
                 .transform(TagGen.axeOrPickaxe())
                 .blockstate(new TieredSawGenerator()::generateModel)
                 .transform(BlockStressDefaults.setImpact(stressImpact))
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(movementBehaviour(new TieredSawMovementBehaviour()))
                 .onRegister(c -> c.setTier(tier))
                 .addLayer(() -> RenderType::cutoutMipped)

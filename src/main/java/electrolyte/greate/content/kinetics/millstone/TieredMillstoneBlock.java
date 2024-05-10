@@ -1,10 +1,8 @@
 package electrolyte.greate.content.kinetics.millstone;
 
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlock;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
 import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -14,14 +12,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.List;
 
-public class TieredMillstoneBlock extends MillstoneBlock implements ITieredBlock, ITieredPartialModel {
+public class TieredMillstoneBlock extends MillstoneBlock implements ITieredBlock {
 
     private int tier;
-    private PartialModel model;
 
-    public TieredMillstoneBlock(Properties properties, PartialModel model) {
+    public TieredMillstoneBlock(Properties properties) {
         super(properties);
-        this.model = model;
     }
 
     @Override
@@ -42,10 +38,5 @@ public class TieredMillstoneBlock extends MillstoneBlock implements ITieredBlock
     @Override
     public void setTier(int tier) {
         this.tier = tier;
-    }
-
-    @Override
-    public PartialModel getPartialModel() {
-        return this.model;
     }
 }

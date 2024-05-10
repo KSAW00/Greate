@@ -13,8 +13,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntityInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.simibubi.create.foundation.utility.Iterate;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredEncasedCogwheel;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
+import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,13 +21,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.Optional;
 
+import static electrolyte.greate.registry.GreatePartialModels.*;
+
 public class TieredEncasedCogInstance extends KineticBlockEntityInstance<KineticBlockEntity> {
 
     private boolean large;
     protected RotatingData rotatingModel;
     protected Optional<RotatingData> rotatingTopShaft;
     protected Optional<RotatingData> rotatingBottomShaft;
-    protected PartialModel partialModel, model;
+    protected int tier;
 
     public static TieredEncasedCogInstance small(MaterialManager manager, KineticBlockEntity be) {
         return new TieredEncasedCogInstance(manager, be, false);
@@ -41,8 +42,7 @@ public class TieredEncasedCogInstance extends KineticBlockEntityInstance<Kinetic
     public TieredEncasedCogInstance(MaterialManager materialManager, KineticBlockEntity blockEntity, boolean large) {
         super(materialManager, blockEntity);
         this.large = large;
-        this.partialModel = ((ITieredPartialModel) blockState.getBlock()).getPartialModel();
-        this.model = ((ITieredEncasedCogwheel) blockState.getBlock()).getCogwheelModel();
+        this.tier = ((ITieredBlock) blockState.getBlock()).getTier();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class TieredEncasedCogInstance extends KineticBlockEntityInstance<Kinetic
         rotatingBottomShaft = Optional.empty();
         for(Direction d : Iterate.directionsInAxis(axis)) {
             if(!def.hasShaftTowards(blockEntity.getLevel(), blockEntity.getBlockPos(), blockState, d)) continue;
-        RotatingData data = setup(getRotatingMaterial().getModel(partialModel, blockState, d).createInstance());
+        RotatingData data = setup(getRotatingMaterial().getModel(SHAFT_HALF_MODELS[tier], blockState, d).createInstance());
             if(large) {
                 data.setRotationOffset(BracketedKineticBlockEntityRenderer.getShaftAngleOffset(axis, pos));
             }
@@ -92,8 +92,13 @@ public class TieredEncasedCogInstance extends KineticBlockEntityInstance<Kinetic
     protected Instancer<RotatingData> getCogModel() {
         BlockState refState = blockEntity.getBlockState();
         Direction facing = Direction.fromAxisAndDirection(refState.getValue(BlockStateProperties.AXIS), Direction.AxisDirection.POSITIVE);
-        PartialModel partialModel = model;
-        return getRotatingMaterial().getModel(partialModel, refState, facing, () -> {
+        PartialModel cogModel;
+        if(large) {
+            cogModel = LARGE_COGWHEEL_SHAFTLESS_MODELS[tier];
+        } else {
+            cogModel = COGWHEEL_SHAFTLESS_MODELS[tier];
+        }
+        return getRotatingMaterial().getModel(cogModel, refState, facing, () -> {
             PoseStack stack = new PoseStack();
             TransformStack.cast(stack)
                     .centre()

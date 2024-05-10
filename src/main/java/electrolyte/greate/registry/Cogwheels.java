@@ -1,7 +1,5 @@
 package electrolyte.greate.registry;
 
-import com.gregtechceu.gtceu.api.data.chemical.material.Material;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
@@ -27,7 +25,6 @@ import static electrolyte.greate.Greate.REGISTRATE;
 import static electrolyte.greate.GreateValues.TM;
 import static electrolyte.greate.foundation.data.GreateBuilderTransformers.tieredEncasedCogwheel;
 import static electrolyte.greate.foundation.data.GreateBuilderTransformers.tieredEncasedLargeCogwheel;
-import static electrolyte.greate.registry.GreatePartialModels.*;
 
 public class Cogwheels {
     
@@ -176,111 +173,87 @@ public class Cogwheels {
         BRASS_ENCASED_LARGE_COGWHEELS[UV] = BRASS_ENCASED_LARGE_DARMSTADTIUM_COGWHEEL = registerBrassEncasedLargeCogwheel(UV);
         BRASS_ENCASED_LARGE_COGWHEELS[UHV] = BRASS_ENCASED_LARGE_NEUTRONIUM_COGWHEEL = registerBrassEncasedLargeCogwheel(UHV);
     }
-
-    public static BlockEntry<TieredCogwheelBlock> registerCogwheel(int tier) {
-        return registerCogwheel(tier, TM[tier], COGWHEEL_SHAFTLESS_MODELS[tier], COGWHEEL_SHAFT_MODELS[tier]);
-    }
     
-    public static BlockEntry<TieredCogwheelBlock> registerCogwheel(int tier, Material material, PartialModel largeCogwheelShaftless, PartialModel cogwheelShaft) {
+    public static BlockEntry<TieredCogwheelBlock> registerCogwheel(int tier) {
         return REGISTRATE
-                .block(material.getName() + "_cogwheel", p -> TieredCogwheelBlock.small(p, largeCogwheelShaftless, cogwheelShaft))
+                .block(TM[tier].getName() + "_cogwheel", TieredCogwheelBlock::small)
                 .initialProperties(SharedProperties::stone)
                 .properties(p -> p.sound(SoundType.WOOD))
                 .properties(p -> p.mapColor(MapColor.DIRT))
                 .transform(BlockStressDefaults.setNoImpact())
                 .transform(TagGen.axeOrPickaxe())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .blockstate(GreateBlockStateGen.tieredCogwheelProvider(false))
                 .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
                 .onRegister(c -> c.setTier(tier))
                 .item(CogwheelBlockItem::new).build()
                 .register();
     }
-
-    public static BlockEntry<TieredCogwheelBlock> registerLargeCogwheel(int tier) {
-        return registerLargeCogwheel(tier, TM[tier], LARGE_COGWHEEL_SHAFTLESS_MODELS[tier], COGWHEEL_SHAFT_MODELS[tier]);
-    }
     
-    public static BlockEntry<TieredCogwheelBlock> registerLargeCogwheel(int tier, Material material, PartialModel largeCogwheelShaftless, PartialModel cogwheelShaft) {
+    public static BlockEntry<TieredCogwheelBlock> registerLargeCogwheel(int tier) {
         return REGISTRATE
-                .block("large_" + material.getName() + "_cogwheel", p -> TieredCogwheelBlock.large(p, largeCogwheelShaftless, cogwheelShaft))
+                .block("large_" + TM[tier].getName() + "_cogwheel", TieredCogwheelBlock::large)
                 .initialProperties(SharedProperties::stone)
                 .properties(p -> p.sound(SoundType.WOOD))
                 .properties(p -> p.mapColor(MapColor.DIRT))
                 .transform(BlockStressDefaults.setNoImpact())
                 .transform(TagGen.axeOrPickaxe())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .blockstate(GreateBlockStateGen.tieredCogwheelProvider(true))
                 .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
                 .onRegister(c -> c.setTier(tier))
                 .item(CogwheelBlockItem::new).build()
                 .register();
     }
-
-    private static BlockEntry<TieredEncasedCogwheelBlock> registerAndesiteEncasedCogwheel(int tier) {
-        return registerAndesiteEncasedCogwheel(tier, TM[tier], COGWHEELS[tier], SHAFT_HALF_MODELS[tier], COGWHEEL_SHAFTLESS_MODELS[tier]);
-    }
     
-    public static BlockEntry<TieredEncasedCogwheelBlock> registerAndesiteEncasedCogwheel(int tier, Material material, BlockEntry<TieredCogwheelBlock> cogwheel, PartialModel halfShaftModel, PartialModel cogwheelShaftlessModel) {
+    public static BlockEntry<TieredEncasedCogwheelBlock> registerAndesiteEncasedCogwheel(int tier) {
         return REGISTRATE
-                .block("andesite_encased_" + material.getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.small(p, AllBlocks.ANDESITE_CASING::get, cogwheel::get, halfShaftModel, cogwheelShaftlessModel))
+                .block("andesite_encased_" + TM[tier].getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.small(p, AllBlocks.ANDESITE_CASING::get, COGWHEELS[tier]::get))
                 .properties(p -> p.mapColor(MapColor.PODZOL))
-                .transform(tieredEncasedCogwheel(cogwheel, () -> AllSpriteShifts.ANDESITE_CASING))
-                .transform(EncasingRegistry.addVariantTo(cogwheel))
+                .transform(tieredEncasedCogwheel(COGWHEELS[tier], () -> AllSpriteShifts.ANDESITE_CASING))
+                .transform(EncasingRegistry.addVariantTo(COGWHEELS[tier]))
                 .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCogCTBehaviour(AllSpriteShifts.ANDESITE_CASING,
                         Couple.create(AllSpriteShifts.ANDESITE_ENCASED_COGWHEEL_SIDE, AllSpriteShifts.ANDESITE_ENCASED_COGWHEEL_OTHERSIDE))))
                 .onRegister(c -> c.setTier(tier))
                 .transform(TagGen.axeOrPickaxe())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .register();
     }
 
-    private static BlockEntry<TieredEncasedCogwheelBlock> registerAndesiteEncasedLargeCogwheel(int tier) {
-        return registerAndesiteEncasedLargeCogwheel(tier, TM[tier], COGWHEELS[tier], LARGE_COGWHEELS[tier], SHAFT_HALF_MODELS[tier], LARGE_COGWHEEL_SHAFTLESS_MODELS[tier]);
-    }
-
-    public static BlockEntry<TieredEncasedCogwheelBlock> registerAndesiteEncasedLargeCogwheel(int tier, Material material, BlockEntry<TieredCogwheelBlock> cogwheel, BlockEntry<TieredCogwheelBlock> largeCogwheel, PartialModel halfShaftModel, PartialModel cogwheelShaftlessModel) {
+    public static BlockEntry<TieredEncasedCogwheelBlock> registerAndesiteEncasedLargeCogwheel(int tier) {
         return REGISTRATE
-                .block("andesite_encased_large_" + material.getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.large(p, AllBlocks.ANDESITE_CASING::get, largeCogwheel::get, halfShaftModel, cogwheelShaftlessModel))
+                .block("andesite_encased_large_" + TM[tier].getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.large(p, AllBlocks.ANDESITE_CASING::get, LARGE_COGWHEELS[tier]::get))
                 .properties(p -> p.mapColor(MapColor.PODZOL))
-                .transform(tieredEncasedLargeCogwheel(cogwheel, () -> AllSpriteShifts.ANDESITE_CASING))
-                .transform(EncasingRegistry.addVariantTo(largeCogwheel))
+                .transform(tieredEncasedLargeCogwheel(COGWHEELS[tier], () -> AllSpriteShifts.ANDESITE_CASING))
+                .transform(EncasingRegistry.addVariantTo(LARGE_COGWHEELS[tier]))
                 .transform(TagGen.axeOrPickaxe())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }
 
-    private static BlockEntry<TieredEncasedCogwheelBlock> registerBrassEncasedCogwheel(int tier) {
-        return registerBrassEncasedCogwheel(tier, TM[tier], COGWHEELS[tier], SHAFT_HALF_MODELS[tier], COGWHEEL_SHAFTLESS_MODELS[tier]);
-    }
-
-    public static BlockEntry<TieredEncasedCogwheelBlock> registerBrassEncasedCogwheel(int tier, Material material, BlockEntry<TieredCogwheelBlock> cogwheel, PartialModel halfShaftModel, PartialModel cogwheelShaftlessModel) {
+    public static BlockEntry<TieredEncasedCogwheelBlock> registerBrassEncasedCogwheel(int tier) {
         return REGISTRATE
-                .block("brass_encased_" + material.getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.small(p, AllBlocks.BRASS_CASING::get, cogwheel::get, halfShaftModel, cogwheelShaftlessModel))
+                .block("brass_encased_" + TM[tier].getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.small(p, AllBlocks.BRASS_CASING::get, COGWHEELS[tier]::get))
                 .properties(p -> p.mapColor(MapColor.PODZOL))
-                .transform(tieredEncasedCogwheel(cogwheel, () -> AllSpriteShifts.BRASS_CASING))
-                .transform(EncasingRegistry.addVariantTo(cogwheel))
+                .transform(tieredEncasedCogwheel(COGWHEELS[tier], () -> AllSpriteShifts.BRASS_CASING))
+                .transform(EncasingRegistry.addVariantTo(COGWHEELS[tier]))
                 .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCogCTBehaviour(AllSpriteShifts.BRASS_CASING,
                         Couple.create(AllSpriteShifts.BRASS_ENCASED_COGWHEEL_SIDE, AllSpriteShifts.BRASS_ENCASED_COGWHEEL_OTHERSIDE))))
                 .onRegister(c -> c.setTier(tier))
                 .transform(TagGen.axeOrPickaxe())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .register();
     }
 
-    private static BlockEntry<TieredEncasedCogwheelBlock> registerBrassEncasedLargeCogwheel(int tier) {
-        return registerBrassEncasedLargeCogwheel(tier, TM[tier], COGWHEELS[tier], LARGE_COGWHEELS[tier], SHAFT_HALF_MODELS[tier], LARGE_COGWHEEL_SHAFTLESS_MODELS[tier]);
-    }
-
-    public static BlockEntry<TieredEncasedCogwheelBlock> registerBrassEncasedLargeCogwheel(int tier, Material material, BlockEntry<TieredCogwheelBlock> cogwheel, BlockEntry<TieredCogwheelBlock> largeCogwheel, PartialModel halfShaftModel, PartialModel cogwheelShaftlessModel) {
+    public static BlockEntry<TieredEncasedCogwheelBlock> registerBrassEncasedLargeCogwheel(int tier) {
         return REGISTRATE
-                .block("brass_encased_large_" + material.getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.large(p, AllBlocks.BRASS_CASING::get, largeCogwheel::get, halfShaftModel, cogwheelShaftlessModel))
+                .block("brass_encased_large_" + TM[tier].getName() + "_cogwheel", p -> TieredEncasedCogwheelBlock.large(p, AllBlocks.BRASS_CASING::get, LARGE_COGWHEELS[tier]::get))
                 .properties(p -> p.mapColor(MapColor.PODZOL))
-                .transform(tieredEncasedLargeCogwheel(cogwheel, () -> AllSpriteShifts.BRASS_CASING))
-                .transform(EncasingRegistry.addVariantTo(largeCogwheel))
+                .transform(tieredEncasedLargeCogwheel(COGWHEELS[tier], () -> AllSpriteShifts.BRASS_CASING))
+                .transform(EncasingRegistry.addVariantTo(LARGE_COGWHEELS[tier]))
                 .transform(TagGen.axeOrPickaxe())
-                .transform(TieredBlockMaterials.setMaterialForBlock(material))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }

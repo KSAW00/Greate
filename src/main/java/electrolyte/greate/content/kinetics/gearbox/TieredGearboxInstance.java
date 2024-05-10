@@ -4,11 +4,9 @@ import com.jozufozu.flywheel.api.InstanceData;
 import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.Material;
 import com.jozufozu.flywheel.api.MaterialManager;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.foundation.utility.Iterate;
 import electrolyte.greate.content.kinetics.base.TieredKineticBlockEntityInstance;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -19,15 +17,16 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import java.util.EnumMap;
 import java.util.Map;
 
+import static electrolyte.greate.registry.GreatePartialModels.SHAFT_HALF_MODELS;
+
 public class TieredGearboxInstance extends TieredKineticBlockEntityInstance<TieredGearboxBlockEntity> {
 
     protected final EnumMap<Direction, RotatingData> keys;
     protected Direction sourceFacing;
-    private PartialModel partialModel;
 
     public TieredGearboxInstance(MaterialManager materialManager, TieredGearboxBlockEntity blockEntity) {
         super(materialManager, blockEntity);
-        partialModel = ((ITieredPartialModel) blockState.getBlock()).getPartialModel();
+        int tier = ((TieredGearboxBlock) blockState.getBlock()).getTier();
         keys = new EnumMap<>(Direction.class);
         final Axis boxAxis = blockState.getValue(BlockStateProperties.AXIS);
         int blockLight = world.getBrightness(LightLayer.BLOCK, pos);
@@ -37,7 +36,7 @@ public class TieredGearboxInstance extends TieredKineticBlockEntityInstance<Tier
         for(Direction direction : Iterate.directions) {
             final Axis axis = direction.getAxis();
             if(boxAxis == axis) continue;
-            Instancer<RotatingData> shaft = rotatingMaterial.getModel(partialModel, blockState, direction);
+            Instancer<RotatingData> shaft = rotatingMaterial.getModel(SHAFT_HALF_MODELS[tier], blockState, direction);
             RotatingData key = shaft.createInstance();
             key.setRotationAxis(Direction.get(AxisDirection.POSITIVE, axis).step())
                     .setRotationalSpeed(getSpeed(direction))

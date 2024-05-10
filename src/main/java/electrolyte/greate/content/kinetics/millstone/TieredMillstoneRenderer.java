@@ -3,9 +3,10 @@ package electrolyte.greate.content.kinetics.millstone;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
-import electrolyte.greate.content.kinetics.simpleRelays.ITieredPartialModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.world.level.block.state.BlockState;
+
+import static electrolyte.greate.registry.GreatePartialModels.MILLSTONE_INNER_MODELS;
 
 public class TieredMillstoneRenderer extends KineticBlockEntityRenderer<TieredMillstoneBlockEntity> {
 
@@ -15,6 +16,7 @@ public class TieredMillstoneRenderer extends KineticBlockEntityRenderer<TieredMi
 
     @Override
     protected SuperByteBuffer getRotatedModel(TieredMillstoneBlockEntity be, BlockState state) {
-        return CachedBufferer.partial(((ITieredPartialModel) state.getBlock()).getPartialModel(), state);
+        int tier = ((TieredMillstoneBlock) state.getBlock()).getTier();
+        return CachedBufferer.partial(MILLSTONE_INNER_MODELS[tier], state);
     }
 }
