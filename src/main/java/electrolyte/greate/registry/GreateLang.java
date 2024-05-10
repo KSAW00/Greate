@@ -18,6 +18,8 @@ public class GreateLang {
         REGISTRATE.addRawLang("greate.recipe.mixing", "Mixing");
         REGISTRATE.addRawLang("greate.recipe.sawing", "Sawing");
         REGISTRATE.addRawLang("greate.recipe.packing", "Packing");
+        REGISTRATE.addRawLang("greate.recipe.fan_washing", "Bulk Washing");
+        REGISTRATE.addRawLang("greate.recipe.fan_haunting", "Bulk Haunting");
         REGISTRATE.addRawLang("greate.recipe.block_cutting", "Block Cutting");
         REGISTRATE.addRawLang("greate.recipe.wood_cutting", "Wood Cutting");
         REGISTRATE.addRawLang("greate.recipe.automatic_shapeless", "Automated Shapeless Crafting");

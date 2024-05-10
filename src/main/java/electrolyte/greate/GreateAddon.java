@@ -24,6 +24,7 @@ public class GreateAddon implements IGTAddon {
 		Belts.register();
 		Cogwheels.register();
 		CrushingWheels.register();
+		EncasedFans.register();
 		Gearboxes.register();
 		Girders.register();
 		MechanicalPresses.register();

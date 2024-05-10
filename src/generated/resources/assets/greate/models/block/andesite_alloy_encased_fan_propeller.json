@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/encased_fan/propeller",
+  "textures": {
+    "axis": "greate:block/andesite_alloy/axis",
+    "axis_top": "greate:block/andesite_alloy/axis_top",
+    "fan_blades": "greate:block/andesite_alloy/fan_blades"
+  }
+}

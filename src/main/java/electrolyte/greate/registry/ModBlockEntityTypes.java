@@ -14,6 +14,9 @@ import electrolyte.greate.content.kinetics.belt.TieredBeltInstance;
 import electrolyte.greate.content.kinetics.belt.TieredBeltRenderer;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingWheelBlockEntity;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingWheelControllerBlockEntity;
+import electrolyte.greate.content.kinetics.fan.TieredEncasedFanBlockEntity;
+import electrolyte.greate.content.kinetics.fan.TieredEncasedFanBlockRenderer;
+import electrolyte.greate.content.kinetics.fan.TieredEncasedFanInstance;
 import electrolyte.greate.content.kinetics.gearbox.TieredGearboxBlockEntity;
 import electrolyte.greate.content.kinetics.gearbox.TieredGearboxInstance;
 import electrolyte.greate.content.kinetics.gearbox.TieredGearboxRenderer;
@@ -137,6 +140,13 @@ public class ModBlockEntityTypes {
             .instance(() -> TieredSawInstance::new)
             .validBlocks(Saws.SAWS)
             .renderer(() -> TieredSawRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<TieredEncasedFanBlockEntity> TIERED_FAN = REGISTRATE
+            .blockEntity("tiered_encased_fan", TieredEncasedFanBlockEntity::new)
+            .instance(() -> TieredEncasedFanInstance::new, false)
+            .validBlocks(EncasedFans.FANS)
+            .renderer(() -> TieredEncasedFanBlockRenderer::new)
             .register();
 
     public static void register() {}

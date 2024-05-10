@@ -190,4 +190,23 @@ public class GreateBlockStateGen {
                     .build();
         }, BlockStateProperties.WATERLOGGED);
     }
+
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> tieredEncasedFanProvider() {
+        return (c, p) -> p.getVariantBuilder(c.getEntry()).forAllStates(state -> {
+            Direction dir = state.getValue(BlockStateProperties.FACING);
+            String material = c.getName().substring(0, c.getName().length() - 12);
+            return ConfiguredModel.builder()
+                    .modelFile(p.models().withExistingParent(c.getName() + "_propeller", Create.asResource("block/encased_fan/propeller"))
+                            .texture("axis_top", p.modLoc("block/" + material + "/axis_top"))
+                            .texture("fan_blades", p.modLoc("block/" + material + "/fan_blades"))
+                            .texture("axis", p.modLoc("block/" + material + "/axis")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/encased_fan/block")))
+                    .rotationX(dir == Direction.DOWN ? 180
+                            : dir.getAxis().isHorizontal()
+                            ? 90 : 0)
+                    .rotationY(dir.getAxis().isVertical()
+                            ? 0 : (((int) dir.toYRot()) + 180) % 360)
+                    .build();
+        });
+    }
 }

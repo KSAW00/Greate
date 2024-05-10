@@ -18,13 +18,14 @@ import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import electrolyte.greate.Greate;
+import electrolyte.greate.content.fluids.pump.TieredPumpBlock;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingWheelBlock;
+import electrolyte.greate.content.kinetics.fan.TieredEncasedFanBlock;
 import electrolyte.greate.content.kinetics.gearbox.TieredGearboxBlock;
 import electrolyte.greate.content.kinetics.gearbox.TieredVerticalGearboxItem;
 import electrolyte.greate.content.kinetics.millstone.TieredMillstoneBlock;
 import electrolyte.greate.content.kinetics.mixer.TieredMechanicalMixerBlock;
 import electrolyte.greate.content.kinetics.press.TieredMechanicalPressBlock;
-import electrolyte.greate.content.fluids.pump.TieredPumpBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredCogwheelBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredShaftBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.encased.TieredEncasedCogwheelBlock;
@@ -219,5 +220,15 @@ public class GreateBuilderTransformers {
     public static void tieredSaw(DataGenContext<Item, BlockItem> ctx, RegistrateItemModelProvider prov) {
         prov.withExistingParent(ctx.getName(), Create.asResource("block/mechanical_saw/item"))
                 .texture("stonecutter_saw", prov.modLoc("block/" + ctx.getName().substring(0, ctx.getName().length() - 15) + "/saw"));
+    }
+
+    public static <B extends TieredEncasedFanBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> tieredEncasedFan() {
+        return b -> b.blockstate(tieredEncasedFanProvider())
+                .item()
+                .model((c, p) -> {
+                    String material = c.getName().substring(0, c.getName().length() - 12);
+                    p.withExistingParent(c.getName(), Create.asResource("block/encased_fan/item"))
+                            .texture("fan_blades", p.modLoc("block/" + material + "/fan_blades"));
+                }).build();
     }
 }

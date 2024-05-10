@@ -6,8 +6,9 @@ import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
 import electrolyte.greate.Greate;
-
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingRecipe;
+import electrolyte.greate.content.kinetics.fan.processing.TieredHauntingRecipe;
+import electrolyte.greate.content.kinetics.fan.processing.TieredSplashingRecipe;
 import electrolyte.greate.content.kinetics.millstone.TieredMillingRecipe;
 import electrolyte.greate.content.kinetics.mixer.TieredCompactingRecipe;
 import electrolyte.greate.content.kinetics.mixer.TieredMixingRecipe;
@@ -43,7 +44,9 @@ public enum ModRecipeTypes implements IRecipeTypeInfo {
 	BASIN(TieredBasinRecipe::new),
 	MIXING(TieredMixingRecipe::new),
 	COMPACTING(TieredCompactingRecipe::new),
-	CUTTING(TieredCuttingRecipe::new);
+	CUTTING(TieredCuttingRecipe::new),
+	SPLASHING(TieredSplashingRecipe::new),
+	HAUNTING(TieredHauntingRecipe::new);
 
 	private final ResourceLocation id;
 	private final RegistryObject<RecipeSerializer<?>> serializerObject;

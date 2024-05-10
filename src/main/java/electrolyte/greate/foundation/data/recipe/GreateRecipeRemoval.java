@@ -17,6 +17,7 @@ public class GreateRecipeRemoval {
 
         recipe.accept(Create.asResource("crafting/kinetics/belt_connector"));
         recipe.accept(Create.asResource("crafting/kinetics/cogwheel"));
+        recipe.accept(Create.asResource("crafting/kinetics/encased_fan"));
         recipe.accept(Create.asResource("crafting/kinetics/gearbox"));
         recipe.accept(Create.asResource("crafting/kinetics/gearboxfrom_conversion"));
         recipe.accept(Create.asResource("crafting/kinetics/large_cogwheel"));
@@ -26,6 +27,7 @@ public class GreateRecipeRemoval {
         recipe.accept(Create.asResource("crafting/kinetics/mechanical_pump"));
         recipe.accept(Create.asResource("crafting/kinetics/mechanical_saw"));
         recipe.accept(Create.asResource("crafting/kinetics/millstone"));
+        recipe.accept(Create.asResource("crafting/kinetics/propeller"));
         recipe.accept(Create.asResource("crafting/kinetics/shaft"));
         recipe.accept(Create.asResource("crafting/kinetics/vertical_gearboxfrom_conversion"));
         recipe.accept(Create.asResource("crafting/kinetics/whisk"));

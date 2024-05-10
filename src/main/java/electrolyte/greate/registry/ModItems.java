@@ -5,8 +5,7 @@ import electrolyte.greate.Greate;
 import net.minecraft.world.item.Item;
 
 import static com.gregtechceu.gtceu.api.GTValues.*;
-import static com.simibubi.create.AllItems.ANDESITE_ALLOY;
-import static com.simibubi.create.AllItems.WHISK;
+import static com.simibubi.create.AllItems.*;
 import static electrolyte.greate.Greate.REGISTRATE;
 import static electrolyte.greate.GreateValues.TM;
 
@@ -38,13 +37,24 @@ public class ModItems {
             DARMSTADTIUM_WHISK,
             NEUTRONIUM_WHISK;
 
+    public static final ItemEntry<Item>[] PROPELLERS = new ItemEntry[10];
+    public static ItemEntry<Item>
+            STEEL_PROPELLER,
+            ALUMINIUM_PROPELLER,
+            STAINLESS_STEEL_PROPELLER,
+            TITANIUM_PROPELLER,
+            TUNGSTENSTEEL_PROPELLER,
+            PALLADIUM_PROPELLER,
+            NAQUADAH_PROPELLER,
+            DARMSTADTIUM_PROPELLER,
+            NEUTRONIUM_PROPELLER;
+
     public static ItemEntry<Item> ULV_CONVEYOR_MODULE;
     public static ItemEntry<Item> ULV_ELECTRIC_MOTOR;
 
     public static void register() {
         REGISTRATE.setCreativeTab(Greate.GREATE_TAB);
 
-        // Alloy
         ALLOYS[ULV] = ANDESITE_ALLOY;
         ALLOYS[LV] = STEEL_ALLOY = alloy(LV);
         ALLOYS[MV] = ALUMINIUM_ALLOY = alloy(MV);
@@ -56,7 +66,17 @@ public class ModItems {
         ALLOYS[UV] = DARMSTADTIUM_ALLOY = alloy(UV);
         ALLOYS[UHV] = NEUTRONIUM_ALLOY = alloy(UHV);
 
-        // Whisk
+        PROPELLERS[ULV] = PROPELLER;
+        PROPELLERS[LV] = STEEL_PROPELLER = propeller(LV);
+        PROPELLERS[MV] = ALUMINIUM_PROPELLER = propeller(MV);
+        PROPELLERS[HV] = STAINLESS_STEEL_PROPELLER = propeller(HV);
+        PROPELLERS[EV] = TITANIUM_PROPELLER = propeller(EV);
+        PROPELLERS[IV] = TUNGSTENSTEEL_PROPELLER = propeller(IV);
+        PROPELLERS[LuV] = PALLADIUM_PROPELLER = propeller(LuV);
+        PROPELLERS[ZPM] = NAQUADAH_PROPELLER = propeller(ZPM);
+        PROPELLERS[UV] = DARMSTADTIUM_PROPELLER = propeller(UV);
+        PROPELLERS[UHV] = NEUTRONIUM_PROPELLER = propeller(UHV);
+
         WHISKS[ULV] = WHISK;
         WHISKS[LV] = STEEL_WHISK = whisk(LV);
         WHISKS[MV] = ALUMINIUM_WHISK = whisk(MV);
@@ -72,27 +92,27 @@ public class ModItems {
         ULV_ELECTRIC_MOTOR = REGISTRATE.item("ulv_electric_motor", Item::new).lang("ULV Electric Motor").register();
     }
 
-    private static ItemEntry<Item> alloy(int tier) {
-        return alloy(TM[tier].getName());
-    }
-
-    public static ItemEntry<Item> alloy(String name) {
+    public static ItemEntry<Item> alloy(int tier) {
         return REGISTRATE
-                .item(name + "_alloy", Item::new)
+                .item(TM[tier].getName() + "_alloy", Item::new)
                 .model((c, p) -> p.withExistingParent(c.getName(), "item/generated")
                         .texture("layer0", p.modLoc("item/" + c.getName().substring(0, c.getName().length() - 6) + "/alloy")))
                 .register();
     }
 
-    private static ItemEntry<Item> whisk(int tier) {
-        return whisk(TM[tier].getName());
-    }
-
-    public static ItemEntry<Item> whisk(String name) {
+    public static ItemEntry<Item> whisk(int tier) {
         return REGISTRATE
-                .item(name + "_whisk", Item::new)
+                .item(TM[tier].getName() + "_whisk", Item::new)
                 .model((c, p) -> p.withExistingParent(c.getName(), "item/generated")
                         .texture("layer0", p.modLoc("item/" + c.getName().substring(0, c.getName().length() - 6) + "/whisk")))
+                .register();
+    }
+
+    public static ItemEntry<Item> propeller(int tier) {
+        return REGISTRATE
+                .item(TM[tier].getName() + "_propeller", Item::new)
+                .model((c, p) -> p.withExistingParent(c.getName(), "item/generated")
+                        .texture("layer0", p.modLoc("item/" + c.getName().substring(0, c.getName().length() - 10) + "/propeller")))
                 .register();
     }
 }

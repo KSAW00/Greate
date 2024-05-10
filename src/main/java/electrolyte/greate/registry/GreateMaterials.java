@@ -20,7 +20,7 @@ public class GreateMaterials {
 	public static void init() {
 		AndesiteAlloy = Builder("andesite_alloy")
 				.ingot().fluid()
-				.appendFlags(STD_METAL)
+				.appendFlags(STD_METAL, GENERATE_BOLT_SCREW)
 				.color(0xC7C8B8).iconSet(DULL)
 				.components(Andesite, 9, Iron, 1)
 				.buildAndRegister();

@@ -120,6 +120,13 @@ public class GreatePartialModels {
         }
     }
 
+    public static final PartialModel[] FAN_INNER_MODELS = new PartialModel[10];
+    static {
+        for(int tier = 0; tier < TM.length; tier++) {
+            FAN_INNER_MODELS[tier] = materialBlock(TM[tier], "_encased_fan_propeller");
+        }
+    }
+
     private static PartialModel belt(Material beltMaterial, BeltPart beltPart) {
         String beltpartName = beltPart.name().toLowerCase();
         PartialModel partialModel = materialBlock(beltMaterial, "_belt_" + beltpartName);
