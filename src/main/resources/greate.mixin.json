@@ -26,6 +26,9 @@
     "MixinSteamEngineBlock",
     "MixinSteamEngineBlock$PlacementHelper"
   ],
+  "client": [
+    "MixinDeployerApplicationRecipe"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
