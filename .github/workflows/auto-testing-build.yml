@@ -1,4 +1,4 @@
-name: Create Release
+name: Create Testing Build
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 env:
-  RELEASE_VERSION: 0.0.19
+  RELEASE_VERSION: 0.0.20
 
 jobs:
   build:
