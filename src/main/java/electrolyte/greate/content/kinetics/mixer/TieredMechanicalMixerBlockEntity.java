@@ -119,15 +119,7 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
         super.startProcessingBasin();
     }
 
-    @Override
-    public boolean isRunningRecipe() {
-        return isRunning();
-    }
 
-    @Override
-    public int getProcessingTicks() {
-        return processingTicks;
-    }
 
     private class CircuitValueBoxTransform extends ValueBoxTransform.Sided {
         @Override

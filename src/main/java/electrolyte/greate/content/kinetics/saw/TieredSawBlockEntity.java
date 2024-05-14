@@ -87,19 +87,4 @@ public class TieredSawBlockEntity extends SawBlockEntity implements ITieredKinet
         }
         return super.getCapability(cap, side);
     }
-
-    @Override
-    public boolean isRunningRecipe() {
-        return canProcess() && !inventory.isEmpty();
-    }
-
-    @Override
-    public int getRecipeDuration() {
-        return (int) inventory.recipeDuration;
-    }
-
-    @Override
-    public int getProcessingTicks() {
-        return (int) inventory.remainingTime;
-    }
 }
