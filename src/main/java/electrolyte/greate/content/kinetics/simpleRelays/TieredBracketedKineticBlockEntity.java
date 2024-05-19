@@ -22,4 +22,8 @@ public class TieredBracketedKineticBlockEntity extends BracketedKineticBlockEnti
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         return ITieredKineticBlockEntity.super.addToGoggleTooltip(tooltip, isPlayerSneaking, tier, capacity, stress);
     }
+
+    public int getTier() {
+        return tier;
+    }
 }

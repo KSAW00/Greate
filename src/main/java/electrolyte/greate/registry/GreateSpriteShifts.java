@@ -22,8 +22,8 @@ public class GreateSpriteShifts {
     public static final Map<TieredBeltBlock, List<SpriteShiftEntry>> BELT_SPRITES = new HashMap<>();
 
     public static void populateMaps(TieredBeltBlock belt) {
-        ResourceLocation blockID = ForgeRegistries.BLOCKS.getKey(belt);
-        String beltMaterial = blockID.toString().substring(Greate.MOD_ID.length() + 1, blockID.toString().length() - 5);
+        String blockID = ForgeRegistries.BLOCKS.getKey(belt).getPath();
+        String beltMaterial = blockID.substring(0, blockID.indexOf("belt") - 1);
         BELT_SPRITES.put(belt, List.of(
                 get(beltMaterial + "/belt", beltMaterial + "/belt_scroll"),
                 get(beltMaterial + "/belt_offset", beltMaterial + "/belt_scroll"),

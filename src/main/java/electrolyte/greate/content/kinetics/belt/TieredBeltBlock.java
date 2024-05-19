@@ -19,12 +19,10 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.utility.Iterate;
-import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.content.kinetics.belt.item.TieredBeltConnectorItem;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingWheelControllerBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredShaftBlock;
-import electrolyte.greate.registry.Belts;
 import electrolyte.greate.registry.GreateSpriteShifts;
 import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -66,31 +64,34 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import static electrolyte.greate.registry.Belts.BELT_CONNECTORS;
+import static electrolyte.greate.registry.Shafts.SHAFTS;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.AXIS;
 
 public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredBelt {
 
-    private ItemStack shaftType;
     private int tier;
     private Material beltMaterial;
 
     public TieredBeltBlock(Properties properties) {
         super(properties);
-        tier = -1;
     }
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-        return this.asItem().getDefaultInstance();
+        return BELT_CONNECTORS[this.tier / 2].asItem().getDefaultInstance();
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState pState, Builder pBuilder) {
         List<ItemStack> drops = super.getDrops(pState, pBuilder);
         BlockEntity be = pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if(be instanceof TieredBeltBlockEntity tbe && tbe.hasPulley()) {
-            drops.removeIf(s -> s.is(AllBlocks.SHAFT.asItem()));
-            drops.addAll(Block.byItem(tbe.getShaftType().getItem()).getDrops(pState, pBuilder));
+        if(be instanceof TieredBeltBlockEntity tbe) {
+            if(tbe.hasPulley()) {
+                drops.removeIf(s -> s.is(AllBlocks.SHAFT.asItem()));
+                drops.addAll(Block.byItem(SHAFTS[tier].asItem()).getDrops(pState, pBuilder));
+            }
+            drops.add(BELT_CONNECTORS[tier / 2].asItem().getDefaultInstance());
         }
         return drops;
     }
@@ -105,10 +106,8 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
         } else if(pLevel.getBlockState(entityPos.below()).getBlock() == this) {
             beltPos = entityPos.below();
         }
-        if(beltPos == null)
-            return;
-        if(! (pLevel instanceof Level))
-            return;
+        if(beltPos == null) return;
+        if(!(pLevel instanceof Level)) return;
         entityInside(pLevel.getBlockState(beltPos), (Level) pLevel, beltPos, pEntity);
     }
 
@@ -203,7 +202,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
                 pLevel.playSound(null, pPos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, 1F + new Random().nextFloat());
             }
         }
-        if(isShaft && heldItem.is(((TieredBeltBlockEntity)beltBE).getShaftType().getItem())) {
+        if(isShaft && heldItem.is(SHAFTS[tier].asItem())) {
             if(pState.getValue(PART) != BeltPart.MIDDLE) return InteractionResult.PASS;
             if(pLevel.isClientSide) return InteractionResult.SUCCESS;
             if(!pPlayer.isCreative()) heldItem.shrink(1);
@@ -241,8 +240,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
                 return InteractionResult.SUCCESS;
             KineticBlockEntity.switchToBlockState(level, pos, state.setValue(PART, BeltPart.MIDDLE));
             if(player != null && ! player.isCreative()) {
-                TieredBeltBlockEntity beltBE = (TieredBeltBlockEntity) level.getBlockEntity(pos);
-                player.getInventory().placeItemBackInInventory(beltBE.getShaftType());
+                player.getInventory().placeItemBackInInventory(SHAFTS[tier].get().asItem().getDefaultInstance());
             }
             return InteractionResult.SUCCESS;
         }
@@ -278,7 +276,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
         for(BlockPos beltPos : beltChain) {
             BlockEntity be = level.getBlockEntity(beltPos);
             BlockState currentState = level.getBlockState(beltPos);
-            if(be instanceof TieredBeltBlockEntity beltBE && currentState.getBlock() instanceof TieredBeltBlock) {
+            if(be instanceof TieredBeltBlockEntity beltBE && beltBE.getBlockState().getBlock() instanceof TieredBeltBlock tbb) {
                 beltBE.setController(currentPos);
                 beltBE.beltLength = beltChain.size();
                 beltBE.index = index;
@@ -298,12 +296,9 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-        if(pLevel.isClientSide)
-            return;
-        if(pState.getBlock() == pNewState.getBlock())
-            return;
-        if(pIsMoving)
-            return;
+        if(pLevel.isClientSide) return;
+        if(pState.getBlock() == pNewState.getBlock()) return;
+        if(pIsMoving) return;
 
         for(boolean forward : Iterate.trueAndFalse) {
             BlockPos currentPos = nextSegmentPosition(pState, pPos, forward);
@@ -321,9 +316,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
                 hasPulley = beltBE.hasPulley();
             }
 
-            TieredBeltBlockEntity tbbe = (TieredBeltBlockEntity) be;
-            BlockState shaftState = Block.byItem(tbbe.getShaftType().getItem()).defaultBlockState()
-                    .setValue(AXIS, getRotationAxis(currentState));
+            BlockState shaftState = SHAFTS[tier].get().defaultBlockState().setValue(AXIS, getRotationAxis(currentState));
             pLevel.removeBlockEntity(currentPos);
             pLevel.setBlock(currentPos, ProperWaterloggedBlock.withWater(pLevel, hasPulley ? shaftState : Blocks.AIR.defaultBlockState(), currentPos), 3);
             pLevel.levelEvent(2001, currentPos, Block.getId(currentState));
@@ -394,9 +387,9 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
     public ItemRequirement getRequiredItems(BlockState state, BlockEntity blockEntity) {
         List<ItemStack> required = new ArrayList<>();
         if(state.getValue(PART) != BeltPart.MIDDLE)
-            required.add(Belts.VALID_SHAFTS.get(this).stream().filter(s -> s.asItem().getDefaultInstance().is(state.getBlock().asItem())).findFirst().get().asItem().getDefaultInstance());
+            required.add(SHAFTS[tier].get().asItem().getDefaultInstance());
         if(state.getValue(PART) == BeltPart.START)
-            required.add(this.asItem().getDefaultInstance());
+            required.add(BELT_CONNECTORS[tier / 2].get().getDefaultInstance());
         if(required.isEmpty())
             return ItemRequirement.NONE;
         return new ItemRequirement(ItemUseType.CONSUME, required);
@@ -410,20 +403,6 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
     @Override
     public void setTier(int tier) {
         this.tier = tier;
-    }
-
-    public ItemStack getShaftType() {
-        return shaftType;
-    }
-
-    public void setShaftType(ItemStack shaftType) {
-        this.shaftType = shaftType;
-    }
-
-    public void validShafts(List<BlockEntry<TieredShaftBlock>> shafts) {
-        List<Block> shaftList = new ArrayList<>();
-        shafts.forEach(s -> shaftList.add(s.get()));
-        Belts.VALID_SHAFTS.put(this, shaftList);
     }
 
     public void setupBeltModel() {

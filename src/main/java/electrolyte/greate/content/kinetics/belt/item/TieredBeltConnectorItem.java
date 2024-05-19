@@ -3,7 +3,6 @@ package electrolyte.greate.content.kinetics.belt.item;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
-import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.kinetics.simpleRelays.AbstractShaftBlock;
@@ -11,13 +10,11 @@ import com.simibubi.create.content.kinetics.simpleRelays.AbstractSimpleShaftBloc
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.utility.VecHelper;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.content.kinetics.belt.ITieredBelt;
-import electrolyte.greate.content.kinetics.belt.TieredBeltBlock;
-import electrolyte.greate.content.kinetics.belt.TieredBeltBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredBracketedKineticBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredShaftBlock;
 import electrolyte.greate.infrastructure.config.GConfigUtility;
-import electrolyte.greate.registry.Belts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -28,7 +25,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -38,14 +35,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
-    private Material beltMaterial;
+import static electrolyte.greate.registry.Belts.BELTS;
 
-    public TieredBeltConnectorItem(Block pBlock, Properties pProperties) {
-        super(pBlock, pProperties);
+public class TieredBeltConnectorItem extends Item implements ITieredBelt {
+
+    private Material material;
+    private final List<BlockEntry<TieredShaftBlock>> validShafts;
+
+    public TieredBeltConnectorItem(Properties pProperties, List<BlockEntry<TieredShaftBlock>> validShafts) {
+        super(pProperties);
+        this.validShafts = validShafts;
     }
 
     @Override
@@ -109,10 +112,8 @@ public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
         }
 
         List<BlockPos> beltsToCreate = getBeltChainBetween(start, end, slope, facing);
-        BlockState state = Block.byItem(this).defaultBlockState();
+        int tier = 0;
         boolean failed = false;
-        int tier = -1;
-        ItemStack shaftType = null;
         for(BlockPos pos : beltsToCreate) {
             BlockState existingState = level.getBlockState(pos);
             if(existingState.getDestroySpeed(level, pos) == -1) {
@@ -124,11 +125,9 @@ public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
             BlockState shaftState = level.getBlockState(pos);
             boolean pulley = shaftState.getBlock() instanceof TieredShaftBlock;
             if(pulley) {
-                tier = (((TieredShaftBlock) shaftState.getBlock()).getTier());
-                shaftType = shaftState.getBlock().asItem().getDefaultInstance();
+                tier = ((TieredShaftBlock) shaftState.getBlock()).getTier();
             }
-            ((TieredBeltBlock) state.getBlock()).setShaftType(shaftType);
-            ((TieredBeltBlock) state.getBlock()).setTier(tier);
+            BlockState state = BELTS[tier].getDefaultState();
             if(part == BeltPart.MIDDLE && pulley) part = BeltPart.PULLEY;
             if(pulley && shaftState.getValue(AbstractShaftBlock.AXIS) == Axis.Y) slope = BeltSlope.SIDEWAYS;
             if(!existingState.canBeReplaced()) level.destroyBlock(pos, false);
@@ -136,14 +135,11 @@ public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
                     .setValue(BeltBlock.SLOPE, slope)
                     .setValue(BeltBlock.PART, part)
                     .setValue(BeltBlock.HORIZONTAL_FACING, facing), pos));
-            if(BeltHelper.getSegmentBE(level, pos) instanceof TieredBeltBlockEntity be) {
-                be.setShaftType(shaftType);
-                be.setTier(tier);
-            }
         }
 
         if(!failed) return;
         for(BlockPos pos : beltsToCreate) {
+            BlockState state = BELTS[tier].getDefaultState();
             if(level.getBlockState(pos).getBlock() == state.getBlock()) level.destroyBlock(pos, false);
         }
     }
@@ -198,7 +194,7 @@ public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
         int y = diff.getY();
         int z = diff.getZ();
         int sames = ((Math.abs(x) == Math.abs(y)) ? 1 : 0) +
-                ((Math.abs(y) == Math.abs(z)) ? 1 : 0) + ((Math.abs(x) == Math.abs(z)) ? 1 : 0);
+                ((Math.abs(y) == Math.abs(z)) ? 1 : 0) + ((Math.abs(z) == Math.abs(x)) ? 1 : 0);
         if(shaftAxis.choose(x, y, z) != 0) return false;
         if(sames != 1) return false;
         if(shaftAxis != level.getBlockState(second).getValue(BlockStateProperties.AXIS)) return false;
@@ -208,9 +204,10 @@ public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
         if(!(be instanceof TieredBracketedKineticBlockEntity kbe)) return false;
         if(!(be2 instanceof TieredBracketedKineticBlockEntity kbe2)) return false;
         if(level.getBlockState(first).getBlock() != level.getBlockState(second).getBlock()) return false;
-        List<Block> validShafts = Belts.VALID_SHAFTS.get(Block.byItem(heldStack.getItem()));
-        if(!validShafts.contains(level.getBlockState(first).getBlock())) return false;
-        if(!validShafts.contains(level.getBlockState(second).getBlock())) return false;
+        List<Block> shafts = new ArrayList<>();
+        tbci.getValidShafts().forEach(s -> shafts.add(s.get()));
+        if(!shafts.contains(level.getBlockState(first).getBlock())) return false;
+        if(!shafts.contains(level.getBlockState(second).getBlock())) return false;
         float speed = kbe.getTheoreticalSpeed();
         float speed2 = kbe2.getTheoreticalSpeed();
 
@@ -220,7 +217,10 @@ public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
         int limit = 1000;
         for(BlockPos pos = first.offset(step); !pos.equals(second) && limit-- > 0; pos = pos.offset(step)) {
             BlockState blockState = level.getBlockState(pos);
-            if(blockState.getBlock() instanceof TieredBeltBlock && blockState.getValue(AbstractSimpleShaftBlock.AXIS) == shaftAxis) continue;
+            if(blockState.getBlock() instanceof TieredShaftBlock && blockState.getValue(AbstractSimpleShaftBlock.AXIS) == shaftAxis) {
+                if(level.getBlockState(first).getBlock() != blockState.getBlock()) return false;
+                continue;
+            }
             if(!blockState.canBeReplaced()) return false;
         }
         return true;
@@ -234,11 +234,15 @@ public class TieredBeltConnectorItem extends BlockItem implements ITieredBelt {
 
     @Override
     public Material getBeltMaterial() {
-        return beltMaterial;
+        return material;
     }
 
     @Override
     public void setBeltMaterial(Material material) {
-        this.beltMaterial = material;
+        this.material = material;
+    }
+
+    public List<BlockEntry<TieredShaftBlock>> getValidShafts() {
+        return validShafts;
     }
 }

@@ -18,30 +18,32 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
 import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
+import static com.tterrag.registrate.providers.RegistrateLangProvider.toEnglishName;
 import static electrolyte.greate.Greate.REGISTRATE;
+import static electrolyte.greate.GreateValues.TM;
+import static electrolyte.greate.registry.Shafts.SHAFTS;
 
 public class Belts {
 
-    public static final Map<Block, List<Block>> VALID_SHAFTS = new HashMap<>();
-
-    public static final BlockEntry<TieredBeltBlock>[] BELTS = new BlockEntry[5];
+    public static final BlockEntry<TieredBeltBlock>[] BELTS = new BlockEntry[10];
     public static BlockEntry<TieredBeltBlock>
-            RUBBER_BELT,
-            SILICONE_RUBBER_BELT,
-            POLYETHYLENE_BELT,
-            POLYTETRAFLUOROETHYLENE_BELT,
-            POLYBENZIMIDAZOLE_BELT;
+            RUBBER_BELT_ANDESITE,
+            RUBBER_BELT_STEEL,
+            SILICONE_RUBBER_BELT_ALUMINIUM,
+            SILICONE_RUBBER_BELT_STAINLESS_STEEL,
+            POLYETHYLENE_BELT_TITANIUM,
+            POLYETHYLENE_BELT_TUNGSTEN_STEEL,
+            POLYTETRAFLUOROETHYLENE_BELT_PALLADIUM,
+            POLYTETRAFLUOROETHYLENE_BELT_NAQUADAH,
+            POLYBENZIMIDAZOLE_BELT_DARMSTADTIUM,
+            POLYBENZIMIDAZOLE_BELT_NEUTRONIUM;
 
     public static final ItemEntry<TieredBeltConnectorItem>[] BELT_CONNECTORS = new ItemEntry[5];
     public static ItemEntry<TieredBeltConnectorItem>
@@ -54,22 +56,28 @@ public class Belts {
     public static void register() {
         REGISTRATE.setCreativeTab(Greate.GREATE_TAB);
 
-        BELTS[0] = RUBBER_BELT = belt(Rubber, List.of(Shafts.ANDESITE_SHAFT, Shafts.STEEL_SHAFT));
-        BELTS[1] = SILICONE_RUBBER_BELT = belt(SiliconeRubber, List.of(Shafts.ALUMINIUM_SHAFT, Shafts.STAINLESS_STEEL_SHAFT));
-        BELTS[2] = POLYETHYLENE_BELT = belt(Polyethylene, List.of(Shafts.TITANIUM_SHAFT, Shafts.TUNGSTENSTEEL_SHAFT));
-        BELTS[3] = POLYTETRAFLUOROETHYLENE_BELT = belt(Polytetrafluoroethylene, List.of(Shafts.PALLADIUM_SHAFT, Shafts.NAQUADAH_SHAFT));
-        BELTS[4] = POLYBENZIMIDAZOLE_BELT = belt(Polybenzimidazole, List.of(Shafts.DARMSTADTIUM_SHAFT, Shafts.NEUTRONIUM_SHAFT));
+        BELTS[0] = RUBBER_BELT_ANDESITE = belt(Rubber, 0);
+        BELTS[1] = RUBBER_BELT_STEEL = belt(Rubber, 1);
+        BELTS[2] = SILICONE_RUBBER_BELT_ALUMINIUM = belt(SiliconeRubber, 2);
+        BELTS[3] = SILICONE_RUBBER_BELT_STAINLESS_STEEL = belt(SiliconeRubber, 3);
+        BELTS[4] = POLYETHYLENE_BELT_TITANIUM = belt(Polyethylene, 4);
+        BELTS[5] = POLYETHYLENE_BELT_TUNGSTEN_STEEL = belt(Polyethylene, 5);
+        BELTS[6] = POLYTETRAFLUOROETHYLENE_BELT_PALLADIUM = belt(Polytetrafluoroethylene, 6);
+        BELTS[7] = POLYTETRAFLUOROETHYLENE_BELT_NAQUADAH = belt(Polytetrafluoroethylene, 7);
+        BELTS[8] = POLYBENZIMIDAZOLE_BELT_DARMSTADTIUM = belt(Polybenzimidazole, 8);
+        BELTS[9] = POLYBENZIMIDAZOLE_BELT_NEUTRONIUM = belt(Polybenzimidazole, 9);
 
-        BELT_CONNECTORS[0] = RUBBER_BELT_CONNECTOR = beltConnector("rubber_belt_connector", RUBBER_BELT);
-        BELT_CONNECTORS[1] = SILICONE_RUBBER_BELT_CONNECTOR = beltConnector("silicone_rubber_belt_connector", SILICONE_RUBBER_BELT);
-        BELT_CONNECTORS[2] = POLYETHYLENE_BELT_CONNECTOR = beltConnector("polyethylene_belt_connector", POLYETHYLENE_BELT);
-        BELT_CONNECTORS[3] = POLYTETRAFLUOROETHYLENE_BELT_CONNECTOR = beltConnector("polytetrafluoroethylene_belt_connector", POLYTETRAFLUOROETHYLENE_BELT);
-        BELT_CONNECTORS[4] = POLYBENZIMIDAZOLE_BELT_CONNECTOR = beltConnector("polybenzimidazole_belt_connector", POLYBENZIMIDAZOLE_BELT);
+        BELT_CONNECTORS[0] = RUBBER_BELT_CONNECTOR = beltConnector("rubber_belt_connector", List.of(SHAFTS[0], SHAFTS[1]), Rubber);
+        BELT_CONNECTORS[1] = SILICONE_RUBBER_BELT_CONNECTOR = beltConnector("silicone_rubber_belt_connector", List.of(SHAFTS[2], SHAFTS[3]), SiliconeRubber);
+        BELT_CONNECTORS[2] = POLYETHYLENE_BELT_CONNECTOR = beltConnector("polyethylene_belt_connector", List.of(SHAFTS[4], SHAFTS[5]), Polyethylene);
+        BELT_CONNECTORS[3] = POLYTETRAFLUOROETHYLENE_BELT_CONNECTOR = beltConnector("polytetrafluoroethylene_belt_connector", List.of(SHAFTS[6], SHAFTS[7]), Polytetrafluoroethylene);
+        BELT_CONNECTORS[4] = POLYBENZIMIDAZOLE_BELT_CONNECTOR = beltConnector("polybenzimidazole_belt_connector", List.of(SHAFTS[8], SHAFTS[9]), Polybenzimidazole);
     }
 
-    public static BlockEntry<TieredBeltBlock> belt(Material material, List<BlockEntry<TieredShaftBlock>> validShafts) {
+    public static BlockEntry<TieredBeltBlock> belt(Material material, int tier) {
         return REGISTRATE
-                .block(material.getName() + "_belt", TieredBeltBlock::new)
+                .block(material.getName() + "_belt_" + TM[tier].getName(), TieredBeltBlock::new)
+                .lang(toEnglishName(material.getName() + "_belt"))
                 .addLayer(() -> RenderType::cutoutMipped)
                 .properties(p -> p.sound(SoundType.WOOL))
                 .properties(p -> p.strength(0.8F))
@@ -78,19 +86,19 @@ public class Belts {
                 .transform(BlockStressDefaults.setImpact(0))
                 .transform(TieredBlockMaterials.setMaterialForBeltBlock(material))
                 .blockstate(new TieredBeltGenerator()::generateModel)
-                .onRegisterAfter(ForgeRegistries.ITEMS.getRegistryKey(), c -> c.validShafts(validShafts))
                 .onRegister(TieredBeltBlock::setupBeltModel)
                 .onRegister(assignDataBehaviour(new ItemNameDisplaySource(), "combine_item_names"))
                 .onRegister(CreateRegistrate.blockModel(() -> BeltModel::new))
                 .onRegister(c -> c.setBeltMaterial(material))
+                .onRegister(c -> c.setTier(tier))
                 .register();
     }
 
-    public static ItemEntry<TieredBeltConnectorItem> beltConnector(String name, BlockEntry<TieredBeltBlock> belt) {
+    public static ItemEntry<TieredBeltConnectorItem> beltConnector(String name, List<BlockEntry<TieredShaftBlock>> validShafts, Material beltMaterial) {
         return REGISTRATE
-                .item(name, p -> new TieredBeltConnectorItem(belt.get(), p))
+                .item(name, p -> new TieredBeltConnectorItem(p, validShafts))
                 .transform(p -> p.properties(b -> b.food(new FoodProperties.Builder().alwaysEat().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(MobEffects.POISON, 100, 0, true, true), 1.0F).build())))
-                .onRegister(c -> c.setBeltMaterial(belt.get().getBeltMaterial()))
+                .onRegister(c -> c.setBeltMaterial(beltMaterial))
                 .register();
     }
 }

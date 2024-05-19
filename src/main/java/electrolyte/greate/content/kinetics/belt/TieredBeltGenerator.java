@@ -7,25 +7,27 @@ import com.simibubi.create.content.kinetics.belt.BeltPart;
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import electrolyte.greate.registry.Belts;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 
+import static electrolyte.greate.GreateValues.TM;
+
+
 public class TieredBeltGenerator extends BeltGenerator {
 
     @Override
     public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov, BlockState state) {
         Boolean casing = state.getValue(BeltBlock.CASING);
+        String beltMaterial = ctx.getName().substring(0, ctx.getName().length() - TM[((TieredBeltBlock) ctx.get()).getTier()].getName().length() - 1);
 
         if (!casing)
-            return new UncheckedModelFile(prov.modLoc("block/" + ctx.getName() + "_particle"));
+            return new UncheckedModelFile(prov.modLoc("block/" + beltMaterial + "_particle"));
 
         BeltPart part = state.getValue(BeltBlock.PART);
         Direction direction = state.getValue(BeltBlock.HORIZONTAL_FACING);
@@ -61,22 +63,14 @@ public class TieredBeltGenerator extends BeltGenerator {
     }
 
     public <T extends TieredBeltBlock> void generateModel(DataGenContext<Block, T> c, RegistrateBlockstateProvider p) {
-        ItemStack shaft = Belts.VALID_SHAFTS.get(c.get()).get(0).asItem().getDefaultInstance();
-        String shaftMaterial = shaft.toString().substring(2, shaft.toString().length() - 6);
-        ItemStack shaft1 = Belts.VALID_SHAFTS.get(c.get()).get(1).asItem().getDefaultInstance();
-        String shaftMaterial1 = shaft1.toString().substring(2, shaft1.toString().length() - 6);
-        String beltMaterial = c.getName().substring(0, c.getName().length() - 5);
+        String shaftMaterial = TM[c.get().getTier()].getName();
+        String beltMaterial = c.getName().substring(0, (c.getName().length() - shaftMaterial.length()) - 6);
 
-        p.models().withExistingParent(c.getName() + "_" + shaftMaterial + "_pulley", Create.asResource("block/belt_pulley"))
+        p.models().withExistingParent(c.getName() + "_pulley", Create.asResource("block/belt_pulley"))
                 .texture("0", p.modLoc("block/" + shaftMaterial + "/axis"))
                 .texture("1", p.modLoc("block/" + shaftMaterial + "/axis_top"));
 
-        p.models().withExistingParent(c.getName() + "_" + shaftMaterial1 + "_pulley", Create.asResource("block/belt_pulley"))
-                .texture("0", p.modLoc("block/" + shaftMaterial1 + "/axis"))
-                .texture("1", p.modLoc("block/" + shaftMaterial1 + "/axis_top"));
-
-
-        p.models().withExistingParent(c.getName() + "_diagonal_end", Create.asResource("block/belt/diagonal_end"))
+        p.models().withExistingParent(beltMaterial + "_belt_diagonal_end", Create.asResource("block/belt/diagonal_end"))
                 .texture("0", p.modLoc("block/" + beltMaterial + "/belt_diagonal"))
                 .texture("particle", p.modLoc("block/" + beltMaterial + "/belt_diagonal"));
 
@@ -84,7 +78,7 @@ public class TieredBeltGenerator extends BeltGenerator {
                 .texture("0", p.modLoc("block/belt_overlay/empty"))
                 .texture("particle", p.modLoc("block/" + beltMaterial + "/belt_diagonal"));
 
-        p.models().withExistingParent(c.getName() + "_diagonal_middle", Create.asResource("block/belt/diagonal_middle"))
+        p.models().withExistingParent(beltMaterial + "_belt_diagonal_middle", Create.asResource("block/belt/diagonal_middle"))
                 .texture("0", p.modLoc("block/" + beltMaterial + "/belt_diagonal"))
                 .texture("particle", p.modLoc("block/" + beltMaterial + "/belt_diagonal"));
 
@@ -92,7 +86,7 @@ public class TieredBeltGenerator extends BeltGenerator {
                 .texture("0", p.modLoc("block/belt_overlay/empty"))
                 .texture("particle", p.modLoc("block/" + beltMaterial + "/belt_diagonal"));
 
-        p.models().withExistingParent(c.getName() + "_diagonal_start", Create.asResource("block/belt/diagonal_start"))
+        p.models().withExistingParent(beltMaterial + "_belt_diagonal_start", Create.asResource("block/belt/diagonal_start"))
                 .texture("0", p.modLoc("block/" + beltMaterial + "/belt_diagonal"))
                 .texture("particle", p.modLoc("block/" + beltMaterial + "/belt_diagonal"));
 
@@ -101,43 +95,43 @@ public class TieredBeltGenerator extends BeltGenerator {
                 .texture("particle", p.modLoc("block/" + beltMaterial + "/belt_diagonal"));
 
 
-        p.models().withExistingParent(c.getName() + "_end", Create.asResource("block/belt/end"))
+        p.models().withExistingParent(beltMaterial + "_belt_end", Create.asResource("block/belt/end"))
                 .texture("0", p.modLoc("block/" + beltMaterial + "/belt"));
 
         p.models().withExistingParent("belt_overlay_end", Create.asResource("block/belt/end"))
                 .texture("0", p.modLoc("block/belt_overlay/empty"));
 
-        p.models().withExistingParent(c.getName() + "_end_bottom", Create.asResource("block/belt/end_bottom"))
+        p.models().withExistingParent(beltMaterial + "_belt_end_bottom", Create.asResource("block/belt/end_bottom"))
                 .texture("1", p.modLoc("block/" + beltMaterial + "/belt_offset"));
 
         p.models().withExistingParent("belt_overlay_end_bottom", Create.asResource("block/belt/end_bottom"))
                 .texture("1", p.modLoc("block/belt_overlay/empty"));
 
 
-        p.models().withExistingParent(c.getName() + "_middle", Create.asResource("block/belt/middle"))
+        p.models().withExistingParent(beltMaterial + "_belt_middle", Create.asResource("block/belt/middle"))
                 .texture("0", p.modLoc("block/" + beltMaterial + "/belt"));
 
         p.models().withExistingParent("belt_overlay_middle", Create.asResource("block/belt/middle"))
                 .texture("0", p.modLoc("block/belt_overlay/empty"));
 
-        p.models().withExistingParent(c.getName() + "_middle_bottom", Create.asResource("block/belt/middle_bottom"))
+        p.models().withExistingParent(beltMaterial + "_belt_middle_bottom", Create.asResource("block/belt/middle_bottom"))
                 .texture("1", p.modLoc("block/" + beltMaterial + "/belt_offset"));
 
         p.models().withExistingParent("belt_overlay_middle_bottom", Create.asResource("block/belt/middle_bottom"))
                 .texture("1", p.modLoc("block/belt_overlay/empty"));
 
 
-        p.models().withExistingParent(c.getName() + "_particle", Create.asResource("block/belt/particle"))
+        p.models().withExistingParent(beltMaterial + "_belt_particle", Create.asResource("block/belt/particle"))
                 .texture("particle", p.modLoc("block/" + beltMaterial + "/belt"));
 
 
-        p.models().withExistingParent(c.getName() + "_start", Create.asResource("block/belt/start"))
+        p.models().withExistingParent(beltMaterial + "_belt_start", Create.asResource("block/belt/start"))
                 .texture("0", p.modLoc("block/" + beltMaterial + "/belt"));
 
         p.models().withExistingParent("belt_overlay_start", Create.asResource("block/belt/start"))
                 .texture("0", p.modLoc("block/belt_overlay/empty"));
 
-        p.models().withExistingParent(c.getName() + "_start_bottom", Create.asResource("block/belt/start_bottom"))
+        p.models().withExistingParent(beltMaterial + "_belt_start_bottom", Create.asResource("block/belt/start_bottom"))
                 .texture("1", p.modLoc("block/" + beltMaterial + "/belt_offset"));
 
         p.models().withExistingParent("belt_overlay_start_bottom", Create.asResource("block/belt/start_bottom"))

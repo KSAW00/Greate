@@ -41,8 +41,9 @@ public class GreateLang {
         REGISTRATE.addRawLang("config.greate.option.CAPACITY", "Tier Capacity");
         REGISTRATE.addRawLang("config.greate.option.MILLSTONE_IMPACT", "Millstone Impact");
         REGISTRATE.addRawLang("config.greate.option.CRUSHING_WHEEL_IMPACT", "Crushing Wheel Impact");
-        REGISTRATE.addRawLang("greate.gui.goggles.saw_contents", "Saw Contents");
+        REGISTRATE.addRawLang("greate.gui.goggles.saw_contents", "Saw Contents:");
         REGISTRATE.addRawLang("config.jade.plugin_greate.recipe_duration", "Recipe Duration");
+        REGISTRATE.addRawLang("config.jade.plugin_greate.belt_icon", "Belt Icon");
         REGISTRATE.addRawLang("material.greate.andesite_alloy", "Andesite Alloy");
         REGISTRATE.addRawLang("material.greate.rose_quartz", "Rose Quartz");
         REGISTRATE.addRawLang("material.greate.chromatic_compound", "Chromatic Compound");

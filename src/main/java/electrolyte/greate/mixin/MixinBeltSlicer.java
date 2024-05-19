@@ -29,6 +29,5 @@ public class MixinBeltSlicer {
         TieredBeltBlockEntity newBE = (TieredBeltBlockEntity) BeltHelper.getSegmentBE(world, next);
         TieredBeltBlockEntity prevBE = (TieredBeltBlockEntity) BeltHelper.getSegmentBE(world, pos);
         newBE.setTier(prevBE.getTier());
-        newBE.setShaftType(prevBE.getShaftType());
     }
 }

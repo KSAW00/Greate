@@ -43,7 +43,7 @@ public class GreateAdvancements implements DataProvider {
             .special(SILENT)),
 
     EAT_ALL_BELTS = create("eat_all_belts", b -> b
-            .icon(Belts.SILICONE_RUBBER_BELT)
+            .icon(Belts.SILICONE_RUBBER_BELT_CONNECTOR)
             .title("Tasty!")
             .description("Consume every type of belt")
             .whenItemsConsumed(Belts.BELT_CONNECTORS)

@@ -16,13 +16,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 
 import java.util.ArrayList;
@@ -33,18 +31,13 @@ import java.util.Optional;
 public class TieredBeltBlockEntity extends BeltBlockEntity implements ITieredKineticBlockEntity {
 
     private int tier;
-    private ItemStack shaftType;
 
     @OnlyIn(Dist.CLIENT)
     public BeltLighter lighter;
 
     public TieredBeltBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        controller = BlockPos.ZERO;
-        itemHandler = LazyOptional.empty();
-        casing = CasingType.NONE;
-        color = Optional.empty();
-        shaftType = ((TieredBeltBlock) state.getBlock()).getShaftType();
+        this.tier = ((TieredBeltBlock) state.getBlock()).getTier();
     }
 
     @Override
@@ -84,22 +77,16 @@ public class TieredBeltBlockEntity extends BeltBlockEntity implements ITieredKin
         toRemove.forEach(passengers::remove);
     }
 
-    //reading/writing shaft type & tier could probably be done in a less jank way, but hey it 'works' so *shrug*
     @Override
     public void write(CompoundTag compound, boolean clientPacket) {
-        ((TieredBeltBlock) this.getBlockState().getBlock()).setShaftType(shaftType);
-        ((TieredBeltBlock) this.getBlockState().getBlock()).setTier(tier);
-        compound.put("ShaftType", shaftType.serializeNBT());
         compound.putInt("Tier", this.tier);
-
         super.write(compound, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
         int prevBeltLength = beltLength;
-
-        shaftType = ItemStack.of(compound.getCompound("ShaftType"));
+        super.read(compound, clientPacket);
         this.tier = compound.getInt("Tier");
         beltLength = compound.getInt("Length");
         if(!wasMoved) {
@@ -111,7 +98,6 @@ public class TieredBeltBlockEntity extends BeltBlockEntity implements ITieredKin
                 });
             }
         }
-        super.read(compound, clientPacket);
     }
 
     @Override
@@ -220,13 +206,13 @@ public class TieredBeltBlockEntity extends BeltBlockEntity implements ITieredKin
         }
     }
 
-    public ItemStack getShaftType() {
+    /*public ItemStack getShaftType() {
         return shaftType;
     }
 
     public void setShaftType(ItemStack shaftType) {
         this.shaftType = shaftType;
-    }
+    }*/
 
     public int getTier() {
         return tier;
@@ -239,6 +225,6 @@ public class TieredBeltBlockEntity extends BeltBlockEntity implements ITieredKin
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        return ITieredKineticBlockEntity.super.addToGoggleTooltip(tooltip, isPlayerSneaking, tier, capacity, stress);
+        return ITieredKineticBlockEntity.super.addToGoggleTooltip(tooltip, isPlayerSneaking, this.getTier(), capacity, stress);
     }
 }
