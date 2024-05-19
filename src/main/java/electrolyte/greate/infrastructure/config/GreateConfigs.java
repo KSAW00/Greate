@@ -2,6 +2,7 @@ package electrolyte.greate.infrastructure.config;
 
 import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.foundation.config.ConfigBase;
+import electrolyte.greate.Greate;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -51,13 +52,15 @@ public class GreateConfigs {
     }
 
     public static void register(ModLoadingContext context) {
-        CLIENT = register(GClient::new, Type.CLIENT);
-        SERVER = register(GServer::new, Type.SERVER);
-        for(Entry<Type, ConfigBase> pair : CONFIGS.entrySet()) {
-            context.registerConfig(pair.getKey(), pair.getValue().specification);
-        }
+        if(context.getActiveNamespace().equals(Greate.MOD_ID)) {
+            CLIENT = register(GClient::new, Type.CLIENT);
+            SERVER = register(GServer::new, Type.SERVER);
+            for(Entry<Type, ConfigBase> pair : CONFIGS.entrySet()) {
+                context.registerConfig(pair.getKey(), pair.getValue().specification);
+            }
 
-        BlockStressValues.registerProvider(context.getActiveNamespace(), server().kinetics.stressValues);
+            BlockStressValues.registerProvider(context.getActiveNamespace(), server().kinetics.stressValues);
+        }
     }
 
     @SubscribeEvent
