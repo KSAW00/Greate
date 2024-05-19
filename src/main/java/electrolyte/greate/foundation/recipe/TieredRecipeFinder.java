@@ -30,7 +30,7 @@ public class TieredRecipeFinder {
             createPairList(cacheKey, level, wrapper, typeAndIngCondition);
         }
         List<Pair<ItemStack, List<Recipe<?>>>> recipes = cachedSearches.asMap().get(cacheKey);
-        if(recipes.stream().noneMatch(r -> wrapper.getItem(0).equals(r.getFirst(), false))) {
+        if(recipes.stream().noneMatch(r -> wrapper.getItem(0).is(r.getFirst().getItem()))) {
             createPairList(cacheKey, level, wrapper, typeAndIngCondition);
         }
         Optional<Pair<ItemStack, List<Recipe<?>>>> pair = recipes.stream().filter(r -> wrapper.getItem(0).is(r.getFirst().getItem())).findFirst();
@@ -44,14 +44,15 @@ public class TieredRecipeFinder {
 
     private static void createPairList(Object cacheKey, Level level, RecipeWrapper wrapper, Predicate<Recipe<?>> conditions) {
         List<Recipe<?>> recipes = startSearch(level, conditions);
-        List<Pair<ItemStack, List<Recipe<?>>>> pairList = new ArrayList<>();
-        if(recipes.isEmpty()) {
-            pairList.add(new Pair<>(wrapper.getItem(0), List.of()));
+        List<Pair<ItemStack, List<Recipe<?>>>> pairList = cachedSearches.getIfPresent(cacheKey);
+        if(pairList == null) {
+            pairList = new ArrayList<>();
+            List<Recipe<?>> recipeList = new ArrayList<>(recipes);
+            pairList.add(new Pair<>(wrapper.getItem(0), recipeList));
             cachedSearches.put(cacheKey, pairList);
+        } else {
+            cachedSearches.asMap().get(cacheKey).add(new Pair<>(wrapper.getItem(0), new ArrayList<>(recipes)));
         }
-        List<Recipe<?>> recipeList = new ArrayList<>(recipes);
-        pairList.add(new Pair<>(wrapper.getItem(0), recipeList));
-        cachedSearches.put(cacheKey, pairList);
     }
 
     private static List<Recipe<?>> startSearch(Level level, Predicate<? super Recipe<?>> conditions) {
