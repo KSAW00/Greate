@@ -31,29 +31,22 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
     public int timer;
     private Recipe<? extends Container> lastRecipe;
     private int tier;
-    private int maxItemsPerRecipe;
     private static final Object MILLING_RECIPE_CACHE_KEY = new Object();
-
 
     public TieredMillstoneBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
         capability = LazyOptional.of(TieredMillstoneInventoryHandler::new);
         tier = ((TieredMillstoneBlock) state.getBlock()).getTier();
-        maxItemsPerRecipe = tier * 2;
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if(getSpeed() == 0)
-            return;
+        if(getSpeed() == 0) return;
 
         for(int i = 0; i < outputInv.getSlots(); i++) {
-            if(outputInv.getStackInSlot(i).getCount() == outputInv.getSlotLimit(i))
-                return;
-            if(outputInv.getStackInSlot(i).getCount() + Math.min(inputInv.getStackInSlot(0).getCount(), maxItemsPerRecipe) > outputInv.getSlotLimit(i))
-                return;
+            if(outputInv.getStackInSlot(i).getCount() == outputInv.getSlotLimit(i)) return;
         }
 
         if(timer > 0) {
@@ -70,11 +63,10 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
             return;
         }
 
-        if(inputInv.getStackInSlot(0).isEmpty())
-            return;
+        if(inputInv.getStackInSlot(0).isEmpty()) return;
 
         RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
-        if(lastRecipe == null || ! TieredRecipeHelper.INSTANCE.firstIngredientMatches(lastRecipe, inventoryIn)) {
+        if(lastRecipe == null || !TieredRecipeHelper.INSTANCE.firstIngredientMatches(lastRecipe, inventoryIn)) {
             Optional<Recipe<?>> recipe = findRecipe(inventoryIn);
             if(recipe.isEmpty()) {
                 timer = 100;
@@ -91,9 +83,10 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
     }
 
     private void process() {
+        if(inputInv.getStackInSlot(0).isEmpty()) return;
         RecipeWrapper inventoryIn = new RecipeWrapper(inputInv);
 
-        if(lastRecipe == null || ! TieredRecipeHelper.INSTANCE.firstIngredientMatches(lastRecipe, inventoryIn)) {
+        if(lastRecipe == null || !TieredRecipeHelper.INSTANCE.firstIngredientMatches(lastRecipe, inventoryIn)) {
             Optional<Recipe<?>> recipe = findRecipe(inventoryIn);
 
             if(recipe.isEmpty()) return;
@@ -101,13 +94,11 @@ public class TieredMillstoneBlockEntity extends MillstoneBlockEntity implements 
         }
 
         ItemStack stackInSlot = inputInv.getStackInSlot(0);
-        int amountInSlot = stackInSlot.getCount();
-        stackInSlot.shrink(maxItemsPerRecipe);
+        stackInSlot.shrink(1);
         inputInv.setStackInSlot(0, stackInSlot);
-        for(int i = 0; i < Math.min(amountInSlot, maxItemsPerRecipe); i++) {
-            List<ItemStack> results = TieredRecipeHelper.INSTANCE.getItemResults(lastRecipe, tier);
-            results.forEach(stack -> ItemHandlerHelper.insertItemStacked(outputInv, stack, false));
-        }
+        List<ItemStack> results = TieredRecipeHelper.INSTANCE.getItemResults(lastRecipe, tier);
+        results.forEach(stack -> ItemHandlerHelper.insertItemStacked(outputInv, stack, false));
+
         award(AllAdvancements.MILLSTONE);
 
         sendData();

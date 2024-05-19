@@ -58,7 +58,7 @@ public class TieredSawBlockEntity extends SawBlockEntity implements ITieredKinet
             LangBuilder mb = Lang.translate("generic.unit.millibuckets");
             FluidStack fluidStack = fluid.getFluidInTank(0);
             if(!fluidStack.isEmpty()) {
-                Lang.builder(Greate.MOD_ID).translate("gui.goggles.saw_contents").forGoggles(tooltip);
+                Lang.builder(Greate.MOD_ID).translate("gui.goggles.saw_contents").style(ChatFormatting.GRAY).forGoggles(tooltip);
                 Lang.text("")
                         .add(Lang.fluidName(fluidStack)
                                 .add(Lang.text(" ")).style(ChatFormatting.GRAY)
