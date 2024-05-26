@@ -2,6 +2,8 @@ package electrolyte.greate.foundation.data.recipe;
 
 import com.simibubi.create.Create;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
 
@@ -33,6 +35,11 @@ public class GreateRecipeRemoval {
         recipe.accept(Create.asResource("crafting/kinetics/whisk"));
 
         recipe.accept(Create.asResource("cutting/andesite_alloy"));
+
+        ForgeRegistries.ITEMS.tags().getTag(ItemTags.PLANKS).forEach(i -> {
+            String path = ForgeRegistries.ITEMS.getKey(i).getPath();
+            recipe.accept(Create.asResource("cutting/" + path));
+        });
 
         recipe.accept(Create.asResource("mechanical_crafting/crushing_wheel"));
 
