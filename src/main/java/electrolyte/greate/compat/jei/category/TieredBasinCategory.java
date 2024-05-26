@@ -8,8 +8,10 @@ import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.Pair;
 import electrolyte.greate.content.processing.basin.TieredBasinRecipe;
 import electrolyte.greate.content.processing.recipe.TieredProcessingOutput;
+import electrolyte.greate.foundation.item.GreateItemHelper;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -21,6 +23,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -38,16 +41,17 @@ public class TieredBasinCategory extends GreateRecipeCategory<TieredBasinRecipe>
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, TieredBasinRecipe recipe, IFocusGroup focuses) {
-        int size = recipe.getIngredients().size() + recipe.getFluidIngredients().size();
+        List<Pair<Ingredient, MutableInt>> condensedIngredients = GreateItemHelper.condenseIngredients(recipe.getIngredients());
+        int size = condensedIngredients.size() + recipe.getFluidIngredients().size();
         int xOffset = size < 3 ? (3 - size) * 19 / 2 : 0;
         int i = 0;
-
-        for(Ingredient ingredient : recipe.getIngredients()) {
+        for(Pair<Ingredient, MutableInt> pair : condensedIngredients) {
             List<ItemStack> stacks = new ArrayList<>();
-            for(ItemStack stack : ingredient.getItems()) {
-                stacks.add(stack.copy());
+            for(ItemStack stack : pair.getFirst().getItems()) {
+                ItemStack copy = stack.copy();
+                copy.setCount(pair.getSecond().getValue());
+                stacks.add(copy);
             }
-
             builder.addSlot(RecipeIngredientRole.INPUT, 17 + xOffset + (i % 3) * 19, 51 - (i / 3) * 19)
                     .setBackground(getRenderedSlot(), -1, -1)
                     .addItemStacks(stacks);
