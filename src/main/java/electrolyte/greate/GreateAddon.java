@@ -35,7 +35,7 @@ public class GreateAddon implements IGTAddon {
 		ModBlockEntityTypes.register();
 		ModItems.register();
 		GreateConfigs.register(ModLoadingContext.get());
-		Greate.LOGGER.info("Greate GT addon initialised!");
+		Greate.LOGGER.info("Greate GT addon initialized!");
 	}
 
 	@Override
