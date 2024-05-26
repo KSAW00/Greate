@@ -117,7 +117,7 @@ public class TieredCrushingWheelControllerBlockEntity extends CrushingWheelContr
                     boolean changed = false;
                     if(!behaviour.canInsertFromSide(facing)) return;
                     for(int slot = 0; slot < inventory.getSlots(); slot++) {
-                        ItemStack stack = inventory.getStackInSlot(0);
+                        ItemStack stack = inventory.getStackInSlot(slot);
                         if(stack.isEmpty()) continue;
                         ItemStack remainder = behaviour.handleInsertion(stack, facing, false);
                         if(remainder.equals(stack, false)) continue;
