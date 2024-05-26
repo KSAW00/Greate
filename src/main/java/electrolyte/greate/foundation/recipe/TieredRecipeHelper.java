@@ -4,6 +4,7 @@ import com.gregtechceu.gtceu.api.capability.recipe.FluidRecipeCapability;
 import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.api.recipe.content.Content;
+import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import electrolyte.greate.content.processing.recipe.TieredProcessingOutput;
@@ -16,6 +17,8 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.gregtechceu.gtceu.api.GTValues.HV;
 
 public class TieredRecipeHelper {
 
@@ -60,9 +63,25 @@ public class TieredRecipeHelper {
         } else if(recipe instanceof GTRecipe gtr) {
             List<Content> outputs = gtr.getOutputContents(ItemRecipeCapability.CAP);
             for(Content c : outputs) {
-                ItemStack[] items = ((Ingredient) c.content).getItems();
-                for(ItemStack item : items) {
-                    newResults.add(new TieredProcessingOutput(item, c.chance, getExtraPercent(c.tierChanceBoost, recipeTier, machineTier)));
+                if(gtr.getType() == GTRecipeTypes.MACERATOR_RECIPES) {
+                    if(machineTier < HV) {
+                        if(c.chance == 1) {
+                            ItemStack[] items = ((Ingredient) c.content).getItems();
+                            for(ItemStack item : items) {
+                                newResults.add(new TieredProcessingOutput(item, c.chance, getExtraPercent(c.tierChanceBoost, recipeTier, machineTier)));
+                            }
+                        }
+                    } else {
+                        ItemStack[] items = ((Ingredient) c.content).getItems();
+                        for(ItemStack item : items) {
+                            newResults.add(new TieredProcessingOutput(item, c.chance, getExtraPercent(c.tierChanceBoost, recipeTier, machineTier)));
+                        }
+                    }
+                } else {
+                    ItemStack[] items = ((Ingredient) c.content).getItems();
+                    for(ItemStack item : items) {
+                        newResults.add(new TieredProcessingOutput(item, c.chance, getExtraPercent(c.tierChanceBoost, recipeTier, machineTier)));
+                    }
                 }
             }
             return new ArrayList<>(getItemResults(newResults));
