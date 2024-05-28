@@ -23,6 +23,7 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +38,6 @@ import java.util.function.Consumer;
 
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static com.gregtechceu.gtceu.api.data.tag.TagPrefix.*;
-import static com.gregtechceu.gtceu.common.data.GTMachines.HULL;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
 import static com.gregtechceu.gtceu.common.data.GTRecipeTypes.ASSEMBLER_RECIPES;
 import static com.gregtechceu.gtceu.common.data.GTRecipeTypes.MACERATOR_RECIPES;
@@ -58,7 +58,6 @@ import static electrolyte.greate.registry.Millstones.MILLSTONES;
 import static electrolyte.greate.registry.ModItems.*;
 import static electrolyte.greate.registry.Pumps.MECHANICAL_PUMPS;
 import static electrolyte.greate.registry.Saws.SAWS;
-import static electrolyte.greate.registry.Shafts.ANDESITE_SHAFT;
 import static electrolyte.greate.registry.Shafts.SHAFTS;
 
 public class GreateRecipes {
@@ -72,6 +71,8 @@ public class GreateRecipes {
         conversionCycle(provider, ImmutableList.of(AllBlocks.MECHANICAL_PRESS, MechanicalPresses.ANDESITE_MECHANICAL_PRESS));
         conversionCycle(provider, ImmutableList.of(AllBlocks.MECHANICAL_MIXER, MechanicalMixers.ANDESITE_MECHANICAL_MIXER));
         conversionCycle(provider, ImmutableList.of(AllBlocks.MECHANICAL_SAW, Saws.ANDESITE_SAW));
+
+        VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("wrench"), AllItems.WRENCH.asStack(), "PP", "PC", " S", 'P', new UnificationEntry(plate, Gold), 'C', COGWHEELS[ULV], 'S', new UnificationEntry(rod, Wood));
         
         for (int tier = 0; tier < TM.length; tier++) {
             Material tierMaterial = TM[tier];
@@ -98,10 +99,10 @@ public class GreateRecipes {
             // Mechanical Mixers
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_mechanical_mixer"), MECHANICAL_MIXERS[tier].asStack(), " S ", "CMC", " W ", 'S', SHAFTS[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'W', WHISKS[tier].asStack());
             // Millstones
-            VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_millstone"), MILLSTONES[tier].asStack(), " A ", "WHW", "CSC", 'A', COGWHEELS[tier].asStack(), 'W', GreateTags.mcItemTag("wooden_slabs"), 'H', HULL[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
-            // Saws (special case since they use conveyors and motors)
+            VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_millstone"), MILLSTONES[tier].asStack(), " A ", "WHW", "CSC", 'A', COGWHEELS[tier].asStack(), 'W', Ingredient.of(ItemTags.WOODEN_SLABS), 'H', CASING.getIngredient(tier), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
+            // Saws (special case since they use greate conveyors and motors)
             if(tier != 0 && tier != 9) {
-                VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_mechanical_saw"), SAWS[tier].asStack(), "MHE", "CSC", 'M', CONVEYOR.getIngredient(tier), 'H', HULL[tier].asStack(), 'E', MOTOR.getIngredient(tier), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
+                VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_mechanical_saw"), SAWS[tier].asStack(), "GSG", "MCM", "OHO", 'G', CIRCUIT.getIngredient(tier), 'S', new UnificationEntry(toolHeadBuzzSaw, tierMaterial), 'M', MOTOR.getIngredient(tier), 'C', CASING.getIngredient(tier), 'H', SHAFTS[tier].asStack(), 'O', CONVEYOR.getIngredient(tier));
             }
             // Pumps
             VanillaRecipeHelper.addShapedRecipe(provider, Greate.id(materialName + "_mechanical_pump"), MECHANICAL_PUMPS[tier].asStack(), " R ", "wPC", " R ", 'R', new UnificationEntry(ring, Rubber), 'P', AllBlocks.FLUID_PIPE, 'C', COGWHEELS[tier].asStack());
@@ -125,11 +126,11 @@ public class GreateRecipes {
         }
 
         //Andesite Saw (special case since they use conveyors and motors)
-        VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("andesite_mechanical_saw"), Saws.ANDESITE_SAW.asStack(), "MHE", "CSC", 'M', ULV_CONVEYOR_MODULE, 'H', HULL[ULV].asStack(), 'E', ULV_ELECTRIC_MOTOR, 'C', GreateTags.gtceuItemTag("circuits/ulv"), 'S', ANDESITE_SHAFT.asStack());
+        VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("andesite_mechanical_saw"), SAWS[0].asStack(), "GSG", "MCM", "OHO", 'G', CIRCUIT.getIngredient(ULV), 'S', new UnificationEntry(toolHeadBuzzSaw, AndesiteAlloy), 'M', ULV_ELECTRIC_MOTOR, 'C', CASING.getIngredient(ULV), 'H', SHAFTS[ULV].asStack(), 'O', ULV_CONVEYOR_MODULE);
 
         //Neutronium Saw (only if higher tier content is enabled)
         if(GTCEuAPI.isHighTier()) {
-            VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("neutronium_mechanical_saw"), SAWS[9].asStack(), "MHE", "CSC", 'M', CONVEYOR.getIngredient(9), 'H', HULL[9].asStack(), 'E', MOTOR.getIngredient(9), 'C', CIRCUIT.getIngredient(9), 'S', SHAFTS[9].asStack());
+            VanillaRecipeHelper.addShapedRecipe(provider, Greate.id("neutronium_mechanical_saw"), SAWS[9].asStack(), "GSG", "MCM", "OHO", 'G', CIRCUIT.getIngredient(UHV), 'S', new UnificationEntry(toolHeadBuzzSaw, Neutronium), 'M', MOTOR.getIngredient(UHV), 'C', CASING.getIngredient(UHV), 'H', SHAFTS[UHV].asStack(), 'O', CONVEYOR.getIngredient(UHV));
         }
 
         //Andesite Alloy

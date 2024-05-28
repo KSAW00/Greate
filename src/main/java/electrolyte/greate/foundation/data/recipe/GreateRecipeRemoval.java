@@ -2,8 +2,6 @@ package electrolyte.greate.foundation.data.recipe;
 
 import com.simibubi.create.Create;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
 
@@ -33,13 +31,30 @@ public class GreateRecipeRemoval {
         recipe.accept(Create.asResource("crafting/kinetics/shaft"));
         recipe.accept(Create.asResource("crafting/kinetics/vertical_gearboxfrom_conversion"));
         recipe.accept(Create.asResource("crafting/kinetics/whisk"));
+        recipe.accept(Create.asResource("crafting/kinetics/wrench"));
 
         recipe.accept(Create.asResource("cutting/andesite_alloy"));
-
-        ForgeRegistries.ITEMS.tags().getTag(ItemTags.PLANKS).forEach(i -> {
-            String path = ForgeRegistries.ITEMS.getKey(i).getPath();
-            recipe.accept(Create.asResource("cutting/" + path));
-        });
+        recipe.accept(Create.asResource("cutting/stripped_oak_log"));
+        recipe.accept(Create.asResource("cutting/stripped_oak_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_spruce_log"));
+        recipe.accept(Create.asResource("cutting/stripped_spruce_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_birch_log"));
+        recipe.accept(Create.asResource("cutting/stripped_birch_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_jungle_log"));
+        recipe.accept(Create.asResource("cutting/stripped_jungle_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_acacia_log"));
+        recipe.accept(Create.asResource("cutting/stripped_warped_stem"));
+        recipe.accept(Create.asResource("cutting/stripped_mangrove_log"));
+        recipe.accept(Create.asResource("cutting/stripped_crimson_hyphae"));
+        recipe.accept(Create.asResource("cutting/stripped_acacia_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_dark_oak_log"));
+        recipe.accept(Create.asResource("cutting/stripped_dark_oak_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_mangrove_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_cherry_log"));
+        recipe.accept(Create.asResource("cutting/stripped_cherry_wood"));
+        recipe.accept(Create.asResource("cutting/stripped_crimson_stem"));
+        recipe.accept(Create.asResource("cutting/stripped_warped_hyphae"));
+        recipe.accept(Create.asResource("cutting/stripped_bamboo_block"));
 
         recipe.accept(Create.asResource("mechanical_crafting/crushing_wheel"));
 
