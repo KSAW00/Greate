@@ -56,7 +56,6 @@ public class Greate {
         CREATIVE_TABS.register(eventBus);
         REGISTRATE.registerEventListeners(eventBus);
         GreateLang.register();
-        GreateTags.init();
         REGISTRATE.addRegisterCallback(ForgeRegistries.BLOCKS.getRegistryKey(), () -> GreateConfigs.register(ModLoadingContext.get()));
         ModRecipeTypes.register(eventBus);
         GreateFanProcessingTypes.register();
