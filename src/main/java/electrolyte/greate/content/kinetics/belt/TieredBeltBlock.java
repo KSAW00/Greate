@@ -176,7 +176,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
         }
         if(isConnector) {
             if(((TieredBeltConnectorItem) heldItem.getItem()).getBeltMaterial() == ((TieredBeltBlock) pLevel.getBlockState(pPos).getBlock()).getBeltMaterial()) {
-                return BeltSlicer.useConnector(pState, pLevel, pPos, pPlayer, pHand, pHit, new Feedback());
+                return TieredBeltSlicer.useConnector(pState, pLevel, pPos, pPlayer, pHand, pHit, new Feedback());
             }
         }
         if(isWrench) {
