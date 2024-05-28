@@ -1,7 +1,7 @@
-- Fix belts not getting correct tier when extended
-- Fix belts getting wrong tier when rejoining a world (you'll need to replace your belts)
-- Add Tiered Encased Fans (Haunting/Washing only)
-- Fix bad tooltip on certain GT items when viewing sequenced assembly recipes 
-- Fix certain machines sometimes not finding and caching valid recipes
-- Fix config generating under both GT and Greate namespaces
-- Revert back to millstone processing one item per recipe cycle, regardless of tier
+- Fix crushing wheels not outputting their contents
+- Fix Mixing Category in JEI not showing ingredients correctly
+- Only allow millstones & crushing wheels HV tier and above to output chanced results
+- Remove plank cutting recipes from create
+- Add buzzsaw to certain GT materials
+- Update wrench & saw recipes
+- Fix error extending regular create belt
