@@ -3,6 +3,9 @@ package electrolyte.greate;
 import com.gregtechceu.gtceu.utils.FormattingUtil;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.TooltipHelper.Palette;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -10,7 +13,10 @@ import electrolyte.greate.content.kinetics.fan.processing.GreateFanProcessingTyp
 import electrolyte.greate.foundation.advancement.GreateAdvancements;
 import electrolyte.greate.foundation.data.GreateTagGen;
 import electrolyte.greate.foundation.data.GreateTagGen.GreateBlockTagGen;
+import electrolyte.greate.foundation.item.GreateKineticStats;
 import electrolyte.greate.infrastructure.config.GreateConfigs;
+import electrolyte.greate.infrastructure.ponder.GreatePonderIndex;
+import electrolyte.greate.infrastructure.ponder.GreatePonderTags;
 import electrolyte.greate.registry.*;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
@@ -48,6 +54,10 @@ public class Greate {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(Greate.MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Greate.MOD_ID);
 
+    static {
+        REGISTRATE.setTooltipModifierFactory(i -> new ItemDescription.Modifier(i, Palette.STANDARD_CREATE).andThen(TooltipModifier.mapNull(GreateKineticStats.create(i))));
+    }
+
     public Greate() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
@@ -74,11 +84,15 @@ public class Greate {
 
     private void clientSetup(FMLClientSetupEvent event) {
         GreatePartialModels.register();
+        GreatePonderTags.register();
+        GreatePonderIndex.register();
     }
 
     private void gatherData(GatherDataEvent event) {
+        REGISTRATE.addDataGenerator(ProviderType.LANG, p -> GreateAdvancements.provideLang(p::add));
+        REGISTRATE.addDataGenerator(ProviderType.LANG, p -> GreatePonderTags.register());
+        REGISTRATE.addDataGenerator(ProviderType.LANG, p -> GreatePonderIndex.register());
         if(event.includeServer()) {
-            REGISTRATE.addDataGenerator(ProviderType.LANG, p -> GreateAdvancements.provideLang(p::add));
             event.getGenerator().addProvider(true, new GreateAdvancements(event.getGenerator().getPackOutput()));
             GreateBlockTagGen blockTags = new GreateBlockTagGen(event.getGenerator().getPackOutput(), event.getLookupProvider(), Greate.MOD_ID, event.getExistingFileHelper());
             event.getGenerator().addProvider(true, blockTags);

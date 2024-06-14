@@ -4,13 +4,7 @@ import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlock;
 import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
 import electrolyte.greate.registry.ModBlockEntityTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-
-import java.util.List;
 
 public class TieredMechanicalMixerBlock extends MechanicalMixerBlock implements ITieredBlock {
 
@@ -33,11 +27,6 @@ public class TieredMechanicalMixerBlock extends MechanicalMixerBlock implements 
     @Override
     public BlockEntityType<? extends MechanicalMixerBlockEntity> getBlockEntityType() {
         return ModBlockEntityTypes.TIERED_MECHANICAL_MIXER.get();
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-        ITieredBlock.super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
     }
 
     @Override

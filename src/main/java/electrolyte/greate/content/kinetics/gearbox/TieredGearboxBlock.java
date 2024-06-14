@@ -5,10 +5,8 @@ import com.simibubi.create.content.kinetics.gearbox.GearboxBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
 import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,10 +52,5 @@ public class TieredGearboxBlock extends GearboxBlock implements ITieredBlock {
     @Override
     public void setTier(int tier) {
         this.tier = tier;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-        ITieredBlock.super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
     }
 }

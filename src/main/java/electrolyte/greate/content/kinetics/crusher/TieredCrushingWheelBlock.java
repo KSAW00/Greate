@@ -5,23 +5,16 @@ import com.simibubi.create.content.kinetics.crusher.CrushingWheelBlockEntity;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
 import com.simibubi.create.foundation.utility.Iterate;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredBlock;
-import electrolyte.greate.registry.CrushingWheels;
 import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
 
 import static com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock.VALID;
 
@@ -118,10 +111,5 @@ public class TieredCrushingWheelBlock extends CrushingWheelBlock implements ITie
     @Override
     public void setTier(int tier) {
         this.tier = tier;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-        ITieredBlock.super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
     }
 }
