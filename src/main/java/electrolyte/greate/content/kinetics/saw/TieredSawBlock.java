@@ -14,15 +14,13 @@ import electrolyte.greate.registry.ModBlockEntityTypes;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -50,11 +48,6 @@ public class TieredSawBlock extends SawBlock implements ITieredBlock, ITieredSha
     @Override
     public BlockEntityType<? extends SawBlockEntity> getBlockEntityType() {
         return ModBlockEntityTypes.TIERED_SAW.get();
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-        ITieredBlock.super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
     }
 
     @Override
@@ -86,14 +79,23 @@ public class TieredSawBlock extends SawBlock implements ITieredBlock, ITieredSha
         if(state.getOptionalValue(FACING).orElse(Direction.WEST) != Direction.UP) return InteractionResult.PASS;
         return onBlockEntityUse(worldIn, pos, be -> {
             if(!heldItem.isEmpty()) {
-                if(FluidHelper.tryEmptyItemIntoBE(worldIn, player, handIn, heldItem, be)) return InteractionResult.SUCCESS;
-                if(FluidHelper.tryFillItemFromBE(worldIn, player, handIn, heldItem, be)) return InteractionResult.SUCCESS;
+                if(FluidHelper.tryEmptyItemIntoBE(worldIn, player, handIn, heldItem, be)) {
+                    player.playSound(SoundEvents.BUCKET_EMPTY);
+                    return InteractionResult.SUCCESS;
+                }
+                if(FluidHelper.tryFillItemFromBE(worldIn, player, handIn, heldItem, be)) {
+                    player.playSound(SoundEvents.BUCKET_FILL);
+                    return InteractionResult.SUCCESS;
+                }
                 if(GenericItemEmptying.canItemBeEmptied(worldIn, heldItem) ||
                         GenericItemFilling.canItemBeFilled(worldIn, heldItem)) return InteractionResult.SUCCESS;
                 if(heldItem.getItem().equals(Items.SPONGE) &&
                         !be.getCapability(ForgeCapabilities.FLUID_HANDLER).map(fh -> fh.drain(Integer.MAX_VALUE, FluidAction.EXECUTE))
                                 .orElse(FluidStack.EMPTY)
-                                .isEmpty()) return InteractionResult.SUCCESS;
+                                .isEmpty()) {
+                    player.playSound(SoundEvents.BOTTLE_EMPTY);
+                    return InteractionResult.SUCCESS;
+                }
                 return InteractionResult.PASS;
             }
             for(int i = 0; i < be.inventory.getSlots(); i++) {

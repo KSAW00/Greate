@@ -152,6 +152,7 @@ public class TieredSawRenderer extends SawRenderer {
         final float zMin = 2 / 16f;
         final float zMax = 14 / 16f;
         FluidStack renderedFluid = behaviour.getTanks()[0].getRenderedFluid();
+        if(renderedFluid.isEmpty()) return;
         if(be.getBlockState().getValue(SawBlock.AXIS_ALONG_FIRST_COORDINATE)) {
             FluidRenderer.renderFluidBox(renderedFluid, xMin, yMin, zMin, xMax, yMax, zMax, bufferSource, poseStack, light, false);
         } else {
