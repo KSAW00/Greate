@@ -17,8 +17,8 @@ public class MixinBlockStressDefaults {
 
     @Shadow @Final public static Map<ResourceLocation, Double> DEFAULT_CAPACITIES;
     @Unique private static final Map<ResourceLocation, Double> greate_NEW_DEFAULT_CAPACITIES = Map.ofEntries(
-            Map.entry(new ResourceLocation("create:hand_crank"), 1d),
-            Map.entry(new ResourceLocation("create:copper_valve_handle"), 1d),
+            Map.entry(new ResourceLocation("create:hand_crank"), 0.25d),
+            Map.entry(new ResourceLocation("create:copper_valve_handle"), 0.25d),
             Map.entry(new ResourceLocation("create:water_wheel"), 1d),
             Map.entry(new ResourceLocation("create:large_water_wheel"), 8d),
             Map.entry(new ResourceLocation("create:windmill_bearing"), 128d),

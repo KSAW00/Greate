@@ -3,9 +3,11 @@ package electrolyte.greate.mixin;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
 import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock.Shape;
+import electrolyte.greate.content.kinetics.belt.TieredBeltBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,12 +23,18 @@ public class MixinBeltFunnelBlock {
         cir.setReturnValue(greate_getShapeForPosition(world, pos, facing, extracting));
     }
 
+    @Inject(method = "isOnValidBelt", at = @At("HEAD"), remap = false, cancellable = true)
+    private static void greate_isOnValidBelt(BlockState state, LevelReader world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        BlockState stateBelow = world.getBlockState(pos.below());
+        if(stateBelow.getBlock() instanceof TieredBeltBlock) cir.setReturnValue(TieredBeltBlock.canTransportObjects(stateBelow));
+    }
+
     @Unique
     private static Shape greate_getShapeForPosition(BlockGetter world, BlockPos pos, Direction facing, boolean extracting) {
         BlockPos posBelow = pos.below();
         BlockState stateBelow = world.getBlockState(posBelow);
         Shape perpendicularState = extracting ? Shape.PUSHING : Shape.PULLING;
-        if (!(stateBelow.getBlock() instanceof BeltBlock)) return perpendicularState;
+        if (!(stateBelow.getBlock() instanceof TieredBeltBlock)) return perpendicularState;
         Direction movementFacing = stateBelow.getValue(BeltBlock.HORIZONTAL_FACING);
         return movementFacing.getAxis() != facing.getAxis() ? perpendicularState : Shape.RETRACTED;
     }

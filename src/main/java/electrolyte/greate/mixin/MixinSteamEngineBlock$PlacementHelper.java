@@ -1,6 +1,5 @@
 package electrolyte.greate.mixin;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.content.kinetics.steamEngine.PoweredShaftBlock;
 import com.simibubi.create.content.kinetics.steamEngine.SteamEngineBlock;
@@ -31,7 +30,7 @@ public abstract class MixinSteamEngineBlock$PlacementHelper {
 
     @Inject(method = "getItemPredicate", at = @At("HEAD"), remap = false, cancellable = true)
     private void greate_getItemPredicate(CallbackInfoReturnable<Predicate<ItemStack>> cir) {
-        cir.setReturnValue(i -> Block.byItem(i.getItem()) instanceof TieredShaftBlock || Block.byItem(i.getItem()).equals(AllBlocks.SHAFT.get()));
+        cir.setReturnValue(i -> Block.byItem(i.getItem()) instanceof ShaftBlock);
     }
 
     @Inject(method = "getOffset(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/BlockHitResult;)Lcom/simibubi/create/foundation/placement/PlacementOffset;", at = @At("HEAD"), remap = false, cancellable = true)

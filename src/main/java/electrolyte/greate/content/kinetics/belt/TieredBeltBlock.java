@@ -113,7 +113,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if(! canTransportObjects(pState))
+        if(!canTransportObjects(pState))
             return;
         if(pEntity instanceof Player player) {
             if(player.isShiftKeyDown())
@@ -283,7 +283,7 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
                 beltBE.attachKinetics();
                 beltBE.setChanged();
                 beltBE.sendData();
-                if(beltBE.isController() && ! BeltBlock.canTransportObjects(currentState))
+                if(beltBE.isController() && !canTransportObjects(currentState))
                     beltBE.getInventory().ejectAll();
             } else {
                 level.destroyBlock(currentPos, true);
@@ -361,6 +361,12 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
         if(tunnelBlock instanceof BeltTunnelBlock btb) {
             btb.updateTunnel(level, pos);
         }
+    }
+
+    public static boolean canTransportObjects(BlockState state) {
+        if(!(state.getBlock() instanceof TieredBeltBlock)) return false;
+        BeltSlope slope = state.getValue(SLOPE);
+        return slope != BeltSlope.VERTICAL && slope != BeltSlope.SIDEWAYS;
     }
 
     public static List<BlockPos> getBeltChain(Level level, BlockPos controllerPos) {
