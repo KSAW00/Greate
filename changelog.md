@@ -1,7 +1,10 @@
-- Fix crushing wheels not outputting their contents
-- Fix Mixing Category in JEI not showing ingredients correctly
-- Only allow millstones & crushing wheels HV tier and above to output chanced results
-- Remove plank cutting recipes from create
-- Add buzzsaw to certain GT materials
-- Update wrench & saw recipes
-- Fix error extending regular create belt
+- Cleanup mixins
+- Change recipes for some blocks/items
+- Fix crash when using sponge to empty saw
+- Add sounds when filling/emptying saw
+- Add max cap tooltip to pump
+- Fix deployer goggle info displaying GT items incorrectly
+- Lower hand crank/copper valve stress gen to ULV level
+- Add ponder information and kinetic-related tooltips to various blocks
+- Fix Sequenced Assembly recipes not showing item/fluid tooltips when hovering over them when EMI is installed
+- Hide various encased blocks from recipe viewers
