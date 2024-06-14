@@ -15,13 +15,19 @@ public class GreateRecipeRemoval {
         recipe.accept(Create.asResource("crafting/materials/andesite_alloy"));
         recipe.accept(Create.asResource("crafting/materials/andesite_alloy_from_zinc"));
 
+        recipe.accept(Create.asResource("crafting/kinetics/basin"));
         recipe.accept(Create.asResource("crafting/kinetics/belt_connector"));
+        recipe.accept(Create.asResource("crafting/kinetics/brass_hand"));
+        recipe.accept(Create.asResource("crafting/kinetics/chute"));
         recipe.accept(Create.asResource("crafting/kinetics/cogwheel"));
+        recipe.accept(Create.asResource("crafting/kinetics/deployer"));
+        recipe.accept(Create.asResource("crafting/kinetics/depot"));
         recipe.accept(Create.asResource("crafting/kinetics/encased_fan"));
         recipe.accept(Create.asResource("crafting/kinetics/gearbox"));
         recipe.accept(Create.asResource("crafting/kinetics/gearboxfrom_conversion"));
         recipe.accept(Create.asResource("crafting/kinetics/large_cogwheel"));
         recipe.accept(Create.asResource("crafting/kinetics/large_cogwheel_from_little"));
+        recipe.accept(Create.asResource("crafting/kinetics/mechanical_crafter"));
         recipe.accept(Create.asResource("crafting/kinetics/mechanical_mixer"));
         recipe.accept(Create.asResource("crafting/kinetics/mechanical_press"));
         recipe.accept(Create.asResource("crafting/kinetics/mechanical_pump"));
@@ -29,6 +35,7 @@ public class GreateRecipeRemoval {
         recipe.accept(Create.asResource("crafting/kinetics/millstone"));
         recipe.accept(Create.asResource("crafting/kinetics/propeller"));
         recipe.accept(Create.asResource("crafting/kinetics/shaft"));
+        recipe.accept(Create.asResource("crafting/kinetics/spout"));
         recipe.accept(Create.asResource("crafting/kinetics/vertical_gearboxfrom_conversion"));
         recipe.accept(Create.asResource("crafting/kinetics/whisk"));
         recipe.accept(Create.asResource("crafting/kinetics/wrench"));
@@ -72,9 +79,13 @@ public class GreateRecipeRemoval {
         recipe.accept(Create.asResource("milling/terracotta"));
         recipe.accept(Create.asResource("milling/wheat"));
 
+        recipe.accept(Create.asResource("mixing/andesite_alloy"));
+        recipe.accept(Create.asResource("mixing/andesite_alloy_from_zinc"));
+
         recipe.accept(Create.asResource("pressing/iron_ingot"));
         recipe.accept(Create.asResource("pressing/gold_ingot"));
         recipe.accept(Create.asResource("pressing/copper_ingot"));
         recipe.accept(Create.asResource("pressing/brass_ingot"));
+        recipe.accept(Create.asResource("pressing/sugar_cane"));
     }
 }
