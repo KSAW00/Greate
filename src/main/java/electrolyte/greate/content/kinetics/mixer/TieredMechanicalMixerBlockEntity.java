@@ -18,7 +18,6 @@ import electrolyte.greate.content.processing.basin.TieredBasinRecipe;
 import electrolyte.greate.registry.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -43,6 +42,12 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
     }
 
     @Override
+    public void tick() {
+        if(this.getSpeed() == 0) running = false;
+        super.tick();
+    }
+
+    @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
         targetCircuit = new ScrollValueBehaviour(Lang.builder(Greate.MOD_ID).translate("tooltip.circuit_number")
@@ -55,16 +60,6 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         return ITieredKineticBlockEntity.super.addToGoggleTooltip(tooltip, isPlayerSneaking, tier, capacity, stress);
-    }
-
-    @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
-        super.read(compound, clientPacket);
-    }
-
-    @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
-        super.write(compound, clientPacket);
     }
 
     @Override
@@ -89,7 +84,8 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
 
     @Override
     protected void applyBasinRecipe() {
-        if (currentRecipe == null) return;
+        if(currentRecipe == null) return;
+        if(this.getSpeed() == 0) return;
 
         Optional<BasinBlockEntity> optionalBasin = getBasin();
         if (!optionalBasin.isPresent()) return;
@@ -113,13 +109,6 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
         Optional<BasinBlockEntity> basin = getBasin();
         return basin.filter(basinBlockEntity -> TieredBasinRecipe.match(basinBlockEntity, recipe, this.tier)).isPresent();
     }
-
-    @Override
-    public void startProcessingBasin() {
-        super.startProcessingBasin();
-    }
-
-
 
     private class CircuitValueBoxTransform extends ValueBoxTransform.Sided {
         @Override

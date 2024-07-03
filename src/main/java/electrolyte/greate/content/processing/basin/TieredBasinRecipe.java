@@ -215,10 +215,11 @@ public class TieredBasinRecipe extends TieredProcessingRecipe<SmartInventory> {
                     break;
                 }
             }
-            if(ing == null) return false;
-            int circuit = IntCircuitBehaviour.getCircuitConfiguration(ing.getItems()[0]);
-            if(circuit != -1 && circuitHolder.getCircuitNumber() != circuit) {
-                return false;
+            if(ing != null) {
+                int circuit = IntCircuitBehaviour.getCircuitConfiguration(ing.getItems()[0]);
+                if(circuit != - 1 && circuitHolder.getCircuitNumber() != circuit) {
+                    return false;
+                }
             }
         }
 

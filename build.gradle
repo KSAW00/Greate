@@ -1,36 +1,54 @@
 plugins {
-    id 'dev.architectury.loom' version "1.5-SNAPSHOT"
+    id 'eclipse'
+    id 'idea'
     id 'maven-publish'
+    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 version = '0.0.22'
 group = 'electrolyte.greate'
 archivesBaseName = 'greate'
 
-java {
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-loom {
-    silentMojangMappingsLicense()
+minecraft {
+    mappings channel: 'parchment', version: '2023.09.03-1.20.1'
 
-    forge {
-        mixinConfigs = [
-                'greate.mixin.json'
-        ]
-        convertAccessWideners = true
-    }
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
+
+        configureEach {
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
+            mods {
+                "greate" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', 'greate'
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', 'greate'
+        }
+
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', 'greate'
+        }
         data {
-            data()
-            programArgs '--all', '--mod', 'greate'
-            programArgs '--output', file('src/generated/resources/').absolutePath
-            programArgs '--existing', file('src/main/resources/').absolutePath
-            programArgs '--existing-mod', 'create'
+            args '--all', '--mod', 'greate', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '--existing-mod', 'create'
         }
     }
-    accessWidenerPath = file('src/main/resources/greate.accesswidener')
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -78,37 +96,37 @@ repositories {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${minecraft_version}"
-    forge "net.neoforged:forge:${minecraft_version}-${forge_version}"
+    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
 
-    mappings loom.layered {
-        it.mappings("org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_version}:intermediary-v2")
-        it.parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
-        it.officialMojangMappings { nameSyntheticMembers = false }
-    }
+    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
-    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    modImplementation("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
-    modApi("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}") { transitive = false }
-    modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") { transitive = false }
-    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}") { transitive = false }
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") { transitive = false }
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
 
-    modImplementation("dev.architectury:architectury-forge:${architectury_version}")
-    modImplementation("dev.latvian.mods:rhino-forge:${rhino_version}")
-    modImplementation("dev.latvian.mods:kubejs-forge:${kubejs_version}")
-    modImplementation("dev.latvian.mods:kubejs-create-forge:${kubejs_create_version}")
+    implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
+    implementation fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}")
+    implementation fg.deobf("dev.latvian.mods:kubejs-create-forge:${kubejs_create_version}")
 
-    modApi("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false }
-    modImplementation("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gregtech_version}") { transitive = false }
-    modApi("dev.toma.configuration:configuration-forge-${minecraft_version}:${configuration_version}")
+    implementation fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlib_version}") { transitive = false }
+    implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gregtech_version}:slim") { transitive = false }
+    runtimeOnly fg.deobf("dev.toma.configuration:configuration-forge-${minecraft_version}:${configuration_version}")
 
-    modImplementation("curse.maven:jade-324717:${jade_version}")
-    modRuntimeOnly("curse.maven:spark-361579:${spark_version}")
+    implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
+    runtimeOnly fg.deobf("curse.maven:spark-361579:${spark_version}")
 
-    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
-    api(include("io.github.llamalad7:mixinextras-forge:0.3.2"))
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
+    implementation fg.deobf("io.github.llamalad7:mixinextras-forge:0.3.2")
+}
+
+mixin {
+    add sourceSets.main, "greate-refmap.json"
+    config "greate.mixin.json"
 }
 
 jar {
@@ -138,7 +156,6 @@ publishing {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-    options.release = 17
 }

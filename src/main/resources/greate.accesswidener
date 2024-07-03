@@ -1,4 +1,0 @@
-accessWidener v2 named
-accessible field net/minecraft/world/item/crafting/RecipeManager recipes Ljava/util/Map; #recipes
-extendable method net/minecraft/data/recipes/RecipeProvider getName ()Ljava/lang/String; #getName
-accessible field net/minecraft/server/network/ServerGamePacketListenerImpl aboveGroundTickCount I

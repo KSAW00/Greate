@@ -1,10 +1,2 @@
-- Cleanup mixins
-- Change recipes for some blocks/items
-- Fix crash when using sponge to empty saw
-- Add sounds when filling/emptying saw
-- Add max cap tooltip to pump
-- Fix deployer goggle info displaying GT items incorrectly
-- Lower hand crank/copper valve stress gen to ULV level
-- Add ponder information and kinetic-related tooltips to various blocks
-- Fix Sequenced Assembly recipes not showing item/fluid tooltips when hovering over them when EMI is installed
-- Hide various encased blocks from recipe viewers
+- Fix mechanical mixers not finding GT mixing recipes without a circuit
+- Fix mechanical mixers running recipes when no stress is supplied
