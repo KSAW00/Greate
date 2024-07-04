@@ -25,6 +25,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import java.util.List;
@@ -45,6 +47,13 @@ public class TieredMechanicalMixerBlockEntity extends MechanicalMixerBlockEntity
     public void tick() {
         if(this.getSpeed() == 0) running = false;
         super.tick();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void tickAudio() {
+        if(this.getSpeed() == 0) return;
+        super.tickAudio();
     }
 
     @Override
