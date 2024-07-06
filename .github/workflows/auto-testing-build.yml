@@ -6,9 +6,6 @@ on:
 permissions:
   contents: write
 
-env:
-  RELEASE_VERSION: 0.0.22
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,6 +19,12 @@ jobs:
         distribution: 'temurin'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Get Version
+      uses: BrycensRanch/read-properties-action@v1
+      id: version
+      with:
+        file: gradle.properties
+        property: greate_version
     - name: Build
       uses: gradle/gradle-build-action@v2.4.2
       with:
@@ -30,5 +33,5 @@ jobs:
     - name: Upload Testing Build
       uses: actions/upload-artifact@v4
       with: 
-        name: greate-${{ env.RELEASE_VERSION }}-testing
+        name: greate-${{ steps.version.outputs.greate_version }}-testing
         path: build/libs/*[0-9].jar

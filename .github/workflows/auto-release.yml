@@ -6,9 +6,6 @@ on:
 permissions:
   contents: write
 
-env:
-  RELEASE_VERSION: 0.0.22
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,6 +19,12 @@ jobs:
         distribution: 'temurin'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Get Version
+      uses: BrycensRanch/read-properties-action@v1
+      id: version
+      with:
+        file: gradle.properties
+        property: greate_version
     - name: Build
       uses: gradle/gradle-build-action@v2.4.2
       with:
@@ -31,12 +34,12 @@ jobs:
       uses: Kir-Antipov/mc-publish@v3.3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        github-tag: ${{ env.RELEASE_VERSION }}
+        github-tag: ${{ steps.version.outputs.greate_version }}
         github-generate-changelog: false
         github-prerelease: true
 
-        name: Greate ${{ env.RELEASE_VERSION }}
-        version: ${{ env.RELEASE_VERSION }}
+        name: Greate ${{ steps.version.outputs.greate_version }}
+        version: ${{ steps.version.outputs.greate_version }}
         changelog-file: changelog.md
 
         modrinth-id: 8wDcQuht
