@@ -1,4 +1,2 @@
-- Fix mechanical mixers not finding GT mixing recipes without a circuit
-- Fix mechanical mixers running recipes when no stress is supplied
-- Fix improper logger warn when circuit is in recipe
+- Change all cable recipes to use the spout/sequenced assembly
 - Update ULV tier machine recipes

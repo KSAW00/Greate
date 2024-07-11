@@ -1,17 +1,13 @@
-package electrolyte.greate.foundation.data.recipe;
+package electrolyte.greate.foundation.data.recipe.removal;
 
 import com.simibubi.create.Create;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Consumer;
 
-public class GreateRecipeRemoval {
+public class CreateRecipeRemoval {
 
-    public static void init(Consumer<ResourceLocation> recipe) {
-        disableCreateRecipes(recipe);
-    }
-
-    private static void disableCreateRecipes(Consumer<ResourceLocation> recipe) {
+    public static void disableCreateRecipes(Consumer<ResourceLocation> recipe) {
         recipe.accept(Create.asResource("crafting/materials/andesite_alloy"));
         recipe.accept(Create.asResource("crafting/materials/andesite_alloy_from_zinc"));
 

@@ -1,13 +1,13 @@
 package electrolyte.greate.foundation.data.recipe.machine;
 
+import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
 import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 
 import java.util.function.Consumer;
 
-import static com.gregtechceu.gtceu.data.recipe.CraftingComponent.CIRCUIT;
+import static com.gregtechceu.gtceu.api.data.tag.TagPrefix.plate;
+import static com.gregtechceu.gtceu.common.data.GTMaterials.Steel;
 import static electrolyte.greate.GreateValues.TM;
 import static electrolyte.greate.registry.CrushingWheels.CRUSHING_WHEELS;
 import static electrolyte.greate.registry.ModItems.ALLOYS;
@@ -19,7 +19,7 @@ public class GreateMechanicalCraftingRecipes {
         for(int tier = 0; tier < TM.length; tier++) {
             MechanicalCraftingRecipeBuilder.shapedRecipe(CRUSHING_WHEELS[tier], 2)
                     .key('A', ALLOYS[tier])
-                    .key('C', (TagKey<Item>) CIRCUIT.getIngredient(tier))
+                    .key('C', ChemicalHelper.get(plate, Steel).getItem())
                     .key('S', SHAFTS[tier])
                     .patternLine(" AAA ")
                     .patternLine("AACAA")

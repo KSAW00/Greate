@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.gregtechceu.gtceu.api.GTCEuAPI;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
+import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
+import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
@@ -53,21 +55,31 @@ public class GreateCraftingTableRecipes {
             VanillaRecipeHelper.addShapelessRecipe(provider, LARGE_COGWHEELS[tier].getId(), LARGE_COGWHEELS[tier].asStack(), SHAFTS[tier].asStack(), new UnificationEntry(plate, previousTierMaterial), new UnificationEntry(plate, previousTierMaterial), GreateRecipes.createIngFromTag("forge", "tools/files"));
             VanillaRecipeHelper.addShapelessRecipe(provider, LARGE_COGWHEELS[tier].getId().withSuffix("_from_little"), LARGE_COGWHEELS[tier].asStack(), COGWHEELS[tier].asStack(), new UnificationEntry(plate, previousTierMaterial), GreateRecipes.createIngFromTag("forge", "tools/files"));
             VanillaRecipeHelper.addShapedRecipe(provider, GEARBOXES[tier].getId(), GEARBOXES[tier].asStack(), " S ", "SCS", "wSh", 'S', SHAFTS[tier].asStack(), 'C', AllBlocks.ANDESITE_CASING);
-            conversionCycle(provider, ImmutableList.of(GEARBOXES[tier], VERTICAL_GEARBOXES[tier]));
-            VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_PRESSES[tier].getId(), MECHANICAL_PRESSES[tier].asStack(), " S ", "CMC", "wBh", 'S', SHAFTS[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'B', new UnificationEntry(block, tierMaterial));
-            VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_MIXERS[tier].getId(), MECHANICAL_MIXERS[tier].asStack(), " S ", "CMC", "wWh", 'S', SHAFTS[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'W', WHISKS[tier].asStack());
-            VanillaRecipeHelper.addShapedRecipe(provider, MILLSTONES[tier].getId(), MILLSTONES[tier].asStack(), "CAC", "WHW", "wSh", 'A', COGWHEELS[tier].asStack(), 'W', Ingredient.of(ItemTags.WOODEN_SLABS), 'H', CASING.getIngredient(tier), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
-            // Saws (special case since they use greate conveyors and motors)
-            if(tier != 0 && tier != 9) {
-                VanillaRecipeHelper.addShapedRecipe(provider, SAWS[tier].getId(), SAWS[tier].asStack(), "GSG", "MCM", "OHO", 'G', CIRCUIT.getIngredient(tier), 'S', new UnificationEntry(toolHeadBuzzSaw, tierMaterial), 'M', MOTOR.getIngredient(tier), 'C', CASING.getIngredient(tier), 'H', SHAFTS[tier].asStack(), 'O', CONVEYOR.getIngredient(tier));
-            }
-            VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_PUMPS[tier].getId(), MECHANICAL_PUMPS[tier].asStack(), " R ", "wPC", " R ", 'R', new UnificationEntry(ring, Rubber), 'P', AllBlocks.FLUID_PIPE, 'C', COGWHEELS[tier].asStack());
             VanillaRecipeHelper.addShapedRecipe(provider, WHISKS[tier].getId(), WHISKS[tier].asStack(), "fId", "PIP", "PPP", 'I', new UnificationEntry(ingot, tierMaterial), 'P', new UnificationEntry(plate, tierMaterial));
             VanillaRecipeHelper.addShapedRecipe(provider, PROPELLERS[tier].getId(), PROPELLERS[tier].asStack(), "SAS", "ARA", "SAS", 'S', new UnificationEntry(screw, tierMaterial), 'A', ALLOYS[tier], 'R', new UnificationEntry(rod, tierMaterial));
-            VanillaRecipeHelper.addShapedRecipe(provider, FANS[tier].getId(), FANS[tier].asStack(), " S ", "CMC", "wPh", 'S', SHAFTS[tier], 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'P', PROPELLERS[tier]);
+            conversionCycle(provider, ImmutableList.of(GEARBOXES[tier], VERTICAL_GEARBOXES[tier]));
+            if(tier != 0) {
+                VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_PRESSES[tier].getId(), MECHANICAL_PRESSES[tier].asStack(), " S ", "CMC", "wBh", 'S', SHAFTS[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'B', new UnificationEntry(block, tierMaterial));
+                VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_MIXERS[tier].getId(), MECHANICAL_MIXERS[tier].asStack(), " S ", "CMC", "wWh", 'S', SHAFTS[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'W', WHISKS[tier].asStack());
+                VanillaRecipeHelper.addShapedRecipe(provider, MILLSTONES[tier].getId(), MILLSTONES[tier].asStack(), "CAC", "WHW", "wSh", 'A', COGWHEELS[tier].asStack(), 'W', Ingredient.of(ItemTags.WOODEN_SLABS), 'H', CASING.getIngredient(tier), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
+                VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_PUMPS[tier].getId(), MECHANICAL_PUMPS[tier].asStack(), " R ", "wPC", " R ", 'R', new UnificationEntry(ring, Rubber), 'P', AllBlocks.FLUID_PIPE, 'C', COGWHEELS[tier].asStack());
+                VanillaRecipeHelper.addShapedRecipe(provider, WHISKS[tier].getId(), WHISKS[tier].asStack(), "fId", "PIP", "PPP", 'I', new UnificationEntry(ingot, tierMaterial), 'P', new UnificationEntry(plate, tierMaterial));
+                VanillaRecipeHelper.addShapedRecipe(provider, PROPELLERS[tier].getId(), PROPELLERS[tier].asStack(), "SAS", "ARA", "SAS", 'S', new UnificationEntry(screw, tierMaterial), 'A', ALLOYS[tier], 'R', new UnificationEntry(rod, tierMaterial));
+                VanillaRecipeHelper.addShapedRecipe(provider, FANS[tier].getId(), FANS[tier].asStack(), " S ", "CMC", "wPh", 'S', SHAFTS[tier], 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'P', PROPELLERS[tier]);
+
+                if(tier != 9) {
+                    VanillaRecipeHelper.addShapedRecipe(provider, SAWS[tier].getId(), SAWS[tier].asStack(), "GSG", "MCM", "OHO", 'G', CIRCUIT.getIngredient(tier), 'S', new UnificationEntry(toolHeadBuzzSaw, tierMaterial), 'M', MOTOR.getIngredient(tier), 'C', CASING.getIngredient(tier), 'H', SHAFTS[tier].asStack(), 'O', CONVEYOR.getIngredient(tier));
+                }
+            }
         }
 
-        VanillaRecipeHelper.addShapedRecipe(provider, SAWS[0].getId(), SAWS[0].asStack(), "GSG", "MCM", "OHO", 'G', CIRCUIT.getIngredient(ULV), 'S', new UnificationEntry(toolHeadBuzzSaw, AndesiteAlloy), 'M', ULV_ELECTRIC_MOTOR, 'C', CASING.getIngredient(ULV), 'H', SHAFTS[ULV].asStack(), 'O', ULV_CONVEYOR_MODULE);
+        VanillaRecipeHelper.addShapedRecipe(provider, SAWS[0].getId(), SAWS[0].asStack(), "GSG", "OCO", "MHM", 'G', new UnificationEntry(TagPrefix.pipeSmallFluid, GTMaterials.TinAlloy), 'S', new UnificationEntry(toolHeadBuzzSaw, AndesiteAlloy), 'M', new UnificationEntry(plate, Steel), 'C', CASING.getIngredient(ULV), 'H', SHAFTS[ULV].asStack(), 'O', new UnificationEntry(plate, WroughtIron));
+        VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_PRESSES[0].getId(), MECHANICAL_PRESSES[0].asStack(), "PSP", "CMC", "wBh", 'P', new UnificationEntry(plate, WroughtIron), 'S', SHAFTS[0].asStack(), 'C', new UnificationEntry(plate, Steel), 'M', CASING.getIngredient(0), 'B', new UnificationEntry(block, TM[0]));
+        VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_MIXERS[0].getId(), MECHANICAL_MIXERS[0].asStack(), "PSP", "CMC", "wWh", 'P', new UnificationEntry(plate, WroughtIron), 'S', SHAFTS[0].asStack(), 'C', new UnificationEntry(plate, Steel), 'M', CASING.getIngredient(0), 'W', WHISKS[0].asStack());
+        VanillaRecipeHelper.addShapedRecipe(provider, MILLSTONES[0].getId(), MILLSTONES[0].asStack(), "CAC", "WHW", "wSh", 'A', COGWHEELS[0].asStack(), 'C', new UnificationEntry(plate, WroughtIron), 'H', CASING.getIngredient(0), 'W', new UnificationEntry(plate, Steel), 'S', SHAFTS[0].asStack());
+        VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_PUMPS[0].getId(), MECHANICAL_PUMPS[0].asStack(), " RO", "wPC", " RS", 'O', new UnificationEntry(rotor, WroughtIron), 'S', new UnificationEntry(screw, WroughtIron), 'R', new UnificationEntry(ring, Rubber), 'P', AllBlocks.FLUID_PIPE, 'C', COGWHEELS[0].asStack());
+        VanillaRecipeHelper.addShapedRecipe(provider, FANS[0].getId(), FANS[0].asStack(), "ASA", "CMC", "wPh", 'S', SHAFTS[0], 'A', new UnificationEntry(plate, WroughtIron), 'C', new UnificationEntry(plate, Steel), 'M', CASING.getIngredient(0), 'P', PROPELLERS[0]);
+
         VanillaRecipeHelper.addShapedRecipe(provider, AllItems.WRENCH.getId(), AllItems.WRENCH.asStack(), "PP", "PC", " S", 'P', new UnificationEntry(plate, Gold), 'C', COGWHEELS[ULV], 'S', new UnificationEntry(rod, Wood));
         VanillaRecipeHelper.addShapedRecipe(provider, AllBlocks.CHUTE.getId(), AllBlocks.CHUTE.asStack(), "PGP", "PCP", "wPh", 'P', new UnificationEntry(plate, Iron), 'G', new UnificationEntry(gearSmall, Iron), 'C', createIngFromTag("forge", "chests/wooden"));
         VanillaRecipeHelper.addShapedRecipe(provider, AllBlocks.BASIN.getId(), AllBlocks.BASIN.asStack(), "AhA", "AAA", 'A', new UnificationEntry(plate, AndesiteAlloy));

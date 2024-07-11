@@ -2,7 +2,7 @@ package electrolyte.greate.mixin;
 
 import com.google.gson.JsonElement;
 import electrolyte.greate.Greate;
-import electrolyte.greate.foundation.data.recipe.GreateRecipeRemoval;
+import electrolyte.greate.foundation.data.recipe.removal.GreateRecipeRemoval;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
