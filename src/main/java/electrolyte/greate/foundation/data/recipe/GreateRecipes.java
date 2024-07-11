@@ -8,7 +8,6 @@ import com.simibubi.create.AllItems;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import electrolyte.greate.foundation.data.recipe.machine.*;
-import electrolyte.greate.gtceu.multiblocks.GreateTransformerRecipes;
 import electrolyte.greate.registry.*;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -46,7 +45,6 @@ public class GreateRecipes {
         GreateMechanicalMixingRecipes.register(provider);
         GreateSequencedAssemblyRecipes.register(provider);
         GreateSpoutRecipes.register(provider);
-        GreateTransformerRecipes.register(provider);
     }
 
     public static void conversionCycle(Consumer<FinishedRecipe> provider, List<ItemProviderEntry<? extends ItemLike>> cycle) {
