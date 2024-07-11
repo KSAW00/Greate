@@ -77,9 +77,6 @@ public class GreateCraftingTableRecipes {
         VanillaRecipeHelper.addShapedRecipe(provider, AllBlocks.SPOUT.getId(), AllBlocks.SPOUT.asStack(), " C ", "hPf", 'C', MECHANICAL_PUMPS[ULV], 'P', AllBlocks.COPPER_CASING.asStack());
         VanillaRecipeHelper.addShapedRecipe(provider, AllBlocks.MECHANICAL_CRAFTER.getId(), new ItemStack(AllBlocks.MECHANICAL_CRAFTER.asItem(), 3), " C ", " R ", "wAh", 'C', CIRCUIT.getIngredient(ULV), 'R', Blocks.CRAFTING_TABLE, 'A', AllBlocks.BRASS_CASING);
 
-        VanillaRecipeHelper.addShapedRecipe(provider, ULV_CONVEYOR_MODULE.getId(), ULV_CONVEYOR_MODULE.asStack(), "RRR", "MCM", "RRR", 'R', new UnificationEntry(plate, Rubber), 'C', new UnificationEntry(cableGtSingle, RedAlloy), 'M', ULV_ELECTRIC_MOTOR.asStack());
-        VanillaRecipeHelper.addShapedRecipe(provider, true, ULV_ELECTRIC_MOTOR.getId(), ULV_ELECTRIC_MOTOR.asStack(), "CWR", "WMW", "RWC", 'C', new UnificationEntry(cableGtSingle, RedAlloy), 'W', new UnificationEntry(wireGtSingle, Tin), 'R', new UnificationEntry(rod, Copper), 'M', new UnificationEntry(rod, IronMagnetic));
-
         if(GTCEuAPI.isHighTier()) {
             VanillaRecipeHelper.addShapedRecipe(provider, SAWS[9].getId(), SAWS[9].asStack(), "GSG", "MCM", "OHO", 'G', CIRCUIT.getIngredient(UHV), 'S', new UnificationEntry(toolHeadBuzzSaw, Neutronium), 'M', MOTOR.getIngredient(UHV), 'C', CASING.getIngredient(UHV), 'H', SHAFTS[UHV].asStack(), 'O', CONVEYOR.getIngredient(UHV));
         }
