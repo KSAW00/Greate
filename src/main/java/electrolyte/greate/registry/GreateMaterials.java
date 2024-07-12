@@ -31,7 +31,7 @@ public class GreateMaterials {
 				.buildAndRegister();
 		RoseQuartz = Builder("rose_quartz")
 				.gem()
-				.color(0xF44471).secondaryColor(0xFCE8CF).iconSet(QUARTZ)
+				.color(0xF44471).secondaryColor(0xC63163).iconSet(QUARTZ)
 				.flags(NO_SMELTING, CRYSTALLIZABLE, DISABLE_DECOMPOSITION)
 				.components(NetherQuartz, 1, Redstone, 8)
 				.buildAndRegister();
