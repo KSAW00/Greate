@@ -1,6 +1,7 @@
 package electrolyte.greate.registry;
 
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
+import com.gregtechceu.gtceu.api.data.chemical.material.info.MaterialIconSet;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.PropertyKey;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.ToolProperty;
 import electrolyte.greate.Greate;
@@ -24,7 +25,7 @@ public class GreateMaterials {
 		AndesiteAlloy = Builder("andesite_alloy")
 				.ingot().fluid()
 				.appendFlags(STD_METAL, GENERATE_BOLT_SCREW)
-				.color(0xC7C8B8).iconSet(DULL)
+				.color(0xDADBCA).secondaryColor(0xABC7B5).iconSet(new MaterialIconSet("andesite_alloy", DULL))
 				.toolStats(ToolProperty.Builder.of(1, 1, 64, 0, BUZZSAW).build())
 				.components(Andesite, 9, Iron, 1)
 				.buildAndRegister();
