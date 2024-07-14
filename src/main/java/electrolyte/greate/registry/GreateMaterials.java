@@ -5,6 +5,8 @@ import com.gregtechceu.gtceu.api.data.chemical.material.info.MaterialIconSet;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.PropertyKey;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.ToolProperty;
 import electrolyte.greate.Greate;
+import electrolyte.greate.content.gtceu.material.PropertyKeys;
+import electrolyte.greate.content.gtceu.material.WhiskProperty;
 
 import static com.gregtechceu.gtceu.api.data.chemical.material.info.MaterialFlags.*;
 import static com.gregtechceu.gtceu.api.data.chemical.material.info.MaterialIconSet.*;
@@ -12,6 +14,7 @@ import static com.gregtechceu.gtceu.api.item.tool.GTToolType.BUZZSAW;
 import static com.gregtechceu.gtceu.common.data.GTElements.Ma;
 import static com.gregtechceu.gtceu.common.data.GTElements.Sp;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
+import static electrolyte.greate.GreateValues.TM;
 
 public class GreateMaterials {
 
@@ -56,6 +59,19 @@ public class GreateMaterials {
 		WroughtIron.addFlags(GENERATE_ROTOR);
 		Aluminium.addFlags(GENERATE_ROTOR);
 		Neutronium.addFlags(GENERATE_ROTOR);
+
+		// Add whisks to Greate tier materials
+		AndesiteAlloy.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		Steel.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		Aluminium.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		StainlessSteel.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		Titanium.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		TungstenSteel.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		RhodiumPlatedPalladium.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		NaquadahAlloy.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		Darmstadtium.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+		Neutronium.setProperty(PropertyKeys.WHISK, new WhiskProperty());
+
 		Darmstadtium.setProperty(PropertyKey.TOOL, ToolProperty.Builder.of(50.0F, 15.0F, 5120, 5, BUZZSAW).build());
 		RhodiumPlatedPalladium.setProperty(PropertyKey.TOOL, ToolProperty.Builder.of(35.0F, 10.0F, 2560, 4, BUZZSAW).build());
 	}

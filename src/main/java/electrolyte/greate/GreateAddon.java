@@ -47,4 +47,9 @@ public class GreateAddon implements IGTAddon {
 	public void addRecipes(Consumer<FinishedRecipe> provider) {
 		GreateRecipes.init(provider);
 	}
+
+	@Override
+	public void registerTagPrefixes() {
+		GreateTagPrefixes.register();
+	}
 }

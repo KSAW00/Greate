@@ -49,6 +49,7 @@ public class GreateLang {
         REGISTRATE.addRawLang("material.greate.chromatic_compound", "Chromatic Compound");
         REGISTRATE.addRawLang("material.greate.refined_radiance", "Refined Radiance");
         REGISTRATE.addRawLang("material.greate.shadow_steel", "Shadow Steel");
+        REGISTRATE.addRawLang("tagprefix.whisk", "%s Whisk");
     }
 
     public static void register() {}
