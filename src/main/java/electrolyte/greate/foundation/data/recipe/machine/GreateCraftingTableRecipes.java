@@ -2,6 +2,7 @@ package electrolyte.greate.foundation.data.recipe.machine;
 
 import com.google.common.collect.ImmutableList;
 import com.gregtechceu.gtceu.api.GTCEuAPI;
+import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
 import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
@@ -56,6 +57,7 @@ public class GreateCraftingTableRecipes {
             VanillaRecipeHelper.addShapelessRecipe(provider, LARGE_COGWHEELS[tier].getId(), LARGE_COGWHEELS[tier].asStack(), SHAFTS[tier].asStack(), new UnificationEntry(plate, previousTierMaterial), new UnificationEntry(plate, previousTierMaterial), GreateRecipes.createIngFromTag("forge", "tools/files"));
             VanillaRecipeHelper.addShapelessRecipe(provider, LARGE_COGWHEELS[tier].getId().withSuffix("_from_little"), LARGE_COGWHEELS[tier].asStack(), COGWHEELS[tier].asStack(), new UnificationEntry(plate, previousTierMaterial), GreateRecipes.createIngFromTag("forge", "tools/files"));
             VanillaRecipeHelper.addShapedRecipe(provider, GEARBOXES[tier].getId(), GEARBOXES[tier].asStack(), " S ", "SCS", "wSh", 'S', SHAFTS[tier].asStack(), 'C', AllBlocks.ANDESITE_CASING);
+            VanillaRecipeHelper.addShapedRecipe(provider, String.format("%s_whisk", tierMaterial.getName()), ChemicalHelper.get(whisk, tierMaterial), "fId", "PIP", "PPP", 'I', new UnificationEntry(ingot, tierMaterial), 'P', new UnificationEntry(plate, tierMaterial));
             conversionCycle(provider, ImmutableList.of(GEARBOXES[tier], VERTICAL_GEARBOXES[tier]));
 
             // Machines
@@ -64,6 +66,7 @@ public class GreateCraftingTableRecipes {
                 VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_PRESSES[tier].getId(), MECHANICAL_PRESSES[tier].asStack(), "PSP", "CMC", "wBh", 'P', new UnificationEntry(plate, tierMaterial), 'S', SHAFTS[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'B', new UnificationEntry(block, tierMaterial));
                 VanillaRecipeHelper.addShapedRecipe(provider, MECHANICAL_MIXERS[tier].getId(), MECHANICAL_MIXERS[tier].asStack(), " S ", "CMC", "wWh", 'S', SHAFTS[tier].asStack(), 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'W', new UnificationEntry(whisk, tierMaterial));
                 VanillaRecipeHelper.addShapedRecipe(provider, MILLSTONES[tier].getId(), MILLSTONES[tier].asStack(), "CAC", "WHW", "wSh", 'A', COGWHEELS[tier].asStack(), 'W', Ingredient.of(ItemTags.WOODEN_SLABS), 'H', CASING.getIngredient(tier), 'C', CIRCUIT.getIngredient(tier), 'S', SHAFTS[tier].asStack());
+                VanillaRecipeHelper.addShapedRecipe(provider, String.format("%s_whisk", tierMaterial.getName()), ChemicalHelper.get(whisk, tierMaterial), "fId", "PIP", "PPP", 'I', new UnificationEntry(ingot, tierMaterial), 'P', new UnificationEntry(plate, tierMaterial));
                 VanillaRecipeHelper.addShapedRecipe(provider, FANS[tier].getId(), FANS[tier].asStack(), " S ", "CMC", "wRh", 'S', SHAFTS[tier], 'C', CIRCUIT.getIngredient(tier), 'M', CASING.getIngredient(tier), 'R', new UnificationEntry(rotor, tierMaterial));
 
                 if(tier != 9) {
