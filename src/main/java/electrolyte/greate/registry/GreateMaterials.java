@@ -54,6 +54,8 @@ public class GreateMaterials {
 				.setFormula(ChromaticCompound.getChemicalFormula() + Sp.symbol());
 
 		WroughtIron.addFlags(GENERATE_ROTOR);
+		Aluminium.addFlags(GENERATE_ROTOR);
+		Neutronium.addFlags(GENERATE_ROTOR);
 		Darmstadtium.setProperty(PropertyKey.TOOL, ToolProperty.Builder.of(50.0F, 15.0F, 5120, 5, BUZZSAW).build());
 		RhodiumPlatedPalladium.setProperty(PropertyKey.TOOL, ToolProperty.Builder.of(35.0F, 10.0F, 2560, 4, BUZZSAW).build());
 	}

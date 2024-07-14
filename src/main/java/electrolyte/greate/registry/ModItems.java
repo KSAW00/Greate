@@ -37,18 +37,6 @@ public class ModItems {
             DARMSTADTIUM_WHISK,
             NEUTRONIUM_WHISK;
 
-    public static final ItemEntry<Item>[] PROPELLERS = new ItemEntry[10];
-    public static ItemEntry<Item>
-            STEEL_PROPELLER,
-            ALUMINIUM_PROPELLER,
-            STAINLESS_STEEL_PROPELLER,
-            TITANIUM_PROPELLER,
-            TUNGSTENSTEEL_PROPELLER,
-            PALLADIUM_PROPELLER,
-            NAQUADAH_PROPELLER,
-            DARMSTADTIUM_PROPELLER,
-            NEUTRONIUM_PROPELLER;
-
     public static void register() {
         REGISTRATE.setCreativeTab(Greate.GREATE_TAB);
 
@@ -62,17 +50,6 @@ public class ModItems {
         ALLOYS[ZPM] = NAQUADAH_ALLOY = alloy(ZPM);
         ALLOYS[UV] = DARMSTADTIUM_ALLOY = alloy(UV);
         ALLOYS[UHV] = NEUTRONIUM_ALLOY = alloy(UHV);
-
-        PROPELLERS[ULV] = PROPELLER;
-        PROPELLERS[LV] = STEEL_PROPELLER = propeller(LV);
-        PROPELLERS[MV] = ALUMINIUM_PROPELLER = propeller(MV);
-        PROPELLERS[HV] = STAINLESS_STEEL_PROPELLER = propeller(HV);
-        PROPELLERS[EV] = TITANIUM_PROPELLER = propeller(EV);
-        PROPELLERS[IV] = TUNGSTENSTEEL_PROPELLER = propeller(IV);
-        PROPELLERS[LuV] = PALLADIUM_PROPELLER = propeller(LuV);
-        PROPELLERS[ZPM] = NAQUADAH_PROPELLER = propeller(ZPM);
-        PROPELLERS[UV] = DARMSTADTIUM_PROPELLER = propeller(UV);
-        PROPELLERS[UHV] = NEUTRONIUM_PROPELLER = propeller(UHV);
 
         WHISKS[ULV] = WHISK;
         WHISKS[LV] = STEEL_WHISK = whisk(LV);
@@ -99,14 +76,6 @@ public class ModItems {
                 .item(TM[tier].getName() + "_whisk", Item::new)
                 .model((c, p) -> p.withExistingParent(c.getName(), "item/generated")
                         .texture("layer0", p.modLoc("item/" + c.getName().substring(0, c.getName().length() - 6) + "/whisk")))
-                .register();
-    }
-
-    public static ItemEntry<Item> propeller(int tier) {
-        return REGISTRATE
-                .item(TM[tier].getName() + "_propeller", Item::new)
-                .model((c, p) -> p.withExistingParent(c.getName(), "item/generated")
-                        .texture("layer0", p.modLoc("item/" + c.getName().substring(0, c.getName().length() - 10) + "/propeller")))
                 .register();
     }
 }
