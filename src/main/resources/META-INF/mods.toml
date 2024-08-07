@@ -15,13 +15,6 @@ authors="Electrolyte"
 description="Create Gregified"
 
 [[dependencies.greate]]
-    modId="kubejs_create"
-    mandatory=true
-    versionRange="[2001.2.5,)"
-    ordering="NONE"
-    side="BOTH"
-
-[[dependencies.greate]]
     modId="create"
     mandatory=true
     versionRange="[0.5.1.e,)"
