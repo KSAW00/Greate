@@ -59,9 +59,6 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
-        behaviours.remove(pressingBehaviour);
-        pressingBehaviour = new TieredPressingBehaviour(this);
-        behaviours.add(pressingBehaviour);
         targetCircuit = new ScrollValueBehaviour(Lang.builder(Greate.MOD_ID).translate("tooltip.circuit_number").component(),
                 this, new CircuitValueBoxTransform());
         targetCircuit.between(0, 32);
