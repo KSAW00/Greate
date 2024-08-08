@@ -14,7 +14,6 @@ import static com.gregtechceu.gtceu.api.item.tool.GTToolType.BUZZSAW;
 import static com.gregtechceu.gtceu.common.data.GTElements.Ma;
 import static com.gregtechceu.gtceu.common.data.GTElements.Sp;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
-import static electrolyte.greate.GreateValues.TM;
 
 public class GreateMaterials {
 
@@ -27,7 +26,7 @@ public class GreateMaterials {
 	public static void init() {
 		AndesiteAlloy = Builder("andesite_alloy")
 				.ingot().fluid()
-				.appendFlags(STD_METAL, GENERATE_BOLT_SCREW)
+				.appendFlags(STD_METAL, GENERATE_BOLT_SCREW, GENERATE_ROTOR)
 				.color(0xDADBCA).secondaryColor(0xABC7B5).iconSet(new MaterialIconSet("andesite_alloy", DULL))
 				.toolStats(ToolProperty.Builder.of(1, 1, 64, 0, BUZZSAW).build())
 				.components(Andesite, 9, Iron, 1)
