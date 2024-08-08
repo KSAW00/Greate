@@ -25,6 +25,8 @@ public class GreateLang {
         REGISTRATE.addRawLang("greate.recipe.automatic_shapeless", "Automated Shapeless Crafting");
         REGISTRATE.addRawLang("greate.recipe.automatic_packing", "Automated Shaped Crafting");
         REGISTRATE.addRawLang("greate.recipe.automatic_brewing", "Automated Brewing");
+        REGISTRATE.addRawLang("greate.recipe.assembly.pressing", "Process in %s or higher Press");
+        REGISTRATE.addRawLang("greate.recipe.assembly.cutting", "Cut with %s or higher Saw");
         REGISTRATE.addRawLang("greate.jei.recipe_tier", "Recipe Tier: ");
         REGISTRATE.addRawLang("greate.recipe.processing.extra_chance", "% extra chance per tier");
         REGISTRATE.addRawLang("greate.old_create_items_warning", "[Greate]: The conversion recipe for this item will be removed in a future version, once all recipes have been properly updated!");

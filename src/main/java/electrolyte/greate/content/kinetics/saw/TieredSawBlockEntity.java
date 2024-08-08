@@ -112,10 +112,17 @@ public class TieredSawBlockEntity extends SawBlockEntity implements ITieredKinet
     public List<Recipe<?>> getValidRecipes() {
         TieredSawBlockEntity be = (TieredSawBlockEntity) level.getBlockEntity(this.getBlockPos());
         Optional<CuttingRecipe> assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, inventory.getStackInSlot(0), AllRecipeTypes.CUTTING.getType(), CuttingRecipe.class);
+        Optional<TieredCuttingRecipe> tieredAssemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, inventory.getStackInSlot(0), ModRecipeTypes.CUTTING.getType(), TieredCuttingRecipe.class);
         FilteringBehaviour filtering = ((MixinSawBlockEntityAccessor) this).getFilteringBehaviour();
         Object cuttingRecipesKey = ((MixinSawBlockEntityAccessor) this).getCuttingRecipesKey();
         if(assemblyRecipe.isPresent() && filtering.test(assemblyRecipe.get().getResultItem(level.registryAccess()))) {
             return ImmutableList.of(assemblyRecipe.get());
+        }
+        if(tieredAssemblyRecipe.isPresent() && filtering.test(tieredAssemblyRecipe.get().getResultItem(level.registryAccess()))) {
+            Predicate<Recipe<?>> predicate = TieredRecipeConditions.isEqualOrAboveTier(tier);
+            if(predicate.test(tieredAssemblyRecipe.get())) {
+                return ImmutableList.of(tieredAssemblyRecipe.get());
+            }
         }
         Predicate<Recipe<?>> recipeTypes = RecipeConditions.isOfType(AllRecipeTypes.CUTTING.getType(), ModRecipeTypes.CUTTING.getType(), GTRecipeTypes.CUTTER_RECIPES,
                 AllConfigs.server().recipes.allowStonecuttingOnSaw.get() ? RecipeType.STONECUTTING : null,

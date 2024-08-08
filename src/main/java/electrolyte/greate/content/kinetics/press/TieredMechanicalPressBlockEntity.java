@@ -44,6 +44,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity implements ITieredKineticBlockEntity, ITieredProcessingRecipeHolder, ICircuitHolder {
 
@@ -111,7 +112,6 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
 
     @Override
     public boolean tryProcessOnBelt(TransportedItemStack input, List<ItemStack> outputList, boolean simulate) {
-        //TODO: tiered sequenced assembly recipes
         Optional<? extends Recipe<?>> recipe = getValidRecipe(input.stack);
         if(recipe.isEmpty()) return false;
         if(simulate) return true;
@@ -133,9 +133,18 @@ public class TieredMechanicalPressBlockEntity extends MechanicalPressBlockEntity
 
     public Optional<? extends Recipe<?>> getValidRecipe(ItemStack stack) {
         Optional<PressingRecipe> assemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, stack, AllRecipeTypes.PRESSING.getType(), PressingRecipe.class);
+        Optional<TieredPressingRecipe> tieredAssemblyRecipe = SequencedAssemblyRecipe.getRecipe(level, stack, ModRecipeTypes.PRESSING.getType(), TieredPressingRecipe.class);
+
         if(assemblyRecipe.isPresent()) {
             currentRecipe = assemblyRecipe.get();
             return assemblyRecipe;
+        }
+        if(tieredAssemblyRecipe.isPresent()) {
+            Predicate<Recipe<?>> predicate = TieredRecipeConditions.isEqualOrAboveTier(tier).and(TieredRecipeConditions.circuitMatches(targetCircuit.getValue()));
+            if(predicate.test(tieredAssemblyRecipe.get())) {
+                currentRecipe = tieredAssemblyRecipe.get();
+                return tieredAssemblyRecipe;
+            }
         }
 
         pressingInv.setItem(0, stack);

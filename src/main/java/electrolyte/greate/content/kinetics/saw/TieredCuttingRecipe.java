@@ -1,5 +1,6 @@
 package electrolyte.greate.content.kinetics.saw;
 
+import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability;
 import com.gregtechceu.gtceu.api.capability.recipe.FluidRecipeCapability;
 import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
@@ -8,8 +9,10 @@ import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.LangBuilder;
+import electrolyte.greate.Greate;
 import electrolyte.greate.GreateValues;
+import electrolyte.greate.compat.jei.category.sequencedassembly.TieredCuttingSubCategory;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipe;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder.TieredProcessingRecipeParams;
@@ -61,7 +64,7 @@ public class TieredCuttingRecipe extends TieredProcessingRecipe<RecipeWrapper> i
     @Override
     @OnlyIn(Dist.CLIENT)
     public Component getDescriptionForAssembly() {
-        return Lang.translateDirect("recipe.assembly.cutting");
+        return new LangBuilder(Greate.MOD_ID).translate("recipe.assembly.cutting", GTValues.VN[recipeTier]).component();
     }
 
     @Override
@@ -74,7 +77,7 @@ public class TieredCuttingRecipe extends TieredProcessingRecipe<RecipeWrapper> i
 
     @Override
     public Supplier<Supplier<SequencedAssemblySubCategory>> getJEISubCategory() {
-        return () -> SequencedAssemblySubCategory.AssemblyCutting::new;
+        return () -> TieredCuttingSubCategory::new;
     }
 
     @Override

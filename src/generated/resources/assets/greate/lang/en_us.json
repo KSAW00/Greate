@@ -231,6 +231,8 @@
   "greate.gui.goggles.saw_contents": "Saw Contents:",
   "greate.jei.recipe_tier": "Recipe Tier: ",
   "greate.old_create_items_warning": "[Greate]: The conversion recipe for this item will be removed in a future version, once all recipes have been properly updated!",
+  "greate.recipe.assembly.cutting": "Cut with %s or higher Saw",
+  "greate.recipe.assembly.pressing": "Process in %s or higher Press",
   "greate.recipe.automatic_brewing": "Automated Brewing",
   "greate.recipe.automatic_packing": "Automated Shaped Crafting",
   "greate.recipe.automatic_shapeless": "Automated Shapeless Crafting",
