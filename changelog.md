@@ -1,2 +1,6 @@
-- Change all cable recipes to use the spout/sequenced assembly
-- Update ULV tier machine recipes
+- Remove propellers in favor of GT rotors
+- Replace whisk items with whisk TagPrefix
+- Fix crash on world create/select screen
+- Remove hard dep on kubejs-create
+- Fix tiered mechanical mixers/presses not being placed correctly on tiered belts
+- Add ability to make tiered sequenced assembly recipes
