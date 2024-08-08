@@ -7,7 +7,6 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.Greate;
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.mixer.TieredMechanicalMixerBlock;
-import electrolyte.greate.content.processing.TieredAssemblyOperatorBlockItem;
 import electrolyte.greate.foundation.data.GreateBuilderTransformers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.material.MapColor;
@@ -56,7 +55,6 @@ public class MechanicalMixers {
                 .transform(GreateBuilderTransformers.tieredMechanicalMixer())
                 .addLayer(() -> RenderType::cutoutMipped)
                 .onRegister(c -> c.setTier(tier))
-                .item(TieredAssemblyOperatorBlockItem::new).build()
                 .register();
     }
 }

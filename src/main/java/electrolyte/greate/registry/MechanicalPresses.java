@@ -7,7 +7,6 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.Greate;
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.press.TieredMechanicalPressBlock;
-import electrolyte.greate.content.processing.TieredAssemblyOperatorBlockItem;
 import electrolyte.greate.foundation.data.GreateBuilderTransformers;
 import net.minecraft.world.level.material.MapColor;
 
@@ -55,7 +54,6 @@ public class MechanicalPresses {
                 .transform(GreateBuilderTransformers.tieredMechanicalPress())
                 .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .onRegister(c -> c.setTier(tier))
-                .item(TieredAssemblyOperatorBlockItem::new).build()
                 .register();
     }
 }
