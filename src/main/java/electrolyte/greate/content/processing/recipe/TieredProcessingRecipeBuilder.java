@@ -105,7 +105,7 @@ public class TieredProcessingRecipeBuilder<T extends TieredProcessingRecipe<?>> 
         for(Content c : list) {
             ItemStack[] items = ((Ingredient) c.content).getItems();
             for (ItemStack item : items) {
-                nonNullList.add(new TieredProcessingOutput(item, c.chance, getExtraPercent(c.tierChanceBoost, recipeTier, machineTier, true)));
+                nonNullList.add(new TieredProcessingOutput(item, (float) c.chance / 10000, getExtraPercent((float) c.tierChanceBoost / 10000, recipeTier, machineTier, true)));
             }
         }
         return withItemOutputs(nonNullList);
