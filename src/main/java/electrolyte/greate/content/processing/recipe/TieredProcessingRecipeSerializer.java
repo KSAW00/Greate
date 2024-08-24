@@ -51,6 +51,8 @@ public class TieredProcessingRecipeSerializer<T extends TieredProcessingRecipe<?
             json.addProperty("heatRequirement", requiredHeat.serialize());
         int recipeTier = recipe.getRecipeTier();
         json.addProperty("recipeTier", recipeTier);
+        int circuitNumber = recipe.getCircuitNumber();
+        json.addProperty("circuitNumber", circuitNumber);
         recipe.writeAdditional(json);
     }
 
@@ -114,6 +116,7 @@ public class TieredProcessingRecipeSerializer<T extends TieredProcessingRecipe<?
         buffer.writeVarInt(recipe.getRequiredHeat()
                 .ordinal());
         buffer.writeVarInt(recipe.getRecipeTier());
+        buffer.writeVarInt(recipe.getCircuitNumber());
 
         recipe.writeAdditional(buffer);
     }
@@ -147,6 +150,7 @@ public class TieredProcessingRecipeSerializer<T extends TieredProcessingRecipe<?
                 .duration(buffer.readVarInt())
                 .requiresHeat(HeatCondition.values()[buffer.readVarInt()])
                 .recipeTier(buffer.readVarInt())
+                .recipeCircuit(buffer.readVarInt())
                 .build();
         recipe.readAdditional(buffer);
         return recipe;
