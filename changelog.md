@@ -1,6 +1,4 @@
-- Remove propellers in favor of GT rotors
-- Replace whisk items with whisk TagPrefix
-- Fix crash on world create/select screen
-- Remove hard dep on kubejs-create
-- Fix tiered mechanical mixers/presses not being placed correctly on tiered belts
-- Add ability to make tiered sequenced assembly recipes
+- Fix server disconnect bug
+- Fix incorrect chance values being inherited from GT recipes after updating to GT 1.4+
+- Add recipes for various create things
+- Fix some overlapping/missing GT recipes
