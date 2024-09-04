@@ -3,7 +3,6 @@ package electrolyte.greate.registry;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.jozufozu.flywheel.core.PartialModel;
 import electrolyte.greate.Greate;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,7 +152,7 @@ public class GreatePartialModels {
     }
 
     private static PartialModel block(String path) {
-        return new PartialModel(new ResourceLocation(Greate.MOD_ID, "block/" + path));
+        return new PartialModel(Greate.id("block/" + path));
     }
 
     public static void register() {}

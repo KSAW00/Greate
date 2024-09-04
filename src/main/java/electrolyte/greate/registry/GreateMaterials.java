@@ -58,6 +58,7 @@ public class GreateMaterials {
 		WroughtIron.addFlags(GENERATE_ROTOR);
 		Aluminium.addFlags(GENERATE_ROTOR);
 		Neutronium.addFlags(GENERATE_ROTOR);
+		Copper.addFlags(GENERATE_BOLT_SCREW);
 
 		// Add whisks to Greate tier materials
 		AndesiteAlloy.setProperty(PropertyKeys.WHISK, new WhiskProperty());

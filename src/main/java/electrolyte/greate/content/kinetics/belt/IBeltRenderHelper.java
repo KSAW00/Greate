@@ -14,7 +14,7 @@ public interface IBeltRenderHelper {
     default PartialModel getBeltPulleyModel(BlockState blockState, TieredBeltBlockEntity be) {
         TieredBeltBlock tieredBeltBlock = (TieredBeltBlock) blockState.getBlock();
         Material beltMaterial = tieredBeltBlock.getBeltMaterial();
-        ResourceLocation resourceLocation = new ResourceLocation(Greate.MOD_ID, "block/" + ForgeRegistries.BLOCKS.getKey(blockState.getBlock()).getPath() + "_pulley");
+        ResourceLocation resourceLocation = Greate.id("block/" + ForgeRegistries.BLOCKS.getKey(blockState.getBlock()).getPath() + "_pulley");
         return GreatePartialModels.NEW_BELT_MODELS.get(beltMaterial).stream().filter(p -> p.getLocation().equals(resourceLocation)).findFirst().orElse(AllPartialModels.BELT_PULLEY);
     }
 }

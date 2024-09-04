@@ -69,7 +69,7 @@ public enum ModRecipeTypes implements IRecipeTypeInfo {
 
 	ModRecipeTypes(Supplier<RecipeSerializer<?>> serializerSupplier) {
 		String name = Lang.asId(name());
-		id = new ResourceLocation(Greate.MOD_ID, name);
+		id = Greate.id(name);
 		serializerObject = Registers.SERIALIZER_REGISTER.register(name, serializerSupplier);
 		typeObject = Registers.TYPE_REGISTER.register(name, () -> RecipeType.simple(id));
 		type = typeObject;

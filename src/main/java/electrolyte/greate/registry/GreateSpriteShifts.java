@@ -4,7 +4,6 @@ import com.simibubi.create.foundation.block.render.SpriteShiftEntry;
 import com.simibubi.create.foundation.block.render.SpriteShifter;
 import electrolyte.greate.Greate;
 import electrolyte.greate.content.kinetics.belt.TieredBeltBlock;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -41,6 +40,6 @@ public class GreateSpriteShifts {
     }
 
     private static SpriteShiftEntry get(String originalLocation, String targetLocation) {
-        return SpriteShifter.get(new ResourceLocation(Greate.MOD_ID, "block/" + originalLocation), new ResourceLocation(Greate.MOD_ID, "block/" + targetLocation));
+        return SpriteShifter.get(Greate.id("block/" + originalLocation), Greate.id("block/" + targetLocation));
     }
 }

@@ -29,7 +29,6 @@ public class GreateLang {
         REGISTRATE.addRawLang("greate.recipe.assembly.cutting", "Cut with %s or higher Saw");
         REGISTRATE.addRawLang("greate.jei.recipe_tier", "Recipe Tier: ");
         REGISTRATE.addRawLang("greate.recipe.processing.extra_chance", "% extra chance per tier");
-        REGISTRATE.addRawLang("greate.old_create_items_warning", "[Greate]: The conversion recipe for this item will be removed in a future version, once all recipes have been properly updated!");
         REGISTRATE.addRawLang("config.greate.option.ULS", "ULS Settings");
         REGISTRATE.addRawLang("config.greate.option.LS", "LS Settings");
         REGISTRATE.addRawLang("config.greate.option.MS", "MS Settings");

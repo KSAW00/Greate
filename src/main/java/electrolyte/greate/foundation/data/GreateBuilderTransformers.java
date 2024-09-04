@@ -60,8 +60,8 @@ public class GreateBuilderTransformers {
                            .texture("0", Create.asResource("block/andesite_casing"))
                            .texture("1", Create.asResource("block/gearbox"))
                            .texture("particle", Create.asResource("block/andesite_casing"))
-                           .texture("1_0", new ResourceLocation(Greate.MOD_ID, "block/" + material + "/axis"))
-                           .texture("1_1", new ResourceLocation(Greate.MOD_ID, "block/" + material + "/axis_top"));
+                           .texture("1_0", Greate.id("block/" + material + "/axis"))
+                           .texture("1_1", Greate.id("block/" + material + "/axis_top"));
                 })
                 .build();
     }
@@ -79,8 +79,8 @@ public class GreateBuilderTransformers {
                             .texture("0", Create.asResource("block/brass_casing"))
                             .texture("1", Create.asResource("block/brass_gearbox"))
                             .texture("particle", Create.asResource("block/brass_casing"))
-                            .texture("1_0", new ResourceLocation(Greate.MOD_ID, "block/" + material + "/axis"))
-                            .texture("1_1", new ResourceLocation(Greate.MOD_ID, "block/" + material + "/axis_top"));
+                            .texture("1_0", Greate.id("block/" + material + "/axis"))
+                            .texture("1_1", Greate.id("block/" + material + "/axis_top"));
                 })
                 .build();
     }

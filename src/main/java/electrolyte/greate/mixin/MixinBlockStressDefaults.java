@@ -1,5 +1,6 @@
 package electrolyte.greate.mixin;
 
+import com.simibubi.create.Create;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Final;
@@ -17,13 +18,13 @@ public class MixinBlockStressDefaults {
 
     @Shadow @Final public static Map<ResourceLocation, Double> DEFAULT_CAPACITIES;
     @Unique private static final Map<ResourceLocation, Double> greate_NEW_DEFAULT_CAPACITIES = Map.ofEntries(
-            Map.entry(new ResourceLocation("create:hand_crank"), 0.25d),
-            Map.entry(new ResourceLocation("create:copper_valve_handle"), 0.25d),
-            Map.entry(new ResourceLocation("create:water_wheel"), 1d),
-            Map.entry(new ResourceLocation("create:large_water_wheel"), 8d),
-            Map.entry(new ResourceLocation("create:windmill_bearing"), 128d),
-            Map.entry(new ResourceLocation("create:steam_engine"), 256d),
-            Map.entry(new ResourceLocation("create:creative_motor"), 2097152d)
+            Map.entry(Create.asResource("hand_crank"), 0.25d),
+            Map.entry(Create.asResource("copper_valve_handle"), 0.25d),
+            Map.entry(Create.asResource("water_wheel"), 1d),
+            Map.entry(Create.asResource("large_water_wheel"), 8d),
+            Map.entry(Create.asResource("windmill_bearing"), 128d),
+            Map.entry(Create.asResource("steam_engine"), 256d),
+            Map.entry(Create.asResource("creative_motor"), 2097152d)
     );
 
     @Inject(method = "setDefaultCapacity", at = @At("RETURN"), remap = false)

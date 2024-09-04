@@ -1,5 +1,6 @@
 package electrolyte.greate.foundation.data.recipe.removal;
 
+import com.gregtechceu.gtceu.GTCEu;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.PropertyKey;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.WireProperties;
@@ -27,13 +28,13 @@ public class CableRecipeRemoval {
         int voltageTier = GTUtil.getTierByVoltage(property.getVoltage());
         int factor = (int) (wirePrefix.getMaterialAmount(material) * 2 / M);
         if(voltageTier <= LV) {
-            recipe.accept(new ResourceLocation("gtceu", "shapeless/" + material.getName() + "_cable_" + factor));
-            recipe.accept(new ResourceLocation("gtceu", "packer/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name().substring(6).toLowerCase()));
+            recipe.accept(GTCEu.id("shapeless/" + material.getName() + "_cable_" + factor));
+            recipe.accept(GTCEu.id("packer/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name().substring(6).toLowerCase()));
         }
         if(voltageTier <= EV) {
-            recipe.accept(new ResourceLocation("gtceu", "assembler/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name.substring(6).toLowerCase() + "_rubber"));
+            recipe.accept(GTCEu.id("assembler/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name.substring(6).toLowerCase() + "_rubber"));
         }
-        recipe.accept(new ResourceLocation("gtceu", "assembler/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name.substring(6).toLowerCase() + "_silicone"));
-        recipe.accept(new ResourceLocation("gtceu", "assembler/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name.substring(6).toLowerCase() + "_styrene_butadiene"));
+        recipe.accept(GTCEu.id("assembler/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name.substring(6).toLowerCase() + "_silicone"));
+        recipe.accept(GTCEu.id("assembler/cover_" + material.getName() + "_wire_gt_" + wirePrefix.name.substring(6).toLowerCase() + "_styrene_butadiene"));
     }
 }

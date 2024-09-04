@@ -47,7 +47,6 @@ import electrolyte.greate.content.processing.basin.TieredBasinRecipe;
 import electrolyte.greate.registry.*;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -83,7 +82,7 @@ import static electrolyte.greate.registry.EncasedFans.FANS;
 @ParametersAreNonnullByDefault
 public class GreateJEI implements IModPlugin {
 
-    private static final ResourceLocation ID = new ResourceLocation(Greate.MOD_ID, "jei_plugin");
+    private static final ResourceLocation ID = Greate.id("jei_plugin");
     private final List<GreateRecipeCategory<?>> allCategories = new ArrayList<>();
     private IIngredientManager ingredientManager;
 
@@ -268,10 +267,6 @@ public class GreateJEI implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         ingredientManager = registration.getIngredientManager();
-        ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
-                AllBlocks.MILLSTONE.asStack(), AllBlocks.CRUSHING_WHEEL.asStack(),
-                AllBlocks.MECHANICAL_PRESS.asStack(), AllBlocks.MECHANICAL_MIXER.asStack(),
-                AllBlocks.MECHANICAL_SAW.asStack(), AllBlocks.ENCASED_FAN.asStack()));
         allCategories.forEach(c -> c.registerRecipes(registration));
     }
 
@@ -499,7 +494,7 @@ public class GreateJEI implements IModPlugin {
             }
 
             GreateRecipeCategory.Info<T> info = new Info<>(
-                    new mezz.jei.api.recipe.RecipeType<>(new ResourceLocation(Greate.MOD_ID, name), recipeClass),
+                    new mezz.jei.api.recipe.RecipeType<>(Greate.id(name), recipeClass),
                     Lang.builder(Greate.MOD_ID).translate("recipe." + name).component(), background, icon, recipesSupplier, catalysts);
             GreateRecipeCategory<T> category = factory.create(info);
             allCategories.add(category);

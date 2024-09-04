@@ -8,12 +8,15 @@ import com.gregtechceu.gtceu.api.data.chemical.material.properties.WirePropertie
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
 import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.utils.GTUtil;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.fluids.transfer.FillingRecipe;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
+import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import electrolyte.greate.Greate;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -23,6 +26,7 @@ import static com.gregtechceu.gtceu.api.data.tag.TagPrefix.*;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
 import static com.gregtechceu.gtceu.data.recipe.CraftingComponent.PLATE;
 import static electrolyte.greate.GreateValues.TM;
+import static electrolyte.greate.foundation.data.recipe.GreateRecipes.createIngFromTag;
 import static electrolyte.greate.foundation.data.recipe.GreateRecipes.createIngFromUnificationEntry;
 import static electrolyte.greate.registry.Cogwheels.COGWHEELS;
 import static electrolyte.greate.registry.Cogwheels.LARGE_COGWHEELS;
@@ -49,6 +53,16 @@ public class GreateSequencedAssemblyRecipes {
                     .loops(1)
                     .build(provider);
         }
+
+        new SequencedAssemblyRecipeBuilder(Greate.id("sturdy_sheet"))
+                .require(createIngFromTag("forge", "dusts/obsidian"))
+                .transitionTo(AllItems.INCOMPLETE_REINFORCED_SHEET)
+                .addStep(FillingRecipe::new, r -> r.require(Fluids.LAVA, 500))
+                .addStep(PressingRecipe::new, r -> r)
+                .addStep(PressingRecipe::new, r -> r)
+                .addOutput(AllItems.STURDY_SHEET.asItem(), 1)
+                .loops(1)
+                .build(provider);
 
         wireGtSingle.executeHandler(provider, PropertyKey.WIRE, GreateSequencedAssemblyRecipes::addRecipe);
         wireGtDouble.executeHandler(provider, PropertyKey.WIRE, GreateSequencedAssemblyRecipes::addRecipe);

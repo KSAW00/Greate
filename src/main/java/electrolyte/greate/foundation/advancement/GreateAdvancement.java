@@ -65,7 +65,7 @@ public class GreateAdvancement {
 
     void save(Consumer<Advancement> advancementConsumer) {
         if(parent != null) builder.parent(parent.datagenResult);
-        datagenResult = builder.save(advancementConsumer, new ResourceLocation(Greate.MOD_ID, id).toString());
+        datagenResult = builder.save(advancementConsumer, Greate.id(id).toString());
     }
 
     void provideLang(BiConsumer<String, String> consumer) {
