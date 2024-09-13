@@ -3,15 +3,12 @@ package electrolyte.greate.content.kinetics.belt;
 import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.equipment.armor.DivingBootsItem;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.*;
 import com.simibubi.create.content.kinetics.belt.BeltBlockEntity.CasingType;
 import com.simibubi.create.content.kinetics.belt.BeltSlicer.Feedback;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour.TransportedResult;
-import com.simibubi.create.content.kinetics.belt.transport.BeltMovementHandler.TransportedEntityInfo;
-import com.simibubi.create.content.kinetics.belt.transport.BeltTunnelInteractionHandler;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
 import com.simibubi.create.content.logistics.funnel.FunnelBlock;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelBlock;
@@ -33,7 +30,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -55,8 +51,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.ArrayList;
@@ -109,54 +103,6 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
         if(beltPos == null) return;
         if(!(pLevel instanceof Level)) return;
         entityInside(pLevel.getBlockState(beltPos), (Level) pLevel, beltPos, pEntity);
-    }
-
-    @Override
-    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if(!canTransportObjects(pState))
-            return;
-        if(pEntity instanceof Player player) {
-            if(player.isShiftKeyDown())
-                return;
-            if(player.getAbilities().flying)
-                return;
-        }
-        if(DivingBootsItem.isWornBy(pEntity))
-            return;
-        BeltBlockEntity beltBE = BeltHelper.getSegmentBE(pLevel, pPos);
-        if(beltBE == null)
-            return;
-        if(pEntity instanceof ItemEntity itemEntity && pEntity.isAlive()) {
-            if(pLevel.isClientSide)
-                return;
-            if(pEntity.getDeltaMovement().y > 0)
-                return;
-            if(! pEntity.isAlive())
-                return;
-            if(BeltTunnelInteractionHandler.getTunnelOnPosition(pLevel, pPos) != null)
-                return;
-            withBlockEntityDo(pLevel, pPos, be -> {
-                IItemHandler handler = be.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
-                if(handler == null)
-                    return;
-                ItemStack remainder = handler.insertItem(0, itemEntity.getItem().copy(), false);
-                if(remainder.isEmpty())
-                    itemEntity.discard();
-            });
-            return;
-        }
-        BeltBlockEntity controllerBE = BeltHelper.getControllerBE(pLevel, pPos);
-        if(controllerBE == null || controllerBE.passengers == null)
-            return;
-        if(controllerBE.passengers.containsKey(pEntity)) {
-            TransportedEntityInfo info = controllerBE.passengers.get(pEntity);
-            if(info.getTicksSinceLastCollision() != 0 || pPos.equals(pEntity.blockPosition())) {
-                info.refresh(pPos, pState);
-            }
-        } else {
-            controllerBE.passengers.put(pEntity, new TransportedEntityInfo(pPos, pState));
-            pEntity.setOnGround(true);
-        }
     }
 
     @Override
@@ -324,19 +270,8 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
     }
 
     @Override
-    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
-        updateWater(pLevel, pState, pCurrentPos);
-        if(pDirection.getAxis().isHorizontal())
-            updateTunnelConnections(pLevel, pCurrentPos.above());
-        if(pDirection == Direction.UP)
-            updateCoverProperty(pLevel, pCurrentPos, pState);
-        return pState;
-    }
-
-    @Override
     public void updateCoverProperty(LevelAccessor level, BlockPos pos, BlockState state) {
-        if(level.isClientSide())
-            return;
+        if(level.isClientSide()) return;
         if(state.getValue(CASING) && state.getValue(SLOPE) == BeltSlope.HORIZONTAL) {
             withBlockEntityDo(level, pos, be -> be.setCovered(isBlockCoveringBelt(level, pos.above())));
         }
@@ -356,18 +291,11 @@ public class TieredBeltBlock extends BeltBlock implements ITieredBlock, ITieredB
         return true;
     }
 
-    private void updateTunnelConnections(LevelAccessor level, BlockPos pos) {
-        Block tunnelBlock = level.getBlockState(pos).getBlock();
-        if(tunnelBlock instanceof BeltTunnelBlock btb) {
-            btb.updateTunnel(level, pos);
-        }
-    }
-
-    public static boolean canTransportObjects(BlockState state) {
+    /*public static boolean canTransportObjects(BlockState state) {
         if(!(state.getBlock() instanceof TieredBeltBlock)) return false;
         BeltSlope slope = state.getValue(SLOPE);
         return slope != BeltSlope.VERTICAL && slope != BeltSlope.SIDEWAYS;
-    }
+    }*/
 
     public static List<BlockPos> getBeltChain(Level level, BlockPos controllerPos) {
         List<BlockPos> positions = new LinkedList<>();

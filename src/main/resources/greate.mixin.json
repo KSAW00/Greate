@@ -7,6 +7,7 @@
     "MixinAllArmInteractionPointTypes$BeltType",
     "MixinBasinBlockEntity",
     "MixinBasinRenderer",
+    "MixinBeltBlock",
     "MixinBeltBlockEntityAccessor",
     "MixinBeltFunnelBlock",
     "MixinBeltTunnelBlock",

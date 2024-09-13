@@ -17,8 +17,14 @@ public class MixinBeltTunnelBlock {
     @Inject(method = "isValidPositionForPlacement", at = @At("HEAD"), cancellable = true, remap = false)
     private void greate_isValidPositionForPlacement(BlockState state, LevelReader worldIn, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         BlockState blockState = worldIn.getBlockState(pos.below());
-        if(!(blockState.getBlock() instanceof BeltBlock)) cir.setReturnValue(false);
-        if(blockState.getValue(BeltBlock.SLOPE) != BeltSlope.HORIZONTAL) cir.setReturnValue(false);
+        if(!(blockState.getBlock() instanceof BeltBlock)) {
+            cir.setReturnValue(false);
+            return;
+        }
+        if(blockState.getValue(BeltBlock.SLOPE) != BeltSlope.HORIZONTAL) {
+            cir.setReturnValue(false);
+            return;
+        }
         cir.setReturnValue(true);
     }
 }

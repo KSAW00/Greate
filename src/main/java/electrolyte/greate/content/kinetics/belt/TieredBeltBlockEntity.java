@@ -206,14 +206,6 @@ public class TieredBeltBlockEntity extends BeltBlockEntity implements ITieredKin
         }
     }
 
-    /*public ItemStack getShaftType() {
-        return shaftType;
-    }
-
-    public void setShaftType(ItemStack shaftType) {
-        this.shaftType = shaftType;
-    }*/
-
     public int getTier() {
         return tier;
     }

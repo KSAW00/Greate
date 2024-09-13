@@ -29,6 +29,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.core.Vec3i;
@@ -193,33 +194,24 @@ public class TieredBeltRenderer extends SafeBlockEntityRenderer<TieredBeltBlockE
     }
 
     protected void renderItems(TieredBeltBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-        if (!be.isController())
-            return;
-        if (be.beltLength == 0)
-            return;
+        if (!be.isController()) return;
+        if (be.beltLength == 0) return;
 
         ms.pushPose();
 
         Direction beltFacing = be.getBeltFacing();
-        Vec3i directionVec = beltFacing
-                .getNormal();
-        Vec3 beltStartOffset = Vec3.atLowerCornerOf(directionVec).scale(-.5)
-                .add(.5, 15 / 16f, .5);
+        Vec3i directionVec = beltFacing.getNormal();
+        Vec3 beltStartOffset = Vec3.atLowerCornerOf(directionVec).scale(-.5).add(.5, 15 / 16f, .5);
         ms.translate(beltStartOffset.x, beltStartOffset.y, beltStartOffset.z);
-        BeltSlope slope = be.getBlockState()
-                .getValue(BeltBlock.SLOPE);
+        BeltSlope slope = be.getBlockState().getValue(BeltBlock.SLOPE);
         int verticality = slope == BeltSlope.DOWNWARD ? -1 : slope == BeltSlope.UPWARD ? 1 : 0;
-        boolean slopeAlongX = beltFacing
-                .getAxis() == Direction.Axis.X;
+        boolean slopeAlongX = beltFacing.getAxis() == Direction.Axis.X;
 
+        Minecraft mc = Minecraft.getInstance();
+        ItemRenderer itemRenderer = mc.getItemRenderer();
         boolean onContraption = be.getLevel() instanceof WrappedWorld;
 
-        for (TransportedItemStack transported : be.getInventory()
-                .getTransportedItems()) {
-            ms.pushPose();
-            TransformStack.cast(ms)
-                    .nudge(transported.angle);
-
+        for (TransportedItemStack transported : be.getInventory().getTransportedItems()) {
             float offset;
             float sideOffset;
             float verticalMovement;
@@ -232,46 +224,44 @@ public class TieredBeltRenderer extends SafeBlockEntityRenderer<TieredBeltBlockE
                 sideOffset = Mth.lerp(partialTicks, transported.prevSideOffset, transported.sideOffset);
             }
 
-            if (offset < .5)
-                verticalMovement = 0;
-            else
-                verticalMovement = verticality * (Math.min(offset, be.beltLength - .5f) - .5f);
+            if (offset < .5) verticalMovement = 0;
+            else verticalMovement = verticality * (Math.min(offset, be.beltLength - .5f) - .5f);
             Vec3 offsetVec = Vec3.atLowerCornerOf(directionVec).scale(offset);
-            if (verticalMovement != 0)
-                offsetVec = offsetVec.add(0, verticalMovement, 0);
-            boolean onSlope =
-                    slope != BeltSlope.HORIZONTAL && Mth.clamp(offset, .5f, be.beltLength - .5f) == offset;
+            if (verticalMovement != 0) offsetVec = offsetVec.add(0, verticalMovement, 0);
+            boolean onSlope = slope != BeltSlope.HORIZONTAL && Mth.clamp(offset, .5f, be.beltLength - .5f) == offset;
             boolean tiltForward = (slope == BeltSlope.DOWNWARD ^ beltFacing
                     .getAxisDirection() == AxisDirection.POSITIVE) == (beltFacing
                     .getAxis() == Direction.Axis.Z);
             float slopeAngle = onSlope ? tiltForward ? -45 : 45 : 0;
 
+            Vec3 itemPos = beltStartOffset.add(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()).add(offsetVec);
+
+            if(this.shouldCullItem(itemPos)) continue;
+
+            ms.pushPose();
+            TransformStack.cast(ms).nudge(transported.angle);
             ms.translate(offsetVec.x, offsetVec.y, offsetVec.z);
 
-            boolean alongX = beltFacing
-                    .getClockWise()
-                    .getAxis() == Direction.Axis.X;
-            if (!alongX)
-                sideOffset *= -1;
+            boolean alongX = beltFacing.getClockWise().getAxis() == Direction.Axis.X;
+            if (!alongX) sideOffset *= -1;
             ms.translate(alongX ? sideOffset : 0, 0, alongX ? 0 : sideOffset);
 
             int stackLight = onContraption ? light : getPackedLight(be, offset);
-            ItemRenderer itemRenderer = Minecraft.getInstance()
-                    .getItemRenderer();
             boolean renderUpright = BeltHelper.isItemUpright(transported.stack);
-            boolean blockItem = itemRenderer.getModel(transported.stack, be.getLevel(), null, 0)
-                    .isGui3d();
+            BakedModel bakedModel = itemRenderer.getModel(transported.stack, be.getLevel(), null, 0);
+            boolean blockItem = bakedModel.isGui3d();
             int count = Mth.log2(transported.stack.getCount()) / 2;
+            if(mc.player.getEyePosition(1.0F).distanceTo(itemPos) < 16) {
+                count = Mth.log2(transported.stack.getCount()) / 2;
+            }
             Random r = new Random(transported.angle);
 
             boolean slopeShadowOnly = renderUpright && onSlope;
             float slopeOffset = 1 / 8f;
-            if (slopeShadowOnly)
-                ms.pushPose();
+            if (slopeShadowOnly) ms.pushPose();
             if (!renderUpright || slopeShadowOnly)
                 ms.mulPose((slopeAlongX ? Axis.ZP : Axis.XP).rotationDegrees(slopeAngle));
-            if (onSlope)
-                ms.translate(0, slopeOffset, 0);
+            if (onSlope) ms.translate(0, slopeOffset, 0);
             ms.pushPose();
             ms.translate(0, -1 / 8f + 0.005f, 0);
             ShadowRenderHelper.renderShadow(ms, buffer, .75f, .2f);
@@ -307,12 +297,11 @@ public class TieredBeltRenderer extends SafeBlockEntityRenderer<TieredBeltBlockE
                 }
 
                 ms.scale(.5f, .5f, .5f);
-                itemRenderer.renderStatic(null, transported.stack, ItemDisplayContext.FIXED, false, ms, buffer, be.getLevel(), stackLight, overlay, 0);
+                itemRenderer.render(transported.stack, ItemDisplayContext.FIXED, false, ms, buffer, stackLight, overlay, bakedModel);
                 ms.popPose();
 
                 if (!renderUpright) {
-                    if (!blockItem)
-                        ms.mulPose(Axis.YP.rotationDegrees(10));
+                    if (!blockItem) ms.mulPose(Axis.YP.rotationDegrees(10));
                     ms.translate(0, blockItem ? 1 / 64d : 1 / 16d, 0);
                 } else
                     ms.translate(0, 0, -1 / 16f);

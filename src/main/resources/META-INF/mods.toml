@@ -17,7 +17,7 @@ description="Create Gregified"
 [[dependencies.greate]]
     modId="create"
     mandatory=true
-    versionRange="[0.5.1.e,)"
+    versionRange="[0.5.1.h,)"
     ordering="AFTER"
     side="BOTH"
 
