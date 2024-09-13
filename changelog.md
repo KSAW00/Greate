@@ -1,4 +1,2 @@
-- Fix server disconnect bug
-- Fix incorrect chance values being inherited from GT recipes after updating to GT 1.4+
-- Add recipes for various create things
-- Fix some overlapping/missing GT recipes
+- Fix Belt Tunnels causing crashes
+- Fix Belts not accepting items after updating create to 0.5.1-h
