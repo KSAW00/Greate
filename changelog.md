@@ -1,2 +1,2 @@
-- Fix Belt Tunnels causing crashes
-- Fix Belts not accepting items after updating create to 0.5.1-h
+- Fix issue with recipes not showing in JEI when KubeJS is not installed
+- Min GT version is now 1.4.4
