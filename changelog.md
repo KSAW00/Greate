@@ -1,2 +1,6 @@
-- Fix issue with recipes not showing in JEI when KubeJS is not installed
-- Min GT version is now 1.4.4
+- Fix belt crash when using create 0.5.1-i
+- Remove temp obsidian dust maceration recipes 
+- Prefer obsidian/netherrack dusts from create over GT in recipes
+- Fix tag gen for hidden items in recipe viewers
+- Min Create version is now 0.5.1-i
+- Min GT version is now 1.4.5
