@@ -17,14 +17,14 @@ description="Create Gregified"
 [[dependencies.greate]]
     modId="create"
     mandatory=true
-    versionRange="[0.5.1.h,)"
+    versionRange="[0.5.1.i,)"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.greate]]
     modId="gtceu"
     mandatory=true
-    versionRange="[1.4.4,)"
+    versionRange="[1.4.5,)"
     ordering="NONE"
     side="BOTH"
 

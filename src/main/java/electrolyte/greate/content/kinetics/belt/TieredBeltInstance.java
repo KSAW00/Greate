@@ -139,7 +139,7 @@ public class TieredBeltInstance extends TieredKineticBlockEntityInstance<TieredB
             return modelTransform;
         };
 
-        return getRotatingMaterial().getModel(getBeltPulleyModel(blockState, blockEntity), blockState, dir, ms);
+        return getRotatingMaterial().getModel(getBeltPulleyModel(blockState), blockState, dir, ms);
     }
 
     private Direction getOrientation() {

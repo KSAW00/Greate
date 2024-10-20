@@ -11,7 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public interface IBeltRenderHelper {
 
-    default PartialModel getBeltPulleyModel(BlockState blockState, TieredBeltBlockEntity be) {
+    default PartialModel getBeltPulleyModel(BlockState blockState) {
         TieredBeltBlock tieredBeltBlock = (TieredBeltBlock) blockState.getBlock();
         Material beltMaterial = tieredBeltBlock.getBeltMaterial();
         ResourceLocation resourceLocation = Greate.id("block/" + ForgeRegistries.BLOCKS.getKey(blockState.getBlock()).getPath() + "_pulley");

@@ -139,7 +139,7 @@ public class TieredBeltRenderer extends SafeBlockEntityRenderer<TieredBeltBlockE
                     return stack;
                 };
 
-                SuperByteBuffer superBuffer = CachedBufferer.partialDirectional(getBeltPulleyModel(blockState, be), blockState, dir, matrixStackSupplier);
+                SuperByteBuffer superBuffer = CachedBufferer.partialDirectional(getBeltPulleyModel(blockState), blockState, dir, matrixStackSupplier);
                 KineticBlockEntityRenderer.standardKineticRotationTransform(superBuffer, be, light).renderInto(ms, vb);
             }
         }
@@ -236,7 +236,7 @@ public class TieredBeltRenderer extends SafeBlockEntityRenderer<TieredBeltBlockE
 
             Vec3 itemPos = beltStartOffset.add(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()).add(offsetVec);
 
-            if(this.shouldCullItem(itemPos)) continue;
+            if(this.shouldCullItem(itemPos, be.getLevel())) continue;
 
             ms.pushPose();
             TransformStack.cast(ms).nudge(transported.angle);
