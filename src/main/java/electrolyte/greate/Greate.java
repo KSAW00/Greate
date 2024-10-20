@@ -35,6 +35,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -62,6 +63,7 @@ public class Greate {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::gatherData);
         CREATIVE_TABS.register(eventBus);
         REGISTRATE.registerEventListeners(eventBus);
@@ -86,6 +88,10 @@ public class Greate {
         GreatePartialModels.register();
         GreatePonderTags.register();
         GreatePonderIndex.register();
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        GreateMaterials.modifyMaterials();
     }
 
     private void gatherData(GatherDataEvent event) {

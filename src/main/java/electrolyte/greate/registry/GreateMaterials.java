@@ -4,12 +4,14 @@ import com.gregtechceu.gtceu.api.data.chemical.material.Material;
 import com.gregtechceu.gtceu.api.data.chemical.material.info.MaterialIconSet;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.PropertyKey;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.ToolProperty;
+import com.simibubi.create.AllItems;
 import electrolyte.greate.Greate;
 import electrolyte.greate.content.gtceu.material.PropertyKeys;
 import electrolyte.greate.content.gtceu.material.WhiskProperty;
 
 import static com.gregtechceu.gtceu.api.data.chemical.material.info.MaterialFlags.*;
 import static com.gregtechceu.gtceu.api.data.chemical.material.info.MaterialIconSet.*;
+import static com.gregtechceu.gtceu.api.data.tag.TagPrefix.dust;
 import static com.gregtechceu.gtceu.api.item.tool.GTToolType.BUZZSAW;
 import static com.gregtechceu.gtceu.common.data.GTElements.Ma;
 import static com.gregtechceu.gtceu.common.data.GTElements.Sp;
@@ -74,6 +76,11 @@ public class GreateMaterials {
 
 		Darmstadtium.setProperty(PropertyKey.TOOL, ToolProperty.Builder.of(50.0F, 15.0F, 5120, 5, BUZZSAW).build());
 		RhodiumPlatedPalladium.setProperty(PropertyKey.TOOL, ToolProperty.Builder.of(35.0F, 10.0F, 2560, 4, BUZZSAW).build());
+	}
+
+	public static void modifyMaterials() {
+		dust.setIgnored(Obsidian, AllItems.POWDERED_OBSIDIAN.asItem());
+		dust.setIgnored(Netherrack, AllItems.CINDER_FLOUR.asItem());
 	}
 
 	public static Material.Builder Builder(String id) {
