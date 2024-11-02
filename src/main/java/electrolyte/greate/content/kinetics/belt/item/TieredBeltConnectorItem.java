@@ -66,29 +66,18 @@ public class TieredBeltConnectorItem extends Item implements ITieredBelt {
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, world, tooltip, flag);
 
-        String materialName = material.getLocalizedName().getString();
         String beltLength = String.valueOf(GConfigUtility.getBeltLengthFromMaterial(material));
-        MutableComponent belt_tt = Component.translatable("greate.tooltip.belt",
-                materialName,
-                beltLength
-                ).withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-        MutableComponent validShaftNames = Component.empty();
-        int i = 0;
-        for (var shaft : validShafts) {
-            var mat = GreateValues.TM[shaft.get().getTier()];
-            validShaftNames
-                    .append(mat.getLocalizedName().getString()).withStyle(Style.EMPTY.withColor(mat.getMaterialRGB()))
-                    .append(" (").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))
-                    .append(GreateValues.SNF[GreateValues.getTierFromTierMaterial(mat)])
-                    .append(")").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
-            if (i < validShafts.size()-1) {
-                validShaftNames.append(", & ").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
-            }
-            i++;
-        }
+        String shaft1_name = GreateValues.TM[validShafts.get(0).get().getTier()].getLocalizedName().getString();
+        String shaft2_name = GreateValues.TM[validShafts.get(1).get().getTier()].getLocalizedName().getString();
 
-        tooltip.add(belt_tt.append(validShaftNames));
+        MutableComponent belt_maxlength = Component.translatable("greate.tooltip.belt_maxlength", beltLength)
+                .withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+        MutableComponent belt_usable = Component.translatable("greate.tooltip.belt_usable", shaft1_name, shaft2_name)
+                .withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+
+        tooltip.add(belt_maxlength);
+        tooltip.add(belt_usable);
     }
 
     @Nonnull
