@@ -11,22 +11,28 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.utility.VecHelper;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import electrolyte.greate.GreateValues;
 import electrolyte.greate.content.kinetics.belt.ITieredBelt;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredBracketedKineticBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredShaftBlock;
 import electrolyte.greate.infrastructure.config.GConfigUtility;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -54,6 +60,35 @@ public class TieredBeltConnectorItem extends Item implements ITieredBelt {
     @Override
     public String getDescriptionId() {
         return getOrCreateDescriptionId();
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, world, tooltip, flag);
+
+        String materialName = material.getLocalizedName().getString();
+        String beltLength = String.valueOf(GConfigUtility.getBeltLengthFromMaterial(material));
+        MutableComponent belt_tt = Component.translatable("greate.tooltip.belt",
+                materialName,
+                beltLength
+                ).withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+
+        MutableComponent validShaftNames = Component.empty();
+        int i = 0;
+        for (var shaft : validShafts) {
+            var mat = GreateValues.TM[shaft.get().getTier()];
+            validShaftNames
+                    .append(mat.getLocalizedName().getString()).withStyle(Style.EMPTY.withColor(mat.getMaterialRGB()))
+                    .append(" (").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))
+                    .append(GreateValues.SNF[GreateValues.getTierFromTierMaterial(mat)])
+                    .append(")").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+            if (i < validShafts.size()-1) {
+                validShaftNames.append(", & ").withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+            }
+            i++;
+        }
+
+        tooltip.add(belt_tt.append(validShaftNames));
     }
 
     @Nonnull
