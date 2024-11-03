@@ -12,8 +12,8 @@ public class GreateLang {
         REGISTRATE.addRawLang("greate.tooltip.max_capacity", "Max Kinetic Capacity: ");
         REGISTRATE.addRawLang("greate.tooltip.networkStatistics", "Network Stats: ");
         REGISTRATE.addRawLang("greate.tooltip.circuit_number", "Circuit Number");
-        REGISTRATE.addRawLang("greate.tooltip.belt_maxlength", "Max Length: %s blocks ");
-        REGISTRATE.addRawLang("greate.tooltip.belt_usable", "Usable on: %s & %s shafts ");
+        REGISTRATE.addRawLang("greate.tooltip.belt_maxlength", "Max Length: ");
+        REGISTRATE.addRawLang("greate.tooltip.belt_usable", "Usable on: ");
         REGISTRATE.addRawLang("greate.recipe.milling", "Milling");
         REGISTRATE.addRawLang("greate.recipe.crushing", "Crushing");
         REGISTRATE.addRawLang("greate.recipe.pressing", "Pressing");

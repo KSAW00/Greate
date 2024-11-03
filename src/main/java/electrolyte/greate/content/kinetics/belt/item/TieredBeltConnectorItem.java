@@ -67,17 +67,23 @@ public class TieredBeltConnectorItem extends Item implements ITieredBelt {
         super.appendHoverText(stack, world, tooltip, flag);
 
         String beltLength = String.valueOf(GConfigUtility.getBeltLengthFromMaterial(material));
+        MutableComponent beltLengthComponent = Component.translatable(beltLength).withStyle(ChatFormatting.BOLD).withStyle(Style.EMPTY.withColor(ChatFormatting.AQUA));
 
-        String shaft1_name = GreateValues.TM[validShafts.get(0).get().getTier()].getLocalizedName().getString();
-        String shaft2_name = GreateValues.TM[validShafts.get(1).get().getTier()].getLocalizedName().getString();
+        int s1RGB = GreateValues.TM[validShafts.get(0).get().getTier()].getMaterialRGB();
+        int s2RGB = GreateValues.TM[validShafts.get(1).get().getTier()].getMaterialRGB();
+        String shaft1_name = validShafts.get(0).get().getShaft().getName().getString();
+        String shaft2_name = validShafts.get(1).get().getShaft().getName().getString();
+        MutableComponent s1nComponent = Component.literal(shaft1_name).withStyle(Style.EMPTY.withColor(s1RGB));
+        MutableComponent s2nComponent = Component.literal(shaft2_name).withStyle(Style.EMPTY.withColor(s2RGB));
 
-        MutableComponent belt_maxlength = Component.translatable("greate.tooltip.belt_maxlength", beltLength)
+        MutableComponent belt_maxlength = Component.translatable("greate.tooltip.belt_maxlength")
                 .withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
-        MutableComponent belt_usable = Component.translatable("greate.tooltip.belt_usable", shaft1_name, shaft2_name)
+        MutableComponent belt_usable = Component.translatable("greate.tooltip.belt_usable")
                 .withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-        tooltip.add(belt_maxlength);
-        tooltip.add(belt_usable);
+
+        tooltip.add(belt_maxlength.append(beltLengthComponent));
+        tooltip.add(belt_usable.append(s1nComponent).append(" & ").append(s2nComponent));
     }
 
     @Nonnull
