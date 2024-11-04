@@ -26,4 +26,11 @@ public class TieredKineticBlockEntity extends KineticBlockEntity implements ITie
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         return ITieredKineticBlockEntity.super.addToGoggleTooltip(tooltip, isPlayerSneaking, tier, capacity, stress);
     }
+
+    @Override
+    public void updateFromNetwork(float maxStress, float currentStress, int networkSize) {
+        super.updateFromNetwork(maxStress, currentStress, networkSize);
+        notifyUpdate();
+    }
+
 }
