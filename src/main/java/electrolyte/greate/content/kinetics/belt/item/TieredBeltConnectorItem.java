@@ -11,22 +11,28 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.utility.VecHelper;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import electrolyte.greate.GreateValues;
 import electrolyte.greate.content.kinetics.belt.ITieredBelt;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredBracketedKineticBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredShaftBlock;
 import electrolyte.greate.infrastructure.config.GConfigUtility;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -54,6 +60,30 @@ public class TieredBeltConnectorItem extends Item implements ITieredBelt {
     @Override
     public String getDescriptionId() {
         return getOrCreateDescriptionId();
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, world, tooltip, flag);
+
+        String beltLength = String.valueOf(GConfigUtility.getBeltLengthFromMaterial(material));
+        MutableComponent beltLengthComponent = Component.translatable(beltLength).withStyle(ChatFormatting.BOLD).withStyle(Style.EMPTY.withColor(ChatFormatting.AQUA));
+
+        int s1RGB = GreateValues.TM[validShafts.get(0).get().getTier()].getMaterialRGB();
+        int s2RGB = GreateValues.TM[validShafts.get(1).get().getTier()].getMaterialRGB();
+        String shaft1_name = validShafts.get(0).get().getShaft().getName().getString();
+        String shaft2_name = validShafts.get(1).get().getShaft().getName().getString();
+        MutableComponent s1nComponent = Component.literal(shaft1_name).withStyle(Style.EMPTY.withColor(s1RGB));
+        MutableComponent s2nComponent = Component.literal(shaft2_name).withStyle(Style.EMPTY.withColor(s2RGB));
+
+        MutableComponent belt_maxlength = Component.translatable("greate.tooltip.belt_maxlength")
+                .withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+        MutableComponent belt_usable = Component.translatable("greate.tooltip.belt_usable")
+                .withStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+
+
+        tooltip.add(belt_maxlength.append(beltLengthComponent));
+        tooltip.add(belt_usable.append(s1nComponent).append(" & ").append(s2nComponent));
     }
 
     @Nonnull
