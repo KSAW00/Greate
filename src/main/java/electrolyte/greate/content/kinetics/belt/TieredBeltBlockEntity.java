@@ -219,4 +219,11 @@ public class TieredBeltBlockEntity extends BeltBlockEntity implements ITieredKin
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         return ITieredKineticBlockEntity.super.addToGoggleTooltip(tooltip, isPlayerSneaking, this.getTier(), capacity, stress);
     }
+
+    @Override
+    public void updateFromNetwork(float maxStress, float currentStress, int networkSize) {
+        super.updateFromNetwork(maxStress, currentStress, networkSize);
+        notifyUpdate();
+    }
+
 }
