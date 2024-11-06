@@ -1,6 +1,3 @@
-- Fix belt crash when using create 0.5.1-i
-- Remove temp obsidian dust maceration recipes 
-- Prefer obsidian/netherrack dusts from create over GT in recipes
-- Fix tag gen for hidden items in recipe viewers
-- Min Create version is now 0.5.1-i
-- Min GT version is now 1.4.5
+- Add max length tooltips & tooltips for which shafts belt connectors can be used on (smored)
+- Fix network stress not updating across the network when adding/removing machines  (smored)
+- Add spouting factory for coating wires
