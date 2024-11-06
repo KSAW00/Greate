@@ -29,11 +29,15 @@ import java.util.function.Consumer;
 
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static com.gregtechceu.gtceu.api.data.tag.TagPrefix.*;
+import static com.gregtechceu.gtceu.common.data.GCyMBlocks.CASING_WATERTIGHT;
+import static com.gregtechceu.gtceu.common.data.GTItems.ELECTRIC_PUMP_IV;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
 import static com.gregtechceu.gtceu.data.recipe.CraftingComponent.*;
+import static com.gregtechceu.gtceu.data.recipe.CustomTags.IV_CIRCUITS;
 import static com.gregtechceu.gtceu.data.recipe.misc.MetaTileEntityLoader.registerMachineRecipe;
 import static electrolyte.greate.GreateValues.BM;
 import static electrolyte.greate.GreateValues.TM;
+import static electrolyte.greate.content.gtceu.machines.GreateMultiblockMachines.SPOUTING_FACTORY;
 import static electrolyte.greate.foundation.data.recipe.GreateCraftingComponent.SHAFT;
 import static electrolyte.greate.foundation.data.recipe.GreateRecipes.conversionCycle;
 import static electrolyte.greate.registry.Belts.BELT_CONNECTORS;
@@ -379,6 +383,13 @@ public class GreateCraftingTableRecipes {
                 " H ", " S ",
                 'S', SHAFT,
                 'H', HULL);
+
+        VanillaRecipeHelper.addShapedRecipe(provider, true, "spouting_factory", SPOUTING_FACTORY.asStack(),
+                "WCW", "PSP", "WCW",
+                'W', CASING_WATERTIGHT,
+                'C', IV_CIRCUITS,
+                'P', ELECTRIC_PUMP_IV.asStack(),
+                'S', AllBlocks.SPOUT.asStack());
 
         //GT Components
         VanillaRecipeHelper.addShapedRecipe(provider, AllItems.ELECTRON_TUBE.getId(), AllItems.ELECTRON_TUBE.asStack(),

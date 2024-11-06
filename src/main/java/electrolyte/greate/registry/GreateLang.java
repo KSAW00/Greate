@@ -53,6 +53,10 @@ public class GreateLang {
         REGISTRATE.addRawLang("material.greate.refined_radiance", "Refined Radiance");
         REGISTRATE.addRawLang("material.greate.shadow_steel", "Shadow Steel");
         REGISTRATE.addRawLang("tagprefix.whisk", "%s Whisk");
+
+        //Greate GT-Addon
+        REGISTRATE.addRawLang("block.greate.spouting_factory", "Spouting Factory");
+        REGISTRATE.addRawLang("gtceu.spouting", "Spouting Factory");
     }
 
     public static void register() {}

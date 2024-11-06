@@ -7,6 +7,7 @@ import com.gregtechceu.gtceu.api.data.chemical.material.properties.PropertyKey;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.WireProperties;
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
 import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
+import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
 import com.gregtechceu.gtceu.utils.GTUtil;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.fluids.transfer.FillingRecipe;
@@ -26,6 +27,7 @@ import static com.gregtechceu.gtceu.api.data.tag.TagPrefix.*;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
 import static com.gregtechceu.gtceu.data.recipe.CraftingComponent.PLATE;
 import static electrolyte.greate.GreateValues.TM;
+import static electrolyte.greate.content.gtceu.machines.GreateRecipeTypes.SPOUTING_RECIPES;
 import static electrolyte.greate.foundation.data.recipe.GreateRecipes.createIngFromTag;
 import static electrolyte.greate.foundation.data.recipe.GreateRecipes.createIngFromUnificationEntry;
 import static electrolyte.greate.registry.Cogwheels.COGWHEELS;
@@ -77,32 +79,53 @@ public class GreateSequencedAssemblyRecipes {
         int cableAmount = (int) (wirePrefix.getMaterialAmount(material) * 2 / M);
         TagPrefix cablePrefix = TagPrefix.get("cable" + wirePrefix.name().substring(4));
         int voltageTier = GTUtil.getTierByVoltage(property.getVoltage());
+        int euT = voltageTier > 0 ? voltageTier - 1 : ULV;
         int insulationAmount = INSULATION_AMOUNT.get(cablePrefix);
 
         if(voltageTier >= EV) {
-            SequencedAssemblyRecipeBuilder siliconeBuilder = new SequencedAssemblyRecipeBuilder(Greate.id(String.format("%s_cable_%d_silicone", material.getName(), cableAmount)))
+            SequencedAssemblyRecipeBuilder siliconeAssemblyBuilder = new SequencedAssemblyRecipeBuilder(Greate.id(String.format("%s_cable_%d_silicone", material.getName(), cableAmount)))
                 .require(ChemicalHelper.get(wirePrefix, material).getItem())
                 .transitionTo(ChemicalHelper.get(wirePrefix, material).getItem())
                 .addOutput(ChemicalHelper.get(cablePrefix, material), 1)
                 .loops(1);
+            GTRecipeBuilder siliconeSpoutingFactoryBuilder = SPOUTING_RECIPES
+                    .recipeBuilder(Greate.id(String.format("%s_cable_%d_silicone", material.getName(), cableAmount)))
+                    .EUt(VA[euT]).duration(100)
+                    .inputItems(wirePrefix, material)
+                    .outputItems(cablePrefix, material);
             if(voltageTier >= LuV) {
-                siliconeBuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyphenyleneSulfide, insulationAmount).getItem()));
+                siliconeAssemblyBuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyphenyleneSulfide, insulationAmount).getItem()));
+                siliconeSpoutingFactoryBuilder.inputItems(foil, PolyphenyleneSulfide, insulationAmount);
             }
-            siliconeBuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyvinylChloride, insulationAmount).getItem()));
-            siliconeBuilder.addStep(FillingRecipe::new, r -> r.require(FluidIngredient.fromFluid(SiliconeRubber.getFluid(), L * insulationAmount / 2)));
-            siliconeBuilder.build(provider);
+            siliconeAssemblyBuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyvinylChloride, insulationAmount).getItem()));
+            siliconeAssemblyBuilder.addStep(FillingRecipe::new, r -> r.require(FluidIngredient.fromFluid(SiliconeRubber.getFluid(), L * insulationAmount / 2)));
+            siliconeAssemblyBuilder.build(provider);
 
-            SequencedAssemblyRecipeBuilder styrenebuilder = new SequencedAssemblyRecipeBuilder(Greate.id(String.format("%s_cable_%d_styrene", material.getName(), cableAmount)))
+            siliconeSpoutingFactoryBuilder.inputItems(foil, PolyvinylChloride, insulationAmount);
+            siliconeSpoutingFactoryBuilder.inputFluids(SiliconeRubber.getFluid(L * (long) insulationAmount / 2));
+            siliconeSpoutingFactoryBuilder.save(provider);
+
+            SequencedAssemblyRecipeBuilder styreneAssemblyBuilder = new SequencedAssemblyRecipeBuilder(Greate.id(String.format("%s_cable_%d_styrene", material.getName(), cableAmount)))
                     .require(ChemicalHelper.get(wirePrefix, material).getItem())
                     .transitionTo(ChemicalHelper.get(wirePrefix, material).getItem())
                     .addOutput(ChemicalHelper.get(cablePrefix, material), 1)
                     .loops(1);
+            GTRecipeBuilder styreneSpoutingFactoryBuilder = SPOUTING_RECIPES
+                    .recipeBuilder(Greate.id(String.format("%s_cable_%d_styrene", material.getName(), cableAmount)))
+                    .EUt(VA[euT]).duration(100)
+                    .inputItems(wirePrefix, material)
+                    .outputItems(cablePrefix, material);
             if(voltageTier >= LuV) {
-                styrenebuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyphenyleneSulfide, insulationAmount).getItem()));
+                styreneAssemblyBuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyphenyleneSulfide, insulationAmount).getItem()));
+                styreneSpoutingFactoryBuilder.inputItems(foil, PolyphenyleneSulfide, insulationAmount);
             }
-            styrenebuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyvinylChloride, insulationAmount).getItem()));
-            styrenebuilder.addStep(FillingRecipe::new, r -> r.require(FluidIngredient.fromFluid(StyreneButadieneRubber.getFluid(), L * insulationAmount / 4)));
-            styrenebuilder.build(provider);
+            styreneAssemblyBuilder.addStep(DeployerApplicationRecipe::new, r -> r.require(ChemicalHelper.get(foil, PolyvinylChloride, insulationAmount).getItem()));
+            styreneAssemblyBuilder.addStep(FillingRecipe::new, r -> r.require(FluidIngredient.fromFluid(StyreneButadieneRubber.getFluid(), L * insulationAmount / 4)));
+            styreneAssemblyBuilder.build(provider);
+
+            styreneSpoutingFactoryBuilder.inputItems(foil, PolyvinylChloride, insulationAmount);
+            styreneSpoutingFactoryBuilder.inputFluids(StyreneButadieneRubber.getFluid(L * (long) insulationAmount / 4));
+            styreneSpoutingFactoryBuilder.save(provider);
         }
     }
 }

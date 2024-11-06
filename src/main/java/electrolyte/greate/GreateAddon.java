@@ -3,6 +3,7 @@ package electrolyte.greate;
 import com.gregtechceu.gtceu.api.addon.GTAddon;
 import com.gregtechceu.gtceu.api.addon.IGTAddon;
 import com.gregtechceu.gtceu.api.registry.registrate.GTRegistrate;
+import electrolyte.greate.content.gtceu.machines.GreateRecipeTypes;
 import electrolyte.greate.foundation.data.recipe.GreateCraftingComponent;
 import electrolyte.greate.foundation.data.recipe.GreateRecipes;
 import electrolyte.greate.infrastructure.config.GreateConfigs;
@@ -46,6 +47,7 @@ public class GreateAddon implements IGTAddon {
 
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> provider) {
+		GreateRecipeTypes.register();
 		GreateCraftingComponent.init();
 		GreateRecipes.init(provider);
 	}
@@ -54,4 +56,6 @@ public class GreateAddon implements IGTAddon {
 	public void registerTagPrefixes() {
 		GreateTagPrefixes.register();
 	}
+
+
 }
