@@ -7,6 +7,7 @@ import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogCTBehaviour;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedCogwheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedShaftBlock;
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -29,7 +30,6 @@ import electrolyte.greate.content.kinetics.simpleRelays.TieredCogwheelBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.TieredShaftBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.encased.TieredEncasedCogwheelBlock;
 import electrolyte.greate.content.kinetics.simpleRelays.encased.TieredEncasedShaftBlock;
-import electrolyte.greate.content.processing.TieredAssemblyOperatorBlockItem;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -180,7 +180,7 @@ public class GreateBuilderTransformers {
 
     public static <B extends TieredMechanicalPressBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> tieredMechanicalPress() {
         return b -> b.blockstate(tieredMechanicalPressProvider())
-                .item(TieredAssemblyOperatorBlockItem::new)
+                .item(AssemblyOperatorBlockItem::new)
                 .model((c, p) -> {
                     p.withExistingParent(c.getName(), Create.asResource("block/mechanical_press/item"))
                             .texture("0", p.modLoc("block/" + c.getName().substring(0, c.getName().length() - 17) + "/axis"))
@@ -193,7 +193,7 @@ public class GreateBuilderTransformers {
 
     public static <B extends TieredMechanicalMixerBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> tieredMechanicalMixer() {
         return b -> b.blockstate(tieredMechanicalMixerProvider())
-                    .item(TieredAssemblyOperatorBlockItem::new)
+                    .item(AssemblyOperatorBlockItem::new)
                     .model((c, p) -> {
                         String material = c.getName().substring(0, c.getName().length() - 17);
                         p.withExistingParent(c.getName(), Create.asResource("block/mechanical_mixer/item"))
