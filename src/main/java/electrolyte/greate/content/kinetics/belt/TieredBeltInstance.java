@@ -15,6 +15,7 @@ import com.simibubi.create.foundation.block.render.SpriteShiftEntry;
 import com.simibubi.create.foundation.render.AllMaterialSpecs;
 import com.simibubi.create.foundation.utility.Iterate;
 import electrolyte.greate.content.kinetics.base.TieredKineticBlockEntityInstance;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
@@ -66,7 +67,7 @@ public class TieredBeltInstance extends TieredKineticBlockEntityInstance<TieredB
             SpriteShiftEntry spriteShift = TieredBeltRenderer.getSpriteShiftEntry((TieredBeltBlock) blockState.getBlock(), diagonal, bottom);
             SpriteShiftEntry overlayShift = TieredBeltRenderer.getDyeOverlayEntry((TieredBeltBlock) blockState.getBlock(), color, diagonal);
             Instancer<BeltData> beltModel = materialManager.defaultCutout().material(AllMaterialSpecs.BELTS).getModel(beltPartial, blockState);
-            Instancer<BeltData> overlayModel = materialManager.defaultTransparent().material(AllMaterialSpecs.BELTS).getModel(overlayPartial, blockState);
+            Instancer<BeltData> overlayModel = materialManager.cutout(RenderType.cutoutMipped()).material(AllMaterialSpecs.BELTS).getModel(overlayPartial, blockState);
             keys.add(setup(beltModel.createInstance(), bottom, spriteShift));
             overlayKeys.add(setup(overlayModel.createInstance(), bottom, overlayShift));
             if(diagonal) break;
