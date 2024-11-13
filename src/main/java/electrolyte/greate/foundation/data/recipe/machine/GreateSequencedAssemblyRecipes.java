@@ -102,7 +102,7 @@ public class GreateSequencedAssemblyRecipes {
             siliconeAssemblyBuilder.build(provider);
 
             siliconeSpoutingFactoryBuilder.inputItems(foil, PolyvinylChloride, insulationAmount);
-            siliconeSpoutingFactoryBuilder.inputFluids(SiliconeRubber.getFluid(L * (long) insulationAmount / 2));
+            siliconeSpoutingFactoryBuilder.inputFluids(SiliconeRubber.getFluid(L * insulationAmount / 2));
             siliconeSpoutingFactoryBuilder.save(provider);
 
             SequencedAssemblyRecipeBuilder styreneAssemblyBuilder = new SequencedAssemblyRecipeBuilder(Greate.id(String.format("%s_cable_%d_styrene", material.getName(), cableAmount)))
@@ -124,7 +124,7 @@ public class GreateSequencedAssemblyRecipes {
             styreneAssemblyBuilder.build(provider);
 
             styreneSpoutingFactoryBuilder.inputItems(foil, PolyvinylChloride, insulationAmount);
-            styreneSpoutingFactoryBuilder.inputFluids(StyreneButadieneRubber.getFluid(L * (long) insulationAmount / 4));
+            styreneSpoutingFactoryBuilder.inputFluids(StyreneButadieneRubber.getFluid(L * insulationAmount / 4));
             styreneSpoutingFactoryBuilder.save(provider);
         }
     }

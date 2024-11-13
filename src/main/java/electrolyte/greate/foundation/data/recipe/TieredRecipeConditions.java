@@ -66,7 +66,7 @@ public class TieredRecipeConditions {
                 List<Content> fluidInputIngredients = gtr.getInputContents(FluidRecipeCapability.CAP);
                 FluidIngredient ing = (FluidIngredient) fluidInputIngredients.get(0).getContent();
                 if(!ing.isEmpty()) {
-                    boolean testFluid = ing.test(com.lowdragmc.lowdraglib.side.fluid.FluidStack.create(stack.getFluid(), stack.getAmount()));
+                    boolean testFluid = ing.test(new FluidStack(stack.getFluid(), stack.getAmount()));
                     return testFluid && ing.getAmount() <= stack.getAmount();
                 } else {
                     return true;

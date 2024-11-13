@@ -129,7 +129,7 @@ public class TieredProcessingRecipeBuilder<T extends TieredProcessingRecipe<?>> 
         NonNullList<FluidIngredient> nonNullList = NonNullList.create();
         for(Content c : ingredients) {
             com.gregtechceu.gtceu.api.recipe.ingredient.FluidIngredient ingredient = (com.gregtechceu.gtceu.api.recipe.ingredient.FluidIngredient) c.getContent();
-            nonNullList.add(FluidIngredient.fromFluid(ingredient.getStacks()[0].getFluid(), (int) ingredient.getAmount()));
+            nonNullList.add(FluidIngredient.fromFluid(ingredient.getStacks()[0].getFluid(), ingredient.getAmount()));
         }
         return withFluidIngredients(nonNullList);
     }
@@ -146,9 +146,9 @@ public class TieredProcessingRecipeBuilder<T extends TieredProcessingRecipe<?>> 
     public TieredProcessingRecipeBuilder<T> withFluidOutputsGT(List<Content> list) {
         NonNullList<FluidStack> nonNullList = NonNullList.create();
         for(Content c : list) {
-            com.lowdragmc.lowdraglib.side.fluid.FluidStack[] fluids = ((com.gregtechceu.gtceu.api.recipe.ingredient.FluidIngredient) c.content).getStacks();
-            for (com.lowdragmc.lowdraglib.side.fluid.FluidStack fluid : fluids) {
-                nonNullList.add(new FluidStack(fluid.getFluid(), (int) fluid.getAmount()));
+            FluidStack[] fluids = ((com.gregtechceu.gtceu.api.recipe.ingredient.FluidIngredient) c.content).getStacks();
+            for (FluidStack fluid : fluids) {
+                nonNullList.add(new FluidStack(fluid.getFluid(), fluid.getAmount()));
             }
         }
         return withFluidOutputs(nonNullList);

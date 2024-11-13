@@ -70,7 +70,7 @@ public class TieredBasinRecipe extends TieredProcessingRecipe<SmartInventory> {
             if(basinRecipe.getOutputContents(ItemRecipeCapability.CAP).isEmpty()
                 && !basinRecipe.getOutputContents(FluidRecipeCapability.CAP).isEmpty()) {
                 com.gregtechceu.gtceu.api.recipe.ingredient.FluidIngredient fluidStack = (com.gregtechceu.gtceu.api.recipe.ingredient.FluidIngredient) basinRecipe.getOutputContents(FluidRecipeCapability.CAP).get(0).getContent();
-                filterTest = filter.test(new FluidStack(fluidStack.getStacks()[0].getFluid(), (int) fluidStack.getAmount()));
+                filterTest = filter.test(new FluidStack(fluidStack.getStacks()[0].getFluid(), fluidStack.getAmount()));
             }
             if(!filterTest) return false;
             return apply(basin, basinRecipe, true, machineTier);
