@@ -1,4 +1,1 @@
-- Fix log error when KubeJS Create is not installed
-- Fix deployers not being placed correctly on tiered belts
-- Fix crash with tiered belts when using batching backend
-- Min GT version is now 1.5.0
+- Fix crash with missing AT entry
