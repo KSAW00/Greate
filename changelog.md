@@ -1,1 +1,2 @@
-- Fix crash with missing AT entry
+- Update to GT 1.5.4
+- Min GT version is now 1.5.4
