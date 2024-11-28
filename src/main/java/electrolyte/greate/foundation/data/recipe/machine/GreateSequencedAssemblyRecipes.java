@@ -74,6 +74,7 @@ public class GreateSequencedAssemblyRecipes {
 
     }
 
+    //WireRecipeHandler
     public static void addRecipe(TagPrefix wirePrefix, Material material, WireProperties property, Consumer<FinishedRecipe> provider) {
         if(property.isSuperconductor()) return;
         int cableAmount = (int) (wirePrefix.getMaterialAmount(material) * 2 / M);
