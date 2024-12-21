@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static com.gregtechceu.gtceu.api.data.tag.TagPrefix.*;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
-import static electrolyte.greate.content.gtceu.machines.GreateRecipeTypes.SPOUTING_RECIPES;
+import static electrolyte.greate.content.gtceu.machines.GreateRecipeTypes.WIRE_COATING_RECIPES;
 
 public class GreateSpoutRecipes {
 
@@ -54,7 +54,7 @@ public class GreateSpoutRecipes {
                     .withSingleItemOutput(ChemicalHelper.get(cablePrefix, material))
                     .build(provider);
 
-            SPOUTING_RECIPES
+            WIRE_COATING_RECIPES
                     .recipeBuilder(Greate.id(String.format("cover_%s_%s_rubber", material.getName(), cableAmount)))
                     .EUt(VA[euT]).duration(100)
                     .inputItems(wirePrefix, material)
@@ -68,7 +68,7 @@ public class GreateSpoutRecipes {
                     .withSingleItemOutput(ChemicalHelper.get(cablePrefix, material))
                     .build(provider);
 
-            SPOUTING_RECIPES
+            WIRE_COATING_RECIPES
                     .recipeBuilder(Greate.id(String.format("cover_%s_%s_silicone", material.getName(), cableAmount)))
                     .EUt(VA[euT]).duration(100)
                     .inputItems(wirePrefix, material)
@@ -82,7 +82,7 @@ public class GreateSpoutRecipes {
                     .withSingleItemOutput(ChemicalHelper.get(cablePrefix, material))
                     .build(provider);
 
-            SPOUTING_RECIPES
+            WIRE_COATING_RECIPES
                     .recipeBuilder(Greate.id(String.format("cover_%s_%s_styrene_butadiene", material.getName(), cableAmount)))
                     .EUt(VA[euT]).duration(100)
                     .inputItems(wirePrefix, material)

@@ -13,7 +13,7 @@ public class GreateRecipeTypes {
 
     public static void register() {}
 
-    public static final GTRecipeType SPOUTING_RECIPES = GTRecipeTypes.register("spouting", ELECTRIC)
+    public static final GTRecipeType WIRE_COATING_RECIPES = GTRecipeTypes.register("wire_coating", ELECTRIC)
             .setMaxIOSize(3, 1, 1, 0)
             .setEUIO(IO.IN)
             .setSlotOverlay(false, false, GuiTextures.WIREMILL_OVERLAY)

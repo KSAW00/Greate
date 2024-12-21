@@ -15,7 +15,7 @@ import static com.gregtechceu.gtceu.api.pattern.Predicates.*;
 import static com.gregtechceu.gtceu.common.data.GCYMBlocks.CASING_WATERTIGHT;
 import static com.gregtechceu.gtceu.common.data.GTBlocks.*;
 import static electrolyte.greate.GreateRegistries.REGISTRATE;
-import static electrolyte.greate.content.gtceu.machines.GreateRecipeTypes.SPOUTING_RECIPES;
+import static electrolyte.greate.content.gtceu.machines.GreateRecipeTypes.WIRE_COATING_RECIPES;
 
 public class GreateMultiblockMachines {
 
@@ -28,7 +28,7 @@ public class GreateMultiblockMachines {
             .tooltips(Component.translatable("gtceu.machine.available_recipe_map_1.tooltip",
                     Component.translatable("greate.wire_coating")))
             .rotationState(RotationState.ALL)
-            .recipeType(SPOUTING_RECIPES)
+            .recipeType(WIRE_COATING_RECIPES)
             .recipeModifiers(GTRecipeModifiers.PARALLEL_HATCH,
                     GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.NON_PERFECT_OVERCLOCK_SUBTICK))
             .appearanceBlock(CASING_WATERTIGHT)
