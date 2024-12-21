@@ -1,2 +1,4 @@
-- Update to GT 1.5.4
-- Min GT version is now 1.5.4
+- Update to GT 1.6.0
+- Min GT version is now 1.6.0
+- Rename Spouting Factory to Wire Coating Factory
+- Fix false-positive validation on recipes where there is a circuit
