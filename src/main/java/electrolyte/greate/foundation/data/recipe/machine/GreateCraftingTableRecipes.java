@@ -333,7 +333,7 @@ public class GreateCraftingTableRecipes {
                     'P', new UnificationEntry(plate, beltMaterial));
         }
 
-        VanillaRecipeHelper.addShapedRecipe(provider, true, Greate.id("spouting_factory"), WIRE_COATING_FACTORY.asStack(),
+        VanillaRecipeHelper.addShapedRecipe(provider, true, Greate.id("wire_coating_factory"), WIRE_COATING_FACTORY.asStack(),
                 "WCW", "PSP", "WCW",
                 'W', CASING_WATERTIGHT,
                 'C', IV_CIRCUITS,
