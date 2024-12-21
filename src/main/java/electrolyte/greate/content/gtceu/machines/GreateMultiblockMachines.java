@@ -26,7 +26,7 @@ public class GreateMultiblockMachines {
             .langValue("Wire Coating Factory")
             .tooltips(Component.translatable("gtceu.multiblock.parallelizable.tooltip"))
             .tooltips(Component.translatable("gtceu.machine.available_recipe_map_1.tooltip",
-                    Component.translatable("greate.wire_coating")))
+                    Component.translatable("gtceu.wire_coating")))
             .rotationState(RotationState.ALL)
             .recipeType(WIRE_COATING_RECIPES)
             .recipeModifiers(GTRecipeModifiers.PARALLEL_HATCH,

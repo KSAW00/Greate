@@ -56,7 +56,7 @@ public class GreateLang {
 
         //Greate GT-Addon
         REGISTRATE.addRawLang("block.greate.wire_coating_factory", "Wire Coating Factory");
-        REGISTRATE.addRawLang("greate.wire_coating", "Wire Coating Factory");
+        REGISTRATE.addRawLang("gtceu.wire_coating", "Wire Coating Factory");
     }
 
     public static void register() {}
