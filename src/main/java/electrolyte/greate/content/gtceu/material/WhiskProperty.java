@@ -4,7 +4,7 @@ import com.gregtechceu.gtceu.api.data.chemical.material.properties.IMaterialProp
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.MaterialProperties;
 import com.gregtechceu.gtceu.api.data.chemical.material.properties.PropertyKey;
 
-public class WhiskProperty implements IMaterialProperty<WhiskProperty> {
+public class WhiskProperty implements IMaterialProperty {
 
 	@Override
 	public void verifyProperty(MaterialProperties properties) {

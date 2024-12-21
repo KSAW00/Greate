@@ -21,12 +21,12 @@ public class GreateMultiblockMachines {
 
     public static void register() {}
 
-    public static final MultiblockMachineDefinition SPOUTING_FACTORY = REGISTRATE
-            .multiblock("spouting_factory", CoilWorkableElectricMultiblockMachine::new)
-            .langValue("Spouting Factory")
+    public static final MultiblockMachineDefinition WIRE_COATING_FACTORY = REGISTRATE
+            .multiblock("wire_coating_factory", CoilWorkableElectricMultiblockMachine::new)
+            .langValue("Wire Coating Factory")
             .tooltips(Component.translatable("gtceu.multiblock.parallelizable.tooltip"))
             .tooltips(Component.translatable("gtceu.machine.available_recipe_map_1.tooltip",
-                    Component.translatable("gtceu.spouting")))
+                    Component.translatable("greate.wire_coating")))
             .rotationState(RotationState.ALL)
             .recipeType(SPOUTING_RECIPES)
             .recipeModifiers(GTRecipeModifiers.PARALLEL_HATCH,

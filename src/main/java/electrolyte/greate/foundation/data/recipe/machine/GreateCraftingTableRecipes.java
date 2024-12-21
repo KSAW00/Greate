@@ -9,11 +9,11 @@ import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.data.GTMachines;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
-import com.gregtechceu.gtceu.common.data.machines.GTCreateMachines;
 import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import electrolyte.greate.Greate;
 import electrolyte.greate.foundation.data.recipe.GreateRecipes;
 import electrolyte.greate.registry.Cogwheels;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -34,11 +34,9 @@ import static com.gregtechceu.gtceu.common.data.GTItems.ELECTRIC_PUMP_IV;
 import static com.gregtechceu.gtceu.common.data.GTMaterials.*;
 import static com.gregtechceu.gtceu.data.recipe.CraftingComponent.*;
 import static com.gregtechceu.gtceu.data.recipe.CustomTags.IV_CIRCUITS;
-import static com.gregtechceu.gtceu.data.recipe.misc.MetaTileEntityLoader.registerMachineRecipe;
 import static electrolyte.greate.GreateValues.BM;
 import static electrolyte.greate.GreateValues.TM;
-import static electrolyte.greate.content.gtceu.machines.GreateMultiblockMachines.SPOUTING_FACTORY;
-import static electrolyte.greate.foundation.data.recipe.GreateCraftingComponent.SHAFT;
+import static electrolyte.greate.content.gtceu.machines.GreateMultiblockMachines.WIRE_COATING_FACTORY;
 import static electrolyte.greate.foundation.data.recipe.GreateRecipes.conversionCycle;
 import static electrolyte.greate.registry.Belts.BELT_CONNECTORS;
 import static electrolyte.greate.registry.Cogwheels.COGWHEELS;
@@ -335,56 +333,7 @@ public class GreateCraftingTableRecipes {
                     'P', new UnificationEntry(plate, beltMaterial));
         }
 
-        //GT Machines
-        registerMachineRecipe(provider, false, GTCreateMachines.KINETIC_MIXER,
-                "GRG", "GEG", "CMC",
-                'M', HULL,
-                'R', ROTOR,
-                'C', AllItems.PRECISION_MECHANISM,
-                'G', GLASS,
-                'E', SHAFT);
-        registerMachineRecipe(provider, false, GTCreateMachines.ELECTRIC_GEAR_BOX_2A,
-                "WMW", "RER", "CHC",
-                'H', HULL,
-                'C', CIRCUIT,
-                'E', SHAFT,
-                'W', CABLE,
-                'M', MOTOR,
-                'R', ROTOR);
-        registerMachineRecipe(provider, false, GTCreateMachines.ELECTRIC_GEAR_BOX_8A,
-                "WMW", "RER", "CHC",
-                'H', HULL,
-                'C', CIRCUIT,
-                'E', SHAFT,
-                'W', CABLE_QUAD,
-                'M', MOTOR,
-                'R', ROTOR);
-        registerMachineRecipe(provider, false, GTCreateMachines.ELECTRIC_GEAR_BOX_16A,
-                "WMW", "RER", "CHC",
-                'H', HULL,
-                'C', CIRCUIT,
-                'E', SHAFT,
-                'W', CABLE_OCT,
-                'M', MOTOR,
-                'R', ROTOR);
-        registerMachineRecipe(provider, false, GTCreateMachines.ELECTRIC_GEAR_BOX_32A,
-                "WMW", "RER", "CHC",
-                'H', HULL,
-                'C', CIRCUIT,
-                'E', SHAFT,
-                'W', CABLE_HEX,
-                'M', MOTOR,
-                'R', ROTOR);
-        registerMachineRecipe(provider, false, GTCreateMachines.KINETIC_INPUT_BOX,
-                " S ", " H ",
-                'S', SHAFT,
-                'H', HULL);
-        registerMachineRecipe(provider, false, GTCreateMachines.KINETIC_OUTPUT_BOX,
-                " H ", " S ",
-                'S', SHAFT,
-                'H', HULL);
-
-        VanillaRecipeHelper.addShapedRecipe(provider, true, "spouting_factory", SPOUTING_FACTORY.asStack(),
+        VanillaRecipeHelper.addShapedRecipe(provider, true, Greate.id("spouting_factory"), WIRE_COATING_FACTORY.asStack(),
                 "WCW", "PSP", "WCW",
                 'W', CASING_WATERTIGHT,
                 'C', IV_CIRCUITS,

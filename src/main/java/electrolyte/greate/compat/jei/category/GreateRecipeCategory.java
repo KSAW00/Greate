@@ -103,7 +103,7 @@ public abstract class GreateRecipeCategory<T extends Recipe<?>> implements IReci
 
     public static ItemStack getCircuitStack(TieredProcessingRecipe<?> recipe) {
         if(recipe.getCircuitNumber() == -1) return ItemStack.EMPTY;
-        ItemStack circuitStack = new ItemStack(GTItems.INTEGRATED_CIRCUIT);
+        ItemStack circuitStack = new ItemStack(GTItems.PROGRAMMED_CIRCUIT);
         IntCircuitBehaviour.setCircuitConfiguration(circuitStack, recipe.getCircuitNumber());
         return circuitStack;
     }

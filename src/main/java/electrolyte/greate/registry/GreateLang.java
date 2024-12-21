@@ -55,8 +55,8 @@ public class GreateLang {
         REGISTRATE.addRawLang("tagprefix.whisk", "%s Whisk");
 
         //Greate GT-Addon
-        REGISTRATE.addRawLang("block.greate.spouting_factory", "Spouting Factory");
-        REGISTRATE.addRawLang("gtceu.spouting", "Spouting Factory");
+        REGISTRATE.addRawLang("block.greate.wire_coating_factory", "Wire Coating Factory");
+        REGISTRATE.addRawLang("greate.wire_coating", "Wire Coating Factory");
     }
 
     public static void register() {}

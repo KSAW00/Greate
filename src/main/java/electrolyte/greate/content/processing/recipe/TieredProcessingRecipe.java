@@ -8,7 +8,6 @@ import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import electrolyte.greate.Greate;
-
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder.TieredProcessingRecipeParams;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.NonNullList;
@@ -47,11 +46,20 @@ public abstract class TieredProcessingRecipe<T extends Container> extends Proces
         String messageHeader = "Your custom " + recipeTypeId + " recipe (" + id.toString() + ")";
         Logger logger = Greate.LOGGER;
         int ingredientCount = ingredients.size();
+        boolean circuit;
+        for(Ingredient ingredient : ingredients) {
+            circuit = ingredient.getItems()[0].is(GTItems.PROGRAMMED_CIRCUIT.asItem());
+            if(circuit) {
+                ingredientCount--;
+                break;
+            }
+        }
         int outputCount = results.size();
 
-        if (ingredientCount > getMaxInputCount())
+        if (ingredientCount > getMaxInputCount()) {
             logger.warn(messageHeader + " has more item inputs (" + ingredientCount + ") than supported ("
                     + getMaxInputCount() + ").");
+        }
 
         if (outputCount > getMaxOutputCount())
             logger.warn(messageHeader + " has more item outputs (" + outputCount + ") than supported ("
@@ -92,7 +100,7 @@ public abstract class TieredProcessingRecipe<T extends Container> extends Proces
     public static int getCircuitFromGTRecipe(List<Content> inputContents) {
         int circuitNumber = -1;
         for(Content c : inputContents) {
-            if(((Ingredient) c.getContent()).getItems()[0].is(GTItems.INTEGRATED_CIRCUIT.asItem())) {
+            if(((Ingredient) c.getContent()).getItems()[0].is(GTItems.PROGRAMMED_CIRCUIT.asItem())) {
                 ItemStack circuit = ((Ingredient) c.getContent()).getItems()[0];
                 circuitNumber = IntCircuitBehaviour.getCircuitConfiguration(circuit);
                 break;

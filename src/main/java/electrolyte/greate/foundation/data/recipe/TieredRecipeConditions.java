@@ -111,7 +111,7 @@ public class TieredRecipeConditions {
             } else if(r instanceof GTRecipe gtr) {
                 for(Content c : gtr.getInputContents(ItemRecipeCapability.CAP)) {
                     Ingredient ing = ((Ingredient) c.getContent());
-                    if(ing.getItems()[0].is(GTItems.INTEGRATED_CIRCUIT.get())) {
+                    if(ing.getItems()[0].is(GTItems.PROGRAMMED_CIRCUIT.get())) {
                         int circuit = IntCircuitBehaviour.getCircuitConfiguration(ing.getItems()[0]);
                         return circuit == machineCircuitNumber;
                     }
