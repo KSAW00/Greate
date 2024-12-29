@@ -1,5 +1,6 @@
 package electrolyte.greate;
 
+import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.machine.MachineDefinition;
 import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.utils.FormattingUtil;
@@ -19,26 +20,17 @@ import electrolyte.greate.foundation.item.GreateKineticStats;
 import electrolyte.greate.infrastructure.config.GreateConfigs;
 import electrolyte.greate.infrastructure.ponder.GreatePonderIndex;
 import electrolyte.greate.infrastructure.ponder.GreatePonderTags;
-import electrolyte.greate.registry.Cogwheels;
-import electrolyte.greate.registry.GreateLang;
-import electrolyte.greate.registry.GreateMaterials;
-import electrolyte.greate.registry.GreatePartialModels;
-import electrolyte.greate.registry.ModRecipeTypes;
-import electrolyte.greate.registry.Shafts;
+import electrolyte.greate.registry.*;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.CreativeModeTab.DisplayItemsGenerator;
 import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
 import net.minecraft.world.item.CreativeModeTab.Output;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -57,6 +49,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import static electrolyte.greate.registry.Millstones.MILLSTONES;
 
 @Mod(Greate.MOD_ID)
 public class Greate {
@@ -94,7 +88,7 @@ public class Greate {
     public static final RegistryObject<CreativeModeTab> GREATE_TAB = CREATIVE_TABS.register("greate",
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.greate"))
-                    .icon(() -> new ItemStack(Items.GOLDEN_APPLE))
+                    .icon(() -> new ItemStack(MILLSTONES[GTValues.UHV]))
                     .displayItems(new GreateRegistrateDisplayItemsGenerator())
                     .build());
 
