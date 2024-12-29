@@ -13,6 +13,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class TieredProcessingOutput extends ProcessingOutput {
@@ -62,7 +63,7 @@ public class TieredProcessingOutput extends ProcessingOutput {
         int count = GsonHelper.getAsInt(json, "count", 1);
         float chance = GsonHelper.isValidNode(json, "chance") ? GsonHelper.getAsFloat(json, "chance") : 1;
         float extraTierChance = GsonHelper.isValidNode(json, "extraTierChance") ? GsonHelper.getAsFloat(json, "extraTierChance") : 0;
-        ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId)), count);
+        ItemStack stack = new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId))), count);
 
         if (GsonHelper.isValidNode(json, "nbt")) {
             try {

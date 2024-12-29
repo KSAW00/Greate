@@ -6,6 +6,9 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import electrolyte.greate.content.fluids.pump.TieredPumpBlockEntity;
 import electrolyte.greate.content.fluids.pump.TieredPumpCogInstance;
 import electrolyte.greate.content.fluids.pump.TieredPumpRenderer;
+import electrolyte.greate.content.kinetics.arm.TieredMechanicalArmBlockEntity;
+import electrolyte.greate.content.kinetics.arm.TieredMechanicalArmInstance;
+import electrolyte.greate.content.kinetics.arm.TieredMechanicalArmRenderer;
 import electrolyte.greate.content.kinetics.base.TieredShaftInstance;
 import electrolyte.greate.content.kinetics.base.TieredShaftRenderer;
 import electrolyte.greate.content.kinetics.base.TieredSingleRotatingInstance;
@@ -119,6 +122,13 @@ public class ModBlockEntityTypes {
             .instance(() -> TieredMechanicalPressInstance::new)
             .validBlocks(MechanicalPresses.MECHANICAL_PRESSES)
             .renderer(() -> TieredMechanicalPressRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<TieredMechanicalArmBlockEntity> TIERED_MECHANICAL_ARM = REGISTRATE
+            .blockEntity("tiered_mechanical_arm", TieredMechanicalArmBlockEntity::new)
+            .instance(() -> TieredMechanicalArmInstance::new, false)
+            .validBlocks(MechanicalArms.MECHANICAL_ARMS)
+            .renderer(() -> TieredMechanicalArmRenderer::new)
             .register();
 
     public static final BlockEntityEntry<TieredMechanicalMixerBlockEntity> TIERED_MECHANICAL_MIXER = REGISTRATE

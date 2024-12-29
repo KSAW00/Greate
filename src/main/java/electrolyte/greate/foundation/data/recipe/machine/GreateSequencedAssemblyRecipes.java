@@ -16,7 +16,11 @@ import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import electrolyte.greate.Greate;
+import electrolyte.greate.content.kinetics.arm.TieredEffectingRecipe;
+import electrolyte.greate.content.processing.Sequenced.TieredSequencedAssemblyRecipeBuilder;
+import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.Map;
@@ -55,7 +59,6 @@ public class GreateSequencedAssemblyRecipes {
                     .loops(1)
                     .build(provider);
         }
-
         new SequencedAssemblyRecipeBuilder(Greate.id("sturdy_sheet"))
                 .require(createIngFromTag("forge", "dusts/obsidian"))
                 .transitionTo(AllItems.INCOMPLETE_REINFORCED_SHEET)
@@ -64,7 +67,7 @@ public class GreateSequencedAssemblyRecipes {
                 .addStep(PressingRecipe::new, r -> r)
                 .addOutput(AllItems.STURDY_SHEET.asItem(), 1)
                 .loops(1)
-                .build(provider);
+                .build();
 
         wireGtSingle.executeHandler(provider, PropertyKey.WIRE, GreateSequencedAssemblyRecipes::addRecipe);
         wireGtDouble.executeHandler(provider, PropertyKey.WIRE, GreateSequencedAssemblyRecipes::addRecipe);
