@@ -31,6 +31,7 @@ public class GreateAddon implements IGTAddon {
 		Girders.register();
 		MechanicalPresses.register();
 		MechanicalMixers.register();
+		MechanicalArms.register();
 		Millstones.register();
 		Saws.register();
 		Pumps.register();

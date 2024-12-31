@@ -19,8 +19,10 @@ import electrolyte.greate.Greate;
 import electrolyte.greate.content.kinetics.arm.TieredEffectingRecipe;
 import electrolyte.greate.content.processing.Sequenced.TieredSequencedAssemblyRecipeBuilder;
 import electrolyte.greate.content.processing.recipe.TieredProcessingRecipeBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.Map;
@@ -36,6 +38,7 @@ import static electrolyte.greate.foundation.data.recipe.GreateRecipes.createIngF
 import static electrolyte.greate.foundation.data.recipe.GreateRecipes.createIngFromUnificationEntry;
 import static electrolyte.greate.registry.Cogwheels.COGWHEELS;
 import static electrolyte.greate.registry.Cogwheels.LARGE_COGWHEELS;
+import static electrolyte.greate.registry.MechanicalArms.MECHANICAL_ARMS;
 import static electrolyte.greate.registry.Shafts.SHAFTS;
 
 public class GreateSequencedAssemblyRecipes {
@@ -59,15 +62,16 @@ public class GreateSequencedAssemblyRecipes {
                     .loops(1)
                     .build(provider);
         }
-        new SequencedAssemblyRecipeBuilder(Greate.id("sturdy_sheet"))
+        new TieredSequencedAssemblyRecipeBuilder(MECHANICAL_ARMS[0].getId(),0)
                 .require(createIngFromTag("forge", "dusts/obsidian"))
                 .transitionTo(AllItems.INCOMPLETE_REINFORCED_SHEET)
                 .addStep(FillingRecipe::new, r -> r.require(Fluids.LAVA, 500))
                 .addStep(PressingRecipe::new, r -> r)
+                .addTieredStep(TieredEffectingRecipe::new, r->r)
                 .addStep(PressingRecipe::new, r -> r)
                 .addOutput(AllItems.STURDY_SHEET.asItem(), 1)
                 .loops(1)
-                .build();
+                .build(provider);
 
         wireGtSingle.executeHandler(provider, PropertyKey.WIRE, GreateSequencedAssemblyRecipes::addRecipe);
         wireGtDouble.executeHandler(provider, PropertyKey.WIRE, GreateSequencedAssemblyRecipes::addRecipe);

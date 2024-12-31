@@ -52,6 +52,7 @@ public class ModBlockEntityTypes {
             .validBlocks(Cogwheels.LARGE_COGWHEELS)
             .renderer(() -> TieredBracketedKineticBlockEntityRenderer::new)
             .register();
+
     public static final BlockEntityEntry<TieredKineticBlockEntity> TIERED_ENCASED_SHAFT = REGISTRATE
             .blockEntity("tiered_encased_shaft", TieredKineticBlockEntity::new)
             .instance(() -> TieredShaftInstance::new, false)

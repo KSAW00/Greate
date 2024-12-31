@@ -21,7 +21,7 @@ public class TieredSequencedAssemblyRecipeGen extends CreateRecipeProvider {
             .loops(1)
             .addStep(FillingRecipe::new, rb -> rb.require(Fluids.LAVA, 500))
             .addStep(PressingRecipe::new, rb -> rb)
-            .addStep(TieredEffectingRecipe::new,rb->rb)
+            //.addStep(TieredEffectingRecipe::new,rb->rb)
             .addStep(PressingRecipe::new, rb -> rb));
 
     public TieredSequencedAssemblyRecipeGen(PackOutput output) {

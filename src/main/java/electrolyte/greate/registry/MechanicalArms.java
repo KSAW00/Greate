@@ -55,6 +55,8 @@ public class MechanicalArms{
                 .initialProperties(SharedProperties::softMetal)
                 .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
                 .transform(axeOrPickaxe())
+                .transform(BlockStressDefaults.setImpact(stressImpact))
+                .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .blockstate((c, p) -> p.getVariantBuilder(c.get())
                         .forAllStates(s -> ConfiguredModel.builder()
                                 .modelFile(AssetLookup.partialBaseModel(c, p))
