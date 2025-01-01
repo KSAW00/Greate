@@ -19,6 +19,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import electrolyte.greate.Greate;
 import electrolyte.greate.content.fluids.pump.TieredPumpBlock;
+import electrolyte.greate.content.kinetics.arm.TieredMechanicalArmBlock;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingWheelBlock;
 import electrolyte.greate.content.kinetics.fan.TieredEncasedFanBlock;
 import electrolyte.greate.content.kinetics.gearbox.TieredGearboxBlock;
@@ -229,6 +230,16 @@ public class GreateBuilderTransformers {
                     String material = c.getName().substring(0, c.getName().length() - 12);
                     p.withExistingParent(c.getName(), Create.asResource("block/encased_fan/item"))
                             .texture("fan_blades", p.modLoc("block/" + material + "/fan_blades"));
+                }).build();
+    }
+
+    public static <B extends TieredMechanicalArmBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> tieredMechanicalArm() {
+        return b -> b.blockstate(tieredMechanicalArmProvider())
+                .item(AssemblyOperatorBlockItem::new)
+                .model((c, p) -> {
+                    p.withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/item"))
+                            .texture("4", p.modLoc("block/" + c.getName().substring(0, c.getName().length() - 15) + "/cogwheel"))
+                            .texture("5", p.modLoc("block/" + c.getName().substring(0, c.getName().length() - 15) + "/arm"));
                 }).build();
     }
 }

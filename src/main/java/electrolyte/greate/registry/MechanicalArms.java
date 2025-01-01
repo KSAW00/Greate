@@ -1,8 +1,6 @@
 package electrolyte.greate.registry;
 
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
-import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlock;
-import com.simibubi.create.content.kinetics.mechanicalArm.ArmItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
@@ -10,6 +8,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import electrolyte.greate.Greate;
 import electrolyte.greate.content.kinetics.TieredBlockMaterials;
 import electrolyte.greate.content.kinetics.arm.TieredMechanicalArmBlock;
+import electrolyte.greate.content.kinetics.arm.TieredMechanicalArmItem;
 import electrolyte.greate.foundation.data.GreateBuilderTransformers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.material.MapColor;
@@ -57,14 +56,15 @@ public class MechanicalArms{
                 .transform(axeOrPickaxe())
                 .transform(BlockStressDefaults.setImpact(stressImpact))
                 .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
+                .transform(GreateBuilderTransformers.tieredMechanicalArm())
                 .blockstate((c, p) -> p.getVariantBuilder(c.get())
                         .forAllStates(s -> ConfiguredModel.builder()
                                 .modelFile(AssetLookup.partialBaseModel(c, p))
-                                .rotationX(s.getValue(ArmBlock.CEILING) ? 180 : 0)
+                                .rotationX(s.getValue(TieredMechanicalArmBlock.CEILING) ? 180 : 0)
                                 .build()))
-                .transform(BlockStressDefaults.setImpact(2.0))
-                .item(ArmItem::new)
+                .item(TieredMechanicalArmItem::new)
                 .transform(customItemModel())
+                .onRegister(c -> c.setTier(tier))
                 .register();
     }
 }

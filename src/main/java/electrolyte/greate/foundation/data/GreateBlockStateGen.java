@@ -160,6 +160,34 @@ public class GreateBlockStateGen {
         });
     }
 
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> tieredMechanicalArmProvider() {
+        return (c, p) -> p.getVariantBuilder(c.getEntry()).forAllStates(state -> {
+            Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            final String prefix = "block/" + c.getName().substring(0, c.getName().length() - 15);
+            return ConfiguredModel.builder()
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/base"))
+                            .texture("5", p.modLoc( prefix + "/arm")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/block"))
+                            .texture("3", p.modLoc(prefix + "/arm")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/upper_claw_grip"))
+                            .texture("5", p.modLoc(prefix + "/arm")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/lower_claw_grip"))
+                            .texture("5", p.modLoc(prefix + "/arm")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/upper_body"))
+                            .texture("5", p.modLoc(prefix + "/arm")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/lower_body"))
+                            .texture("5", p.modLoc(prefix + "/arm")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/cog"))
+                            .texture("5", p.modLoc(prefix + "/cogwheel")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/claw_base"))
+                            .texture("5", p.modLoc(prefix + "/arm")))
+                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/claw_base_goggles"))
+                            .texture("5", p.modLoc(prefix + "/arm")))
+                    .rotationY(dir == Direction.EAST ? 90 : dir == Direction.SOUTH ? 180 : dir == Direction.WEST ? 270 : 0)
+                    .build();
+        });
+    }
+
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> tieredMechanicalMixerProvider() {
         return (c, p) -> p.getVariantBuilder(c.getEntry()).forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(p.models().withExistingParent(c.getName() + "_head", Create.asResource("block/mechanical_mixer/head"))
