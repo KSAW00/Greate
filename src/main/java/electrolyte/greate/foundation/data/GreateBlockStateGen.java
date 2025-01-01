@@ -164,7 +164,7 @@ public class GreateBlockStateGen {
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> tieredMechanicalArmProvider() {
         return (c, p) -> p.getVariantBuilder(c.getEntry()).forAllStates(state -> {
             //Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            final String prefix = "block/" + c.getName().substring(0, c.getName().length() - 15);
+            String prefix = "block/" + c.getName().substring(0, c.getName().length()-15);
             return ConfiguredModel.builder()
                     .modelFile(p.models().withExistingParent(c.getName() + "_base", Create.asResource("block/mechanical_arm/base"))
                             .texture("2", Create.asResource("block/elevator_pulley"))
@@ -191,6 +191,7 @@ public class GreateBlockStateGen {
                             .texture("7", Create.asResource("block/brass_block"))
                             .texture("particle", Create.asResource("block/brass_casing")))
                     //.rotationY(dir == Direction.EAST ? 90 : dir == Direction.SOUTH ? 180 : dir == Direction.WEST ? 270 : 0)
+
                     .rotationX(state.getValue(TieredMechanicalArmBlock.CEILING) ? 180 : 0)
                     .build();
         });

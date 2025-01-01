@@ -35,7 +35,6 @@ public class TieredMechanicalArmRenderer extends KineticBlockEntityRenderer<Tier
         super(context);
     }
 
-    @Override
     protected void renderSafe(TieredMechanicalArmBlockEntity be, float pt, PoseStack ms, MultiBufferSource buffer, int light,
                               int overlay) {
         super.renderSafe(be, pt, ms, buffer, light, overlay);

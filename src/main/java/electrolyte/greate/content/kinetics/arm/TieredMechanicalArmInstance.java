@@ -47,7 +47,7 @@ public class TieredMechanicalArmInstance extends SingleRotatingInstance<TieredMe
 	private int tier;
 	public TieredMechanicalArmInstance(MaterialManager materialManager, TieredMechanicalArmBlockEntity blockEntity) {
 		super(materialManager, blockEntity);
-
+		tier = ((TieredMechanicalArmBlock) this.blockEntity.getBlockState().getBlock()).getTier();
 		Material<ModelData> mat = getTransformMaterial();
 
 		base = mat.getModel(GreatePartialModels.ARM_BASE_MODELS[tier], blockState)
@@ -60,8 +60,6 @@ public class TieredMechanicalArmInstance extends SingleRotatingInstance<TieredMe
 			.getModel(blockEntity.goggles ? GreatePartialModels.ARM_CLAW_BASE_GOGGLES_MODELS[tier] : GreatePartialModels.ARM_CLAW_BASE_MODELS[tier],
 				blockState)
 			.createInstance();
-		tier = ((TieredMechanicalArmBlock) this.blockEntity.getBlockState().getBlock()).getTier();
-
 		ModelData clawGrip1 = mat.getModel(GreatePartialModels.ARM_CLAW_GRIP_UPPER_MODELS[tier], blockState)
 			.createInstance();
 		ModelData clawGrip2 = mat.getModel(GreatePartialModels.ARM_CLAW_GRIP_LOWER_MODELS[tier], blockState)

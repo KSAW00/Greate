@@ -55,14 +55,10 @@ public class MechanicalArms{
                 .initialProperties(SharedProperties::softMetal)
                 .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
                 .transform(axeOrPickaxe())
-                .blockstate((c, p) -> p.getVariantBuilder(c.get())
-                        .forAllStates(s -> ConfiguredModel.builder()
-                                .modelFile(AssetLookup.partialBaseModel(c, p))
-                                .rotationX(s.getValue(ArmBlock.CEILING) ? 180 : 0)
-                                .build()))
+                .transform(GreateBuilderTransformers.tieredMechanicalArm())
                 .transform(BlockStressDefaults.setImpact(stressImpact))
                 .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
-                .transform(GreateBuilderTransformers.tieredMechanicalArm())
+                .addLayer(() -> RenderType::cutoutMipped)
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }

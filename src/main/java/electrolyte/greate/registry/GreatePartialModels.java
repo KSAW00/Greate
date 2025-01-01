@@ -142,14 +142,14 @@ public class GreatePartialModels {
     static {
         for (int tier = 0; tier < TM.length; tier++) {
             Material tierMaterial = TM[tier];
-            ARM_COG_MODELS[tier] = materialBlock(tierMaterial, "_cog");
-            ARM_BASE_MODELS[tier] = materialBlock(tierMaterial, "_base");
-            ARM_LOWER_BODY_MODELS[tier] = materialBlock(tierMaterial, "_lower_body");
-            ARM_UPPER_BODY_MODELS[tier] = materialBlock(tierMaterial, "_upper_body");
-            ARM_CLAW_BASE_MODELS[tier] = materialBlock(tierMaterial, "_claw_base");
-            ARM_CLAW_BASE_GOGGLES_MODELS[tier] = materialBlock(tierMaterial, "_claw_base_goggles");
-            ARM_CLAW_GRIP_UPPER_MODELS[tier] = materialBlock(tierMaterial, "_upper_claw_grip");
-            ARM_CLAW_GRIP_LOWER_MODELS[tier] = materialBlock(tierMaterial, "_lower_claw_grip");
+            ARM_COG_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_cog");
+            ARM_BASE_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_base");
+            ARM_LOWER_BODY_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_lower_body");
+            ARM_UPPER_BODY_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_upper_body");
+            ARM_CLAW_BASE_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_claw_base");
+            ARM_CLAW_BASE_GOGGLES_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_claw_base_goggles");
+            ARM_CLAW_GRIP_UPPER_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_upper_claw_grip");
+            ARM_CLAW_GRIP_LOWER_MODELS[tier] = materialBlock(tierMaterial, "_mechanical_arm_lower_claw_grip");
         }
     }
     private static PartialModel belt(Material beltMaterial, BeltPart beltPart) {
