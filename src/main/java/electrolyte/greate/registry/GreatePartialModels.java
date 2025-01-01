@@ -20,8 +20,6 @@ public class GreatePartialModels {
     public static final PartialModel[] LARGE_COGWHEEL_SHAFTLESS_MODELS = new PartialModel[10];
     public static final PartialModel[] COGWHEEL_SHAFT_MODELS = new PartialModel[10];
     public static final PartialModel[] SHAFT_HALF_MODELS = new PartialModel[10];
-
-
     static {
         for (int tier = 0; tier < TM.length; tier++) {
             Material tierMaterial = TM[tier];
@@ -121,7 +119,6 @@ public class GreatePartialModels {
         }
     }
 
-    // Fan
     public static final PartialModel[] FAN_INNER_MODELS = new PartialModel[10];
     static {
         for(int tier = 0; tier < TM.length; tier++) {
@@ -129,29 +126,6 @@ public class GreatePartialModels {
         }
     }
 
-    //Mechanical ARM
-    public static final PartialModel[] ARM_COG_MODELS=new PartialModel[10];
-    public static final PartialModel[] ARM_BASE_MODELS=new PartialModel[10];
-    public static final PartialModel[] ARM_LOWER_BODY_MODELS=new PartialModel[10];
-    public static final PartialModel[] ARM_UPPER_BODY_MODELS=new PartialModel[10];
-    public static final PartialModel[] ARM_CLAW_BASE_MODELS=new PartialModel[10];
-    public static final PartialModel[] ARM_CLAW_BASE_GOGGLES_MODELS=new PartialModel[10];
-    public static final PartialModel[] ARM_CLAW_GRIP_UPPER_MODELS=new PartialModel[10];
-    public static final PartialModel[] ARM_CLAW_GRIP_LOWER_MODELS=new PartialModel[10];
-
-    static {
-        for (int tier = 0; tier < TM.length; tier++) {
-            Material tierMaterial = TM[tier];
-            ARM_COG_MODELS[tier] = materialBlock(tierMaterial, "_cog");
-            ARM_BASE_MODELS[tier] = materialBlock(tierMaterial, "_base");
-            ARM_LOWER_BODY_MODELS[tier] = materialBlock(tierMaterial, "_lower_body");
-            ARM_UPPER_BODY_MODELS[tier] = materialBlock(tierMaterial, "_upper_body");
-            ARM_CLAW_BASE_MODELS[tier] = materialBlock(tierMaterial, "_claw_base");
-            ARM_CLAW_BASE_GOGGLES_MODELS[tier] = materialBlock(tierMaterial, "_claw_base_goggles");
-            ARM_CLAW_GRIP_UPPER_MODELS[tier] = materialBlock(tierMaterial, "_upper_claw_grip");
-            ARM_CLAW_GRIP_LOWER_MODELS[tier] = materialBlock(tierMaterial, "_lower_claw_grip");
-        }
-    }
     private static PartialModel belt(Material beltMaterial, BeltPart beltPart) {
         String beltpartName = beltPart.name().toLowerCase();
         PartialModel partialModel = materialBlock(beltMaterial, "_belt_" + beltpartName);

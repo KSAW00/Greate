@@ -145,15 +145,6 @@ public class GreateJEI implements IModPlugin {
                         .emptyBackground(177, 85)
                         .build("pressing", TieredPressingCategory::new),
 
-                effecting = builder(TieredPressingRecipe.class)
-                        .addTypedRecipes(ModRecipeTypes.EFFECTING::getType)
-                        .catalysts(Arrays.stream(MechanicalArms.MECHANICAL_ARMS)
-                                .<Supplier<ItemLike>>map(o -> o::get)
-                                .collect(Collectors.toList()))
-                        .doubleIconItem(MechanicalArms.NEUTRONIUM_MECHANICAL_ARM.get(), AllItems.IRON_SHEET.get())
-                        .emptyBackground(177, 85)
-                        .build("pressing", TieredPressingCategory::new),
-
                 mixing = builder(TieredBasinRecipe.class)
                         .addTypedRecipesGT(GTRecipeTypes.MIXER_RECIPES, r -> TieredMixingRecipe.convertGTMixing(r, ULV))
                         .addTypedRecipes(ModRecipeTypes.MIXING::getType)
