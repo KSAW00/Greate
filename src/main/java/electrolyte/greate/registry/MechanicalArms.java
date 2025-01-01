@@ -57,13 +57,6 @@ public class MechanicalArms{
                 .transform(BlockStressDefaults.setImpact(stressImpact))
                 .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .transform(GreateBuilderTransformers.tieredMechanicalArm())
-                .blockstate((c, p) -> p.getVariantBuilder(c.get())
-                        .forAllStates(s -> ConfiguredModel.builder()
-                                .modelFile(AssetLookup.partialBaseModel(c, p))
-                                .rotationX(s.getValue(TieredMechanicalArmBlock.CEILING) ? 180 : 0)
-                                .build()))
-                .item(TieredMechanicalArmItem::new)
-                .transform(customItemModel())
                 .onRegister(c -> c.setTier(tier))
                 .register();
     }

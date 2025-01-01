@@ -4,6 +4,7 @@ import com.simibubi.create.Create;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import electrolyte.greate.content.kinetics.arm.TieredMechanicalArmBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.Block;
@@ -184,6 +185,7 @@ public class GreateBlockStateGen {
                     .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/claw_base_goggles"))
                             .texture("5", p.modLoc(prefix + "/arm")))
                     .rotationY(dir == Direction.EAST ? 90 : dir == Direction.SOUTH ? 180 : dir == Direction.WEST ? 270 : 0)
+                    .rotationX(state.getValue(TieredMechanicalArmBlock.CEILING) ? 180 : 0)
                     .build();
         });
     }
