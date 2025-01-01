@@ -62,7 +62,7 @@ public class GreateSequencedAssemblyRecipes {
                     .loops(1)
                     .build(provider);
         }
-        new TieredSequencedAssemblyRecipeBuilder(MECHANICAL_ARMS[0].getId(),0)
+        new TieredSequencedAssemblyRecipeBuilder(Greate.id("sturdy_sheet"),0)
                 .require(createIngFromTag("forge", "dusts/obsidian"))
                 .transitionTo(AllItems.INCOMPLETE_REINFORCED_SHEET)
                 .addStep(FillingRecipe::new, r -> r.require(Fluids.LAVA, 500))
