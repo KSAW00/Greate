@@ -9,7 +9,6 @@ import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.jozufozu.flywheel.core.materials.model.ModelData;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.SingleRotatingInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlock;
@@ -18,6 +17,7 @@ import com.simibubi.create.content.kinetics.mechanicalArm.ArmRenderer;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Color;
 import com.simibubi.create.foundation.utility.Iterate;
+import electrolyte.greate.registry.GreatePartialModels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.util.Mth;
@@ -44,26 +44,27 @@ public class TieredMechanicalArmInstance extends SingleRotatingInstance<TieredMe
 	private float lowerArmAngle = Float.NaN;
 	private float upperArmAngle = Float.NaN;
 	private float headAngle = Float.NaN;
-
+	private int tier;
 	public TieredMechanicalArmInstance(MaterialManager materialManager, TieredMechanicalArmBlockEntity blockEntity) {
 		super(materialManager, blockEntity);
 
 		Material<ModelData> mat = getTransformMaterial();
 
-		base = mat.getModel(AllPartialModels.ARM_BASE, blockState)
+		base = mat.getModel(GreatePartialModels.ARM_BASE_MODELS[tier], blockState)
 			.createInstance();
-		lowerBody = mat.getModel(AllPartialModels.ARM_LOWER_BODY, blockState)
+		lowerBody = mat.getModel(GreatePartialModels.ARM_LOWER_BODY_MODELS[tier], blockState)
 			.createInstance();
-		upperBody = mat.getModel(AllPartialModels.ARM_UPPER_BODY, blockState)
+		upperBody = mat.getModel(GreatePartialModels.ARM_UPPER_BODY_MODELS[tier], blockState)
 			.createInstance();
 		claw = mat
-			.getModel(blockEntity.goggles ? AllPartialModels.ARM_CLAW_BASE_GOGGLES : AllPartialModels.ARM_CLAW_BASE,
+			.getModel(blockEntity.goggles ? GreatePartialModels.ARM_CLAW_BASE_GOGGLES_MODELS[tier] : GreatePartialModels.ARM_CLAW_BASE_MODELS[tier],
 				blockState)
 			.createInstance();
+		tier = ((TieredMechanicalArmBlock) this.blockEntity.getBlockState().getBlock()).getTier();
 
-		ModelData clawGrip1 = mat.getModel(AllPartialModels.ARM_CLAW_GRIP_UPPER, blockState)
+		ModelData clawGrip1 = mat.getModel(GreatePartialModels.ARM_CLAW_GRIP_UPPER_MODELS[tier], blockState)
 			.createInstance();
-		ModelData clawGrip2 = mat.getModel(AllPartialModels.ARM_CLAW_GRIP_LOWER, blockState)
+		ModelData clawGrip2 = mat.getModel(GreatePartialModels.ARM_CLAW_GRIP_LOWER_MODELS[tier], blockState)
 			.createInstance();
 
 		clawGrips = Lists.newArrayList(clawGrip1, clawGrip2);
@@ -180,7 +181,7 @@ public class TieredMechanicalArmInstance extends SingleRotatingInstance<TieredMe
 		models.remove(claw);
 		claw.delete();
 		claw = getTransformMaterial()
-			.getModel(blockEntity.goggles ? AllPartialModels.ARM_CLAW_BASE_GOGGLES : AllPartialModels.ARM_CLAW_BASE,
+			.getModel(blockEntity.goggles ? GreatePartialModels.ARM_CLAW_BASE_GOGGLES_MODELS[tier] : GreatePartialModels.ARM_CLAW_BASE_MODELS[tier],
 				blockState)
 			.createInstance();
 		models.add(claw);
@@ -197,7 +198,7 @@ public class TieredMechanicalArmInstance extends SingleRotatingInstance<TieredMe
 
 	@Override
 	protected Instancer<RotatingData> getModel() {
-		return getRotatingMaterial().getModel(AllPartialModels.ARM_COG, blockEntity.getBlockState());
+		return getRotatingMaterial().getModel(GreatePartialModels.ARM_COG_MODELS[tier], blockEntity.getBlockState());
 	}
 
 	@Override

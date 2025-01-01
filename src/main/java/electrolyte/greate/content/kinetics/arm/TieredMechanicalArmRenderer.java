@@ -15,6 +15,8 @@ import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Color;
 import com.simibubi.create.foundation.utility.Iterate;
 
+import electrolyte.greate.content.kinetics.mixer.TieredMechanicalMixerBlock;
+import electrolyte.greate.registry.GreatePartialModels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -64,6 +66,9 @@ public class TieredMechanicalArmRenderer extends KineticBlockEntityRenderer<Tier
         int color;
         boolean inverted = blockState.getValue(ArmBlock.CEILING);
 
+        TieredMechanicalArmBlock armBlock = (TieredMechanicalArmBlock) blockState.getBlock();
+        int tier = armBlock.getTier();
+
         boolean rave = be.phase == TieredMechanicalArmBlockEntity.Phase.DANCING && be.getSpeed() != 0;
         if (rave) {
             float renderTick = AnimationTickHolder.getRenderTime(be.getLevel()) + (be.hashCode() % 64);
@@ -90,7 +95,7 @@ public class TieredMechanicalArmRenderer extends KineticBlockEntityRenderer<Tier
             doItemTransforms(msr, baseAngle, lowerArmAngle, upperArmAngle, headAngle);
         else
             renderArm(builder, ms, msLocal, msr, blockState, color, baseAngle, lowerArmAngle, upperArmAngle, headAngle,
-                    be.goggles, inverted && be.goggles, hasItem, isBlockItem, light);
+                    be.goggles, inverted && be.goggles, hasItem, isBlockItem, light, tier);
 
         if (hasItem) {
             ms.pushPose();
@@ -112,20 +117,20 @@ public class TieredMechanicalArmRenderer extends KineticBlockEntityRenderer<Tier
 
     private void renderArm(VertexConsumer builder, PoseStack ms, PoseStack msLocal, TransformStack msr,
                            BlockState blockState, int color, float baseAngle, float lowerArmAngle, float upperArmAngle, float headAngle,
-                           boolean goggles, boolean inverted, boolean hasItem, boolean isBlockItem, int light) {
-        SuperByteBuffer base = CachedBufferer.partial(AllPartialModels.ARM_BASE, blockState)
+                           boolean goggles, boolean inverted, boolean hasItem, boolean isBlockItem, int light, int tier) {
+        SuperByteBuffer base = CachedBufferer.partial(GreatePartialModels.ARM_BASE_MODELS[tier], blockState)
                 .light(light);
-        SuperByteBuffer lowerBody = CachedBufferer.partial(AllPartialModels.ARM_LOWER_BODY, blockState)
+        SuperByteBuffer lowerBody = CachedBufferer.partial(GreatePartialModels.ARM_LOWER_BODY_MODELS[tier], blockState)
                 .light(light);
-        SuperByteBuffer upperBody = CachedBufferer.partial(AllPartialModels.ARM_UPPER_BODY, blockState)
+        SuperByteBuffer upperBody = CachedBufferer.partial(GreatePartialModels.ARM_UPPER_BODY_MODELS[tier], blockState)
                 .light(light);
         SuperByteBuffer claw = CachedBufferer
-                .partial(goggles ? AllPartialModels.ARM_CLAW_BASE_GOGGLES : AllPartialModels.ARM_CLAW_BASE, blockState)
+                .partial(goggles ? GreatePartialModels.ARM_CLAW_BASE_GOGGLES_MODELS[tier] : GreatePartialModels.ARM_CLAW_BASE_MODELS[tier], blockState)
                 .light(light);
-        SuperByteBuffer upperClawGrip = CachedBufferer.partial(AllPartialModels.ARM_CLAW_GRIP_UPPER,
+        SuperByteBuffer upperClawGrip = CachedBufferer.partial(GreatePartialModels.ARM_CLAW_GRIP_UPPER_MODELS[tier],
                         blockState)
                 .light(light);
-        SuperByteBuffer lowerClawGrip = CachedBufferer.partial(AllPartialModels.ARM_CLAW_GRIP_LOWER, blockState)
+        SuperByteBuffer lowerClawGrip = CachedBufferer.partial(GreatePartialModels.ARM_CLAW_GRIP_LOWER_MODELS[tier], blockState)
                 .light(light);
 
         transformBase(msr, baseAngle);
@@ -202,7 +207,7 @@ public class TieredMechanicalArmRenderer extends KineticBlockEntityRenderer<Tier
 
     @Override
     protected SuperByteBuffer getRotatedModel(TieredMechanicalArmBlockEntity be, BlockState state) {
-        return CachedBufferer.partial(AllPartialModels.ARM_COG, state);
+        return CachedBufferer.partial(GreatePartialModels.ARM_COG_MODELS[((TieredMechanicalArmBlock) be.getBlockState().getBlock()).getTier()], state);
     }
 
 }
