@@ -1,6 +1,7 @@
 package electrolyte.greate.registry;
 
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlock;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
@@ -54,6 +55,11 @@ public class MechanicalArms{
                 .initialProperties(SharedProperties::softMetal)
                 .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
                 .transform(axeOrPickaxe())
+                .blockstate((c, p) -> p.getVariantBuilder(c.get())
+                        .forAllStates(s -> ConfiguredModel.builder()
+                                .modelFile(AssetLookup.partialBaseModel(c, p))
+                                .rotationX(s.getValue(ArmBlock.CEILING) ? 180 : 0)
+                                .build()))
                 .transform(BlockStressDefaults.setImpact(stressImpact))
                 .transform(TieredBlockMaterials.setMaterialForBlock(TM[tier]))
                 .transform(GreateBuilderTransformers.tieredMechanicalArm())

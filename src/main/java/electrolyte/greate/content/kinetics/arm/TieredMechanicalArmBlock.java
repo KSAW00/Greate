@@ -17,12 +17,10 @@ public class TieredMechanicalArmBlock extends ArmBlock implements ITieredBlock {
         return ModBlockEntityTypes.TIERED_MECHANICAL_ARM.get();
     }
 
-    @Override
     public int getTier() {
         return tier;
     }
 
-    @Override
     public void setTier(int tier) {
         this.tier = tier;
     }

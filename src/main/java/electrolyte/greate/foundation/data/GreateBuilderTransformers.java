@@ -238,8 +238,12 @@ public class GreateBuilderTransformers {
                 .item(AssemblyOperatorBlockItem::new)
                 .model((c, p) -> {
                     p.withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/item"))
-                            .texture("4", p.modLoc("block/" + c.getName().substring(0, c.getName().length() - 15) + "/cogwheel"))
-                            .texture("5", p.modLoc("block/" + c.getName().substring(0, c.getName().length() - 15) + "/arm"));
+                            .texture("4", Create.asResource("block/flywheel"))
+                            .texture("5", p.modLoc("block/" + c.getName().substring(0, c.getName().length() - 15) + "/arm"))
+                            .texture("6", Create.asResource("block/elevator_pulley"))
+                            .texture("7", Create.asResource("block/brass_block"))
+                            .texture("8", Create.asResource("block/brass_casing"))
+                            .texture("particle", Create.asResource("block/brass_casing"));
                 }).build();
     }
 }

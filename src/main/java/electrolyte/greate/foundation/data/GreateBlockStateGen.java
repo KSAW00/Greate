@@ -163,28 +163,34 @@ public class GreateBlockStateGen {
 
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> tieredMechanicalArmProvider() {
         return (c, p) -> p.getVariantBuilder(c.getEntry()).forAllStates(state -> {
-            Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            //Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
             final String prefix = "block/" + c.getName().substring(0, c.getName().length() - 15);
             return ConfiguredModel.builder()
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/base"))
-                            .texture("5", p.modLoc( prefix + "/arm")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/block"))
-                            .texture("3", p.modLoc(prefix + "/arm")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/upper_claw_grip"))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_base", Create.asResource("block/mechanical_arm/base"))
+                            .texture("2", Create.asResource("block/elevator_pulley"))
+                            .texture("3", Create.asResource("block/brass_block"))
                             .texture("5", p.modLoc(prefix + "/arm")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/lower_claw_grip"))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_upper_claw_grip", Create.asResource("block/mechanical_arm/upper_claw_grip"))
                             .texture("5", p.modLoc(prefix + "/arm")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/upper_body"))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_lower_claw_grip", Create.asResource("block/mechanical_arm/lower_claw_grip"))
                             .texture("5", p.modLoc(prefix + "/arm")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/lower_body"))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_upper_body", Create.asResource("block/mechanical_arm/upper_body"))
                             .texture("5", p.modLoc(prefix + "/arm")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/cog"))
-                            .texture("5", p.modLoc(prefix + "/cogwheel")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/claw_base"))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_lower_body", Create.asResource("block/mechanical_arm/lower_body"))
                             .texture("5", p.modLoc(prefix + "/arm")))
-                    .modelFile(p.models().withExistingParent(c.getName(), Create.asResource("block/mechanical_arm/claw_base_goggles"))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_cog", Create.asResource("block/mechanical_arm/cog"))
+                            .texture("5", Create.asResource("block/flywheel")))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_claw_base", Create.asResource("block/mechanical_arm/claw_base"))
                             .texture("5", p.modLoc(prefix + "/arm")))
-                    .rotationY(dir == Direction.EAST ? 90 : dir == Direction.SOUTH ? 180 : dir == Direction.WEST ? 270 : 0)
+                    .modelFile(p.models().withExistingParent(c.getName() + "_claw_base_goggles", Create.asResource("block/mechanical_arm/claw_base_goggles"))
+                            .texture("1", Create.asResource("block/hat_test"))
+                            .texture("5", p.modLoc(prefix + "/arm"))
+                            .texture("particle", Create.asResource("block/hat_test")))
+                    .modelFile(p.models().withExistingParent(c.getName() + "_block", Create.asResource("block/mechanical_arm/block"))
+                            .texture("3", p.modLoc(prefix + "/arm"))
+                            .texture("7", Create.asResource("block/brass_block"))
+                            .texture("particle", Create.asResource("block/brass_casing")))
+                    //.rotationY(dir == Direction.EAST ? 90 : dir == Direction.SOUTH ? 180 : dir == Direction.WEST ? 270 : 0)
                     .rotationX(state.getValue(TieredMechanicalArmBlock.CEILING) ? 180 : 0)
                     .build();
         });

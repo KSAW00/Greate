@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/mechanical_arm/block",
+  "textures": {
+    "3": "greate:block/neutronium/arm",
+    "7": "create:block/brass_block",
+    "particle": "create:block/brass_casing"
+  }
+}
