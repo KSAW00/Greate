@@ -1,5 +1,6 @@
 package electrolyte.greate.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredKineticBlockEntity;
@@ -42,13 +43,6 @@ public abstract class MixinKineticNetwork {
         }
     }
 
-    @Inject(method = "updateFromNetwork", at = @At(value = "RETURN"), remap = false)
-    private void greate_updateFromNetwork(KineticBlockEntity be, CallbackInfo ci) {
-        if(be instanceof ITieredKineticBlockEntity itkbe) {
-            itkbe.updateFromNetwork(currentCapacity, currentStress, getSize(), greate_currentMaxCapacity);
-        }
-    }
-
     @Unique
     private void greate_updateMaxCapacity() {
         float newMaxCapacity = greate_calculateMaxCapacity();
@@ -79,5 +73,11 @@ public abstract class MixinKineticNetwork {
             }
         }
         return presentMaxCapacity;
+    }
+
+    @ModifyReturnValue(method = "calculateCapacity", at = @At("RETURN"), remap = false)
+    private float greate_calculateCapacity(float original) {
+        greate_updateMaxCapacity();
+        return Math.min(original, greate_currentMaxCapacity);
     }
 }
