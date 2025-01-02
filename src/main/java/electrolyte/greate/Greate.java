@@ -70,7 +70,7 @@ public class Greate {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::gatherData);
-        GreateRegistries.REGISTRATE.registerRegistrate();
+   //     GreateRegistries.REGISTRATE.registerRegistrate();
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(GTRecipeType.class, GreateRegistries::registerRecipeTypes);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MachineDefinition.class, GreateRegistries::registerMultiblocks);
         CREATIVE_TABS.register(eventBus);

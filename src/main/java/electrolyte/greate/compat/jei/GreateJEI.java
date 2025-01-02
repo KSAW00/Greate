@@ -32,6 +32,7 @@ import electrolyte.greate.Greate;
 import electrolyte.greate.compat.jei.category.*;
 import electrolyte.greate.compat.jei.category.GreateRecipeCategory.Info;
 import electrolyte.greate.compat.jei.category.TieredBlockCuttingCategory.TieredCondensedBlockCuttingRecipe;
+import electrolyte.greate.content.kinetics.arm.TieredEffectingRecipe;
 import electrolyte.greate.content.kinetics.crusher.TieredAbstractCrushingRecipe;
 import electrolyte.greate.content.kinetics.crusher.TieredCrushingRecipe;
 import electrolyte.greate.content.kinetics.fan.TieredEncasedFanBlock;
@@ -145,14 +146,15 @@ public class GreateJEI implements IModPlugin {
                         .emptyBackground(177, 85)
                         .build("pressing", TieredPressingCategory::new),
 
-                effecting = builder(TieredPressingRecipe.class)
+                effecting = builder(TieredEffectingRecipe.class)
                         .addTypedRecipes(ModRecipeTypes.EFFECTING::getType)
+                        .addTypedRecipesGT(GTRecipeTypes.POLARIZER_RECIPES, TieredEffectingRecipe::convertGT)
                         .catalysts(Arrays.stream(MechanicalArms.MECHANICAL_ARMS)
                                 .<Supplier<ItemLike>>map(o -> o::get)
                                 .collect(Collectors.toList()))
                         .doubleIconItem(MechanicalArms.NEUTRONIUM_MECHANICAL_ARM.get(), AllItems.IRON_SHEET.get())
                         .emptyBackground(177, 85)
-                        .build("pressing", TieredPressingCategory::new),
+                        .build("effecting", TieredEffectingCategory::new),
 
                 mixing = builder(TieredBasinRecipe.class)
                         .addTypedRecipesGT(GTRecipeTypes.MIXER_RECIPES, r -> TieredMixingRecipe.convertGTMixing(r, ULV))

@@ -1,5 +1,7 @@
 package electrolyte.greate.content.kinetics.arm;
 
+import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
+import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -12,17 +14,22 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import electrolyte.greate.Greate;
 import electrolyte.greate.content.kinetics.simpleRelays.ITieredKineticBlockEntity;
 import electrolyte.greate.content.processing.Sequenced.TieredSequencedAssemblyRecipe;
+import electrolyte.greate.content.processing.recipe.TieredProcessingRecipe;
 import electrolyte.greate.foundation.data.recipe.TieredRecipeConditions;
+import electrolyte.greate.foundation.recipe.TieredRecipeApplier;
 import electrolyte.greate.registry.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,15 +136,37 @@ public class TieredMechanicalArmBlockEntity extends ArmBlockEntity implements IT
     }
 //          Wot?
 
-//    public boolean tryProcessItem(ItemEntity itemEntity, boolean simulate) {
-//        ItemStack stack = itemEntity.getItem();
-//        Optional<? extends Recipe<?>> recipe = getValidRecipe(stack);
-//        if (recipe.isEmpty()) return false; // If no valid recipe, return early
-//        if (simulate) return true; // Return success in simulation mode
-//        applyRecipe(recipe.get(), itemEntity);
-//
-//        return true;
-//    }
+    public boolean tryProcessInWorld(ItemEntity itemEntity, boolean simulate) {
+        ItemStack stack = itemEntity.getItem();
+        Optional<? extends Recipe<?>> recipe = getValidRecipe(stack);
+        if(recipe.isEmpty()) return false;
+        if(simulate) return true;
+
+        ItemStack createdStack = ItemStack.EMPTY;
+        if(stack.getCount() == 1) {
+            TieredRecipeApplier.applyRecipeOn(itemEntity, recipe.get(), tier);
+            createdStack = itemEntity.getItem().copy();
+        } else {
+            for(ItemStack result : TieredRecipeApplier.applyRecipeOn(level, ItemHandlerHelper.copyStackWithSize(stack, 1), recipe.get(), tier)) {
+                if(createdStack.isEmpty()) {
+                    createdStack = result.copy();
+                }
+                ItemEntity createdEntityStack = new ItemEntity(level, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), result);
+                createdEntityStack.setDefaultPickUpDelay();
+                createdEntityStack.setDeltaMovement(VecHelper.offsetRandomly(Vec3.ZERO, level.random, 0.05f));
+                level.addFreshEntity(createdEntityStack);
+            }
+            if(recipe.get() instanceof TieredProcessingRecipe<?>) {
+                stack.shrink(recipe.get().getIngredients().get(0).getItems()[0].getCount());
+            } else if(recipe.get() instanceof GTRecipe gtr) {
+                int amount = ((Ingredient) gtr.getInputContents(ItemRecipeCapability.CAP).get(0).getContent()).getItems()[0].getCount();
+                stack.shrink(amount);
+            } else {
+                stack.shrink(1);
+            }
+        }
+        return true;
+    }
 
     private class CircuitValueBoxTransform extends ValueBoxTransform.Sided {
         @Override
