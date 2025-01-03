@@ -22,8 +22,6 @@ public interface ITieredKineticBlockEntity {
         return Integer.MAX_VALUE;
     }
 
-    default void updateFromNetwork(float maxStress, float currentStress, int networkSize, float networkMaxCapacity) {};
-
     default boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking, int tier, double capacity, double stress) {
         if(tier != -1) {
             if(!tooltip.isEmpty()) {

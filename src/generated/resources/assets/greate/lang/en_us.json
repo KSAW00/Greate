@@ -253,8 +253,6 @@
   "greate.tooltip.circuit_number": "Circuit Number",
   "greate.tooltip.max_capacity": "Max Kinetic Capacity: ",
   "greate.tooltip.networkStatistics": "Network Stats: ",
-  "greate.tooltip.overcapacity": "Overcapacity",
-  "greate.tooltip.overcapacity.description": "It appears that a shaft on this network has reached §fovercapacity.§7 Reduce the amount of su to an amount that the shaft can support.",
   "gtceu.wire_coating": "Wire Coating Factory",
   "item.greate.aluminium_alloy": "Aluminium Alloy",
   "item.greate.aluminium_vertical_gearbox": "Aluminium Vertical Gearbox",
